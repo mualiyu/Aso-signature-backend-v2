@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="path/to/aso-signature-logo.png" alt="Aso Signature" width="200">
+    <img src="https://backend.asosignature.com/themes/aso.svg" alt="Aso Signature" width="200">
 </p>
 
 <p align="center">
