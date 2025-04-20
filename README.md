@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="path/to/aso-signature-logo.png" alt="Aso Signature" width="200">
+    <img src="https://backend.asosignature.com/themes/aso.svg" alt="Aso Signature" width="200">
 </p>
 
 <p align="center">
@@ -33,9 +33,12 @@ Aso Signature is a premium e-commerce platform bridging the gap between talented
 git clone https://github.com/mualiyu/aso-signature-backend-v2.git
 
 # Install dependencies
+composer install
 npm install
 
 # Start development server
+php artisan serve
+
 npm run dev
 ```
 
@@ -49,7 +52,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-- Website: [www.asosignature.com](https://www.asosignature.com)
-- Email: contact@asosignature.com
+- Website: [backend.asosignature.com](https://backend.asosignature.com)
+- Email: dev@asosignature.com
 - Twitter: [@AsoSignature_Ng](https://twitter.com/AsoSignature_Ng)
 
