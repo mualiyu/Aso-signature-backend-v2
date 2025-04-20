@@ -59,7 +59,8 @@
         </v-dark>
 
         <a 
-            href="{{ route('shop.home.index') }}" 
+            href="{{ env('STORE_FRONT_URL') }}" 
+            {{-- href="{{ route('shop.home.index') }}"  --}}
             target="_blank"
             class="flex"
         >
