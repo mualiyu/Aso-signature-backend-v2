@@ -151,7 +151,7 @@
     <!-- Drawer Header -->
     <x-slot:header>
         <div class="flex items-center justify-between">
-            @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
+            {{-- @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
                 <img
                     class="h-10"
                     src="{{ Storage::url($logo) }}"
@@ -163,7 +163,13 @@
                     id="logo-image"
                     alt="{{ config('app.name') }}"
                 />
-            @endif
+            @endif --}}
+
+            <img
+            src="{{asset('themes/aso.svg')}}" class="" style="width: 80px;"
+            id="logo-image"
+            alt="{{ config('app.name') }}"
+        />
         </div>
     </x-slot>
 
@@ -744,9 +750,9 @@
                 return {
                     isDarkMode: {{ request()->cookie('dark_mode') ?? 0 }},
 
-                    logo: "{{ bagisto_asset('images/logo.svg') }}",
+                    logo: "{{ asset('themes/aso.svg') }}",
 
-                    dark_logo: "{{ bagisto_asset('images/dark-logo.svg') }}",
+                    dark_logo: "{{ asset('themes/aso.svg') }}",
                 };
             },
 

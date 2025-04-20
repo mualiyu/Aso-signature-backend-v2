@@ -16,7 +16,7 @@
             <!-- SEO Meta Title -->
             <p 
                 class="text-[#135F29]"
-                v-text="'{{ URL::to('/') }}/' + (slug ? slug + '/' : '') + (metaTitle ? metaTitle.toLowerCase().replace(/\s+/g, '-') : '')"
+                v-text="'{{ env('STORE_FRONT_URL') }}/' + (slug ? slug + '/' : '') + (metaTitle ? metaTitle.toLowerCase().replace(/\s+/g, '-') : '')"
             >
             </p>
 
