@@ -33,9 +33,12 @@ Aso Signature is a premium e-commerce platform bridging the gap between talented
 git clone https://github.com/mualiyu/aso-signature-backend-v2.git
 
 # Install dependencies
+composer install
 npm install
 
 # Start development server
+php artisan serve
+
 npm run dev
 ```
 
