@@ -13,5 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+        // Add your URIs here that you want to exclude from CSRF verification
+        // Example:
+        'https://backend.asosignature.com/api/*',
     ];
 }

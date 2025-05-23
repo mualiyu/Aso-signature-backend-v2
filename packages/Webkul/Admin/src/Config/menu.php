@@ -118,15 +118,26 @@ return [
     ],
 
     /**
-     * CMS.
+     * Designers.
      */
     [
-        'key'        => 'cms',
-        'name'       => 'admin::app.components.layouts.sidebar.cms',
-        'route'      => 'admin.cms.index',
-        'sort'       => 5,
-        'icon'       => 'icon-cms',
+        'key'        => 'designers',
+        'name'       => 'admin::app.components.layouts.sidebar.customers',
+        'route'      => 'admin.customers.customers.index',
+        'sort'       => 4,
+        'icon'       => 'icon-customer-2',
     ],
+
+    /**
+     * CMS.
+     */
+    // [
+    //     'key'        => 'cms',
+    //     'name'       => 'admin::app.components.layouts.sidebar.cms',
+    //     'route'      => 'admin.cms.index',
+    //     'sort'       => 5,
+    //     'icon'       => 'icon-cms',
+    // ],
 
     /**
      * Marketing.
