@@ -120,13 +120,13 @@ return [
     /**
      * Designers.
      */
-    [
-        'key'        => 'designers',
-        'name'       => 'admin::app.components.layouts.sidebar.customers',
-        'route'      => 'admin.customers.customers.index',
-        'sort'       => 4,
-        'icon'       => 'icon-customer-2',
-    ],
+    // [
+    //     'key'        => 'designers',
+    //     'name'       => 'Designers',
+    //     'route'      => 'admin.designers.designers.index',
+    //     'sort'       => 5,
+    //     'icon'       => 'icon-customer-2',
+    // ],
 
     /**
      * CMS.

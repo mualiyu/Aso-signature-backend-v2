@@ -339,55 +339,10 @@
                                     </div>
                                 </template>
                             </x-slot>
-
-
                         </x-admin::accordion>
                     </template>
 
                     {!! view_render_event('bagisto.admin.customers.customers.view.card.accordion.address.after') !!}
-
-                    {!! view_render_event('bagisto.admin.customers.customers.view.card.accordion.address.before') !!}
-                    {{-- <template>
-                        <x-admin::accordion class="mt-4">
-    <x-slot:header>
-        <div class="flex w-full">
-            <p class="w-full p-2.5 text-base font-semibold text-gray-800 dark:text-white">
-                Outfit Measurement
-            </p>
-        </div>
-    </x-slot:header>
-
-    <x-slot:content>
-        <div class="grid gap-y-2.5 text-gray-800 dark:text-gray-300">
-            <p class="font-semibold">Gender: Male</p>
-
-            <ul class="list-disc ml-5">
-                <li>Chest: 40 inches</li>
-                <li>Waist: 34 inches</li>
-                <li>Hips: 38 inches</li>
-                <li>Sleeve Length: 25 inches</li>
-                <li>Shoulder Width: 18 inches</li>
-                <li>Inseam: 32 inches</li>
-                <li>Neck: 15 inches</li>
-            </ul>
-
-            <p class="font-semibold mt-4">Gender: Female</p>
-
-            <ul class="list-disc ml-5">
-                <li>Bust: 36 inches</li>
-                <li>Waist: 28 inches</li>
-                <li>Hips: 40 inches</li>
-                <li>Sleeve Length: 23 inches</li>
-                <li>Shoulder Width: 16 inches</li>
-                <li>Dress Length: 55 inches</li>
-            </ul>
-        </div>
-    </x-slot:content>
-</x-admin::accordion>
-
-                    </template> --}}
-                    {!! view_render_event('bagisto.admin.customers.customers.view.card.accordion.address.after') !!}
-
                 </div>
             </div>
         </script>
@@ -410,17 +365,11 @@
                             message: '@lang('admin::app.customers.customers.view.address-delete-confirmation')',
 
                             agree: () => {
-                                this.$axios.post(
-                                        `{{ route('admin.customers.customers.addresses.delete', '') }}/${id}`
-                                        )
+                                this.$axios.post(`{{ route('admin.customers.customers.addresses.delete', '') }}/${id}`)
                                     .then((response) => {
-                                        this.$emitter.emit('add-flash', {
-                                            type: 'success',
-                                            message: response.data.message
-                                        });
+                                        this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
 
-                                        this.customer.addresses = this.customer.addresses.filter(
-                                            address => address.id !== id);
+                                        this.customer.addresses = this.customer.addresses.filter(address => address.id !== id);
                                     })
                                     .catch((error) => {});
                             },
@@ -430,21 +379,17 @@
                     setAsDefault(address, index) {
                         this.isUpdating[index] = true;
 
-                        this.$axios.post(
-                                `{{ route('admin.customers.customers.addresses.set_default', '') }}/${this.customer.id}`, {
-                                    set_as_default: address.id,
-                                })
+                        this.$axios.post(`{{ route('admin.customers.customers.addresses.set_default', '') }}/${this.customer.id}`, {
+                            set_as_default: address.id,
+                        })
                             .then((response) => {
-                                this.$emitter.emit('add-flash', {
-                                    type: 'success',
-                                    message: response.data.message
-                                });
+                                this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
 
                                 this.customer.addresses = this.customer.addresses.map(address => ({
                                     ...address,
-                                    default_address: address.id === response.data.data.id ?
-                                        response.data.data.default_address :
-                                        false,
+                                    default_address: address.id === response.data.data.id
+                                        ? response.data.data.default_address
+                                        : false,
                                 }));
 
                                 this.isUpdating[index] = false;
@@ -478,7 +423,7 @@
                             this.customer.addresses.forEach(address => address.default_address = false);
                         }
 
-                        this.customer.addresses = this.customer.addresses.map(address => {
+                        this.customer.addresses =this.customer.addresses.map(address => {
                             if (address.id === updatedAddress.id) {
                                 return {
                                     ...updatedAddress,
