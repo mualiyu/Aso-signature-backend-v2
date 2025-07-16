@@ -30,11 +30,16 @@ return [
     ],
 
     'exchange_api' => [
-        'default' => 'exchange_rates',
+        'default' => 'currencylayer',
 
         'fixer' => [
             'key'   => env('FIXER_API_KEY'),
             'class' => 'Webkul\Core\Helpers\Exchange\FixerExchange',
+        ],
+
+        'currencylayer' => [
+            'key'   => env('CURRENCY_API_KEY'),
+            'class' => 'Webkul\Core\Helpers\Exchange\CurrencyLayerExchange',
         ],
 
         'exchange_rates' => [
@@ -78,5 +83,12 @@ return [
         'client_id'     => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect'      => env('GITHUB_CALLBACK_URL'),
+    ],
+
+    'currency' => [
+        'url' => env('CURRENCY_API_URL'),
+        'key' => env('CURRENCY_API_KEY'),
+        'base' => env('CURRENCY_BASE', 'USD'),
+        'symbols' => env('CURRENCY_SYMBOLS', 'NGN,EUR,GBP'),
     ],
 ];

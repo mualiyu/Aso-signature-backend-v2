@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://172.20.10.5:9900",
+            "url": "http://aso-signature-backend.test",
             "description": "Bagisto Rest API"
         }
     ],

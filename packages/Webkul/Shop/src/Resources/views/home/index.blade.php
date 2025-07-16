@@ -16,8 +16,9 @@
     <x-slot:title>
         {{  $channel->home_seo['meta_title'] ?? '' }}
     </x-slot>
-    
+
     <!-- Loop over the theme customization -->
+    {{-- {{ dd($customizations) }} --}}
     @foreach ($customizations as $customization)
         @php ($data = $customization->options) @endphp
 

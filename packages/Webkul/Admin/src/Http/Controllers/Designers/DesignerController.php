@@ -19,6 +19,7 @@ use Webkul\Admin\Mail\Customer\NewCustomerNotification;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Customer\Repositories\CustomerNoteRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\Designer\Models\Designer;
 
 class DesignerController extends Controller
 {
@@ -60,72 +61,49 @@ class DesignerController extends Controller
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datagrid(CustomerDataGrid::class)->process();
-        }
+        $designers = Designer::with(['products', 'images'])->get();
 
-        $groups = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
+        return view('admin::designers.designers.index', compact('designers'));
+    }
 
-        return view('admin::designers.designers.index', compact('groups'));
+    public function create()
+    {
+
+        return view('admin::designers.designers.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(): JsonResponse
+    public function store()
     {
-        $this->validate(request(), [
-            'first_name'    => 'string|required',
-            'last_name'     => 'string|required',
-            'gender'        => 'required',
-            'email'         => 'required|unique:customers,email',
-            'date_of_birth' => 'date|before:today',
-            'phone'         => 'unique:customers,phone',
+        $validatedData = request()->validate([
+            'name'          => 'string|required',
+            'email'         => 'required|unique:designers,email',
+            'phone'         => 'unique:designers,phone',
+            'description'   => 'string|nullable',
+            'website'       => 'url|nullable',
+            'instagram'     => 'url|nullable',
+            'facebook'      => 'url|nullable',
+            'twitter'       => 'url|nullable',
+            'pinterest'     => 'url|nullable',
+            'linkedin'      => 'url|nullable',
+            'youtube'       => 'url|nullable',
+            'status'        => 'required|in:1,0',
         ]);
 
-        $password = rand(100000, 10000000);
+        $designer = Designer::create($validatedData);
 
-        Event::dispatch('customer.registration.before');
+        // return new JsonResponse([
+        //     'data'    => $designer,
+        //     'message' => trans('admin::app.designers.designers.index.create.create-success'),
+        // ]);
 
-        $data = array_merge([
-            'password'    => bcrypt($password),
-            'is_verified' => 1,
-            'channel_id'  => core()->getCurrentChannel()->id,
-        ], request()->only([
-            'first_name',
-            'last_name',
-            'gender',
-            'email',
-            'date_of_birth',
-            'phone',
-            'customer_group_id',
-            'channel_id',
-        ]));
-
-        if (empty($data['phone'])) {
-            $data['phone'] = null;
+        if ($designer) {
+            return redirect()->route('admin.designers.designers.index')->with('success', 'Designer created successfully');
         }
 
-        Event::dispatch('customer.create.before');
-
-        $customer = $this->customerRepository->create($data);
-
-        if (core()->getConfigData('emails.general.notifications.emails.general.notifications.customer_account_credentials')) {
-            try {
-                Mail::queue(new NewCustomerNotification($customer, $password));
-            } catch (\Exception $e) {
-                report($e);
-            }
-        }
-
-        Event::dispatch('customer.create.after', $customer);
-
-        Event::dispatch('customer.registration.after', $customer);
-
-        return new JsonResponse([
-            'data'    => $customer,
-            'message' => trans('admin::app.customers.customers.index.create.create-success'),
-        ]);
+        return redirect()->route('admin.designers.designers.index')->with('error', 'Designer creation failed');
     }
 
     /**
@@ -135,44 +113,39 @@ class DesignerController extends Controller
      */
     public function update(int $id)
     {
-        $this->validate(request(), [
-            'first_name'    => 'string|required',
-            'last_name'     => 'string|required',
-            'gender'        => 'required',
-            'email'         => 'required|unique:customers,email,'.$id,
-            'date_of_birth' => 'date|before:today',
-            'phone'         => 'unique:customers,phone,'.$id,
+        $validatedData = request()->validate([
+            'name'          => 'string|required',
+            'email'         => 'required|unique:designers,email,'.$id,
+            'phone'         => 'unique:designers,phone,'.$id,
+            'description'   => 'string|nullable',
+            'website'       => 'url|nullable',
+            'instagram'     => 'url|nullable',
+            'facebook'      => 'url|nullable',
+            'twitter'       => 'url|nullable',
+            'pinterest'     => 'url|nullable',
+            'linkedin'      => 'url|nullable',
+            'youtube'       => 'url|nullable',
+            'status'        => 'required|in:1,0',
         ]);
 
-        $data = request()->only([
-            'first_name',
-            'last_name',
-            'gender',
-            'email',
-            'date_of_birth',
-            'phone',
-            'customer_group_id',
-            'status',
-            'is_suspended',
-        ]);
+        $designer = Designer::find($id);
 
-        if (empty($data['phone'])) {
-            $data['phone'] = null;
+        if (!$designer) {
+            return response()->json(['message' => 'Designer not found'], 404);
         }
 
-        Event::dispatch('customer.update.before', $id);
+        $designer->update($validatedData);
 
-        $customer = $this->customerRepository->update($data, $id);
+        // return response()->json([
+        //     'message' => 'Designer updated successfully',
+        //     'data'    => $designer->fresh(),
+        // ]);
 
-        Event::dispatch('customer.update.after', $customer);
+        if ($designer) {
+            return redirect()->back()->with('success', 'Designer updated successfully');
+        }
 
-        return new JsonResponse([
-            'message' => trans('admin::app.customers.customers.update-success'),
-            'data'    => [
-                'customer' => $customer->fresh(),
-                'group'    => $customer->group,
-            ],
-        ]);
+        return redirect()->back()->with('error', 'Designer update failed');
     }
 
     /**
@@ -249,9 +222,7 @@ class DesignerController extends Controller
      */
     public function show(int $id)
     {
-        $customer = $this->customerRepository->with(['addresses', 'group'])->findOrFail($id);
-
-        $groups = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
+        $designer = Designer::findOrFail($id);
 
         if (request()->ajax()) {
             switch (request()->query('type')) {
@@ -266,7 +237,7 @@ class DesignerController extends Controller
             }
         }
 
-        return view('admin::customers.customers.view', compact('customer', 'groups'));
+        return view('admin::designers.designers.edit', compact('designer'));
     }
 
     /**

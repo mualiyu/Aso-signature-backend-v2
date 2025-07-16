@@ -17,11 +17,14 @@ use Webkul\Attribute\Repositories\AttributeFamilyRepository;
 use Webkul\Core\Rules\Slug;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Product\Helpers\ProductType;
+use Webkul\Product\Models\Product;
 use Webkul\Product\Repositories\ProductAttributeValueRepository;
 use Webkul\Product\Repositories\ProductDownloadableLinkRepository;
 use Webkul\Product\Repositories\ProductDownloadableSampleRepository;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
+
+use Webkul\Designer\Models\Designer;
 
 class ProductController extends Controller
 {
@@ -58,7 +61,22 @@ class ProductController extends Controller
 
         $families = $this->attributeFamilyRepository->all();
 
-        return view('admin::catalog.products.index', compact('families'));
+        // $lastSku = Product::latest()->value('sku'); // Get last SKU
+        // $nextNumber = $lastSku ? (int) substr($lastSku, 4) + 1 : 1;
+        // $generatedSku = 'Aso-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+
+        // Get the last base SKU like 'Aso-12344'
+        $lastProduct = Product::where('sku', 'like', 'Aso-%')->latest()->first();
+
+        if ($lastProduct && preg_match('/Aso-(\d+)/', $lastProduct->sku, $matches)) {
+            $nextNumber = (int) $matches[1] + 1;
+        } else {
+            $nextNumber = 1;
+        }
+
+        $baseSku = 'Aso-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+
+        return view('admin::catalog.products.index', compact('families', 'baseSku'));
     }
 
     /**
@@ -138,7 +156,9 @@ class ProductController extends Controller
     {
         $product = $this->productRepository->findOrFail($id);
 
-        return view('admin::catalog.products.edit', compact('product'));
+        $designers = Designer::where('status', '1')->get();
+
+        return view('admin::catalog.products.edit', compact('product', 'designers'));
     }
 
     /**
@@ -332,7 +352,7 @@ class ProductController extends Controller
             $searchEngine = 'elastic';
 
             $indexNames = core()->getAllChannels()->map(function ($channel) {
-                return 'products_'.$channel->code.'_'.app()->getLocale().'_index';
+                return 'products_' . $channel->code . '_' . app()->getLocale() . '_index';
             })->toArray();
         }
 

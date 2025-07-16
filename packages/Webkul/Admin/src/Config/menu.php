@@ -120,24 +120,30 @@ return [
     /**
      * Designers.
      */
-    // [
-    //     'key'        => 'designers',
-    //     'name'       => 'Designers',
-    //     'route'      => 'admin.designers.designers.index',
-    //     'sort'       => 5,
-    //     'icon'       => 'icon-customer-2',
-    // ],
+    [
+        'key'        => 'designers',
+        'name'       => 'Designers',
+        'route'      => 'admin.designers.designers.index',
+        'sort'       => 5,
+        'icon'       => 'icon-customer-2',
+    ],[
+        'key'        => 'designers.designers',
+        'name'       => 'Designers',
+        'route'      => 'admin.designers.designers.index',
+        'sort'       => 1,
+        'icon'       => '',
+    ],
 
     /**
      * CMS.
      */
-    // [
-    //     'key'        => 'cms',
-    //     'name'       => 'admin::app.components.layouts.sidebar.cms',
-    //     'route'      => 'admin.cms.index',
-    //     'sort'       => 5,
-    //     'icon'       => 'icon-cms',
-    // ],
+    [
+        'key'        => 'cms',
+        'name'       => 'admin::app.components.layouts.sidebar.cms',
+        'route'      => 'admin.cms.index',
+        'sort'       => 6,
+        'icon'       => 'icon-cms',
+    ],
 
     /**
      * Marketing.
@@ -146,7 +152,7 @@ return [
         'key'        => 'marketing',
         'name'       => 'admin::app.components.layouts.sidebar.marketing',
         'route'      => 'admin.marketing.promotions.catalog_rules.index',
-        'sort'       => 6,
+        'sort'       => 7,
         'icon'       => 'icon-promotion',
         'icon-class' => 'promotion-icon',
     ], [
@@ -236,7 +242,7 @@ return [
         'key'        => 'reporting',
         'name'       => 'admin::app.components.layouts.sidebar.reporting',
         'route'      => 'admin.reporting.sales.index',
-        'sort'       => 7,
+        'sort'       => 8,
         'icon'       => 'icon-report',
         'icon-class' => 'report-icon',
     ], [
@@ -266,7 +272,7 @@ return [
         'key'        => 'settings',
         'name'       => 'admin::app.components.layouts.sidebar.settings',
         'route'      => 'admin.settings.locales.index',
-        'sort'       => 8,
+        'sort'       => 9,
         'icon'       => 'icon-settings',
         'icon-class' => 'settings-icon',
     ], [
@@ -356,7 +362,7 @@ return [
         'key'        => 'configuration',
         'name'       => 'admin::app.components.layouts.sidebar.configure',
         'route'      => 'admin.configuration.index',
-        'sort'       => 9,
+        'sort'       => 10,
         'icon'       => 'icon-configuration',
     ],
 ];

@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+         \App\Console\Commands\UpdateCurrencyRates::class,
     ];
 
     /**
@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('indexer:index --type=price')->dailyAt('00:01');
 
         $schedule->command('product:price-rule:index')->dailyAt('00:01');
+
+        $schedule->command('currency:update')->twiceDaily(6, 18);
     }
 
     /**
@@ -39,6 +41,7 @@ class Kernel extends ConsoleKernel
     {
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/../../packages/Webkul/Core/src/Console/Commands');
+
 
         require base_path('routes/console.php');
     }

@@ -22,6 +22,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url').'/d
         Route::controller(DesignerController::class)->group(function () {
             Route::get('', 'index')->name('admin.designers.designers.index');
 
+            Route::get('create', 'create')->name('admin.designers.designers.create');
+
             Route::get('view/{id}', 'show')->name('admin.designers.designers.view');
 
             Route::post('create', 'store')->name('admin.designers.designers.store');
@@ -30,7 +32,7 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url').'/d
 
             Route::get('login-as-customer/{id}', 'loginAsCustomer')->name('admin.designers.designers.login_as_customer');
 
-            Route::post('note/{id}', 'storeNotes')->name('admin.customer.note.store');
+            // Route::post('note/{id}', 'storeNotes')->name('admin.customer.note.store');
 
             Route::put('edit/{id}', 'update')->name('admin.designers.designers.update');
 

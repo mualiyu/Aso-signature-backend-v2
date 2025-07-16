@@ -13,6 +13,7 @@ use Webkul\Shop\Http\Controllers\API\ReviewController;
 use Webkul\Shop\Http\Controllers\API\WishlistController;
 
 Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'], function () {
+    
     Route::controller(CoreController::class)->prefix('core')->group(function () {
         Route::get('countries', 'getCountries')->name('shop.api.core.countries');
 
@@ -36,6 +37,8 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::get('{id}/up-sell', 'upSellProducts')->name('shop.api.products.up-sell.index');
     });
+
+
 
     Route::controller(ReviewController::class)->prefix('product/{id}')->group(function () {
         Route::get('reviews', 'index')->name('shop.api.products.reviews.index');
@@ -94,7 +97,12 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
      */
     Route::controller(CustomerController::class)->prefix('customer')->group(function () {
         Route::post('login', 'login')->name('shop.api.customers.session.create');
+
+        // contact us route
+        Route::post('contactus', 'sendContactUsMail')->name('shop.api.contact-us.store');
     });
+
+
 
     Route::group(['middleware' => ['customer'], 'prefix' => 'customer'], function () {
 

@@ -9,7 +9,6 @@
         >
             <form @submit="handleSubmit($event, create)">
                 <!-- Designer Create Modal -->
-                <x-admin::modal ref="designerCreateModal">
                     <!-- Modal Header -->
                     <x-slot:header>
                         <p class="text-lg font-bold text-gray-800 dark:text-white">
@@ -248,7 +247,6 @@
                             />
                         </div>
                     </x-slot>
-                </x-admin::modal>
             </form>
         </x-admin::form>
     </script>
@@ -285,7 +283,7 @@
                         })
                         .catch(error => {
                             console.log(error);
-                            
+
                             this.isStoring = false;
 
                             if (error.response.status == 422) {

@@ -91,7 +91,7 @@
                             <span class="icon-language text-2xl"></span>
 
                             {{ $currentLocale->name }}
-                            
+
                             <input
                                 type="hidden"
                                 name="locale"
@@ -136,7 +136,7 @@
                             && view()->exists($path = $field->getPath())
                         )
                             {!! view($path, compact('field', 'child'))->render() !!}
-                        @else 
+                        @else
                             @include ('admin::configuration.field-type')
                         @endif
                     @endforeach

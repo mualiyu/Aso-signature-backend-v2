@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Webkul\Shop\Http\Controllers\Customer\Account\AddressController;
+use Webkul\Shop\Http\Controllers\Customer\Account\MeasurementController;
 use Webkul\Shop\Http\Controllers\Customer\Account\DownloadableProductController;
 use Webkul\Shop\Http\Controllers\Customer\Account\OrderController;
 use Webkul\Shop\Http\Controllers\Customer\Account\WishlistController;
@@ -123,6 +124,22 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
                     Route::patch('edit/{id}', 'makeDefault')->name('shop.customers.account.addresses.update.default');
 
                     Route::delete('delete/{id}', 'destroy')->name('shop.customers.account.addresses.delete');
+                });
+
+                Route::controller(MeasurementController::class)->prefix('measurements')->group(function () {
+                    Route::get('', 'index')->name('shop.customers.account.measurements.index');
+
+                    Route::get('create', 'create')->name('shop.customers.account.measurements.create');
+
+                    Route::post('create', 'store')->name('shop.customers.account.measurements.store');
+
+                    Route::get('edit/{id}', 'edit')->name('shop.customers.account.measurements.edit');
+
+                    Route::put('edit/{id}', 'update')->name('shop.customers.account.measurements.update');
+
+                    Route::patch('edit/{id}', 'makeDefault')->name('shop.customers.account.measurements.update.default');
+
+                    Route::delete('delete/{id}', 'destroy')->name('shop.customers.account.measurements.delete');
                 });
 
                 /**
