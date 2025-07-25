@@ -70,6 +70,13 @@ class ThemeCustomization extends TranslatableModel implements ThemeCustomization
      */
     public const SERVICES_CONTENT = 'services_content';
 
+     /**
+     * Designer carousel precision.
+     *
+     * @var string
+     */
+    public const DESIGNER_CAROUSEL = 'designer_carousel';
+
     /**
      * Cast options field to array.
      *

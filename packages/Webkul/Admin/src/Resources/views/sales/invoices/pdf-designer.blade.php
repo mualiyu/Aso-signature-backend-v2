@@ -246,7 +246,7 @@
 
         <div class="page">
             <!-- Header -->
-            <div class="page-header" style="margin-bottom: 30px;">
+            <div class="page-header">
                 <b>@lang('admin::app.sales.invoices.invoice-pdf.invoice')</b>
             </div>
 
@@ -365,11 +365,13 @@
                                 </th>
                             @endif
 
+                            @if ($invoice->order->shipping_address)
                                 <th style="width: 50%">
                                     <b>
                                         @lang('admin::app.sales.invoices.invoice-pdf.ship-to')
                                     </b>
                                 </th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -391,7 +393,7 @@
                                 </td>
                             @endif
 
-                            {{-- @if ($invoice->order->shipping_address)
+                            @if ($invoice->order->shipping_address)
                                 <td style="width: 50%">
                                     <div>{{ $invoice->order->shipping_address->company_name ?? '' }}<div>
 
@@ -405,10 +407,7 @@
 
                                     <div>@lang('admin::app.sales.invoices.invoice-pdf.contact'): {{ $invoice->order->shipping_address->phone }}</div>
                                 </td>
-                            @endif --}}
-                            <td style="width: 50%">
-                                <div> Null <div>
-                            </td>
+                            @endif
                         </tr>
                     </tbody>
                 </table>
@@ -550,7 +549,7 @@
                 </div>
 
                 <!-- Summary Table -->
-                {{-- <div class="summary">
+                <div class="summary">
                     <table class="{{ core()->getCurrentLocale()->direction }}">
                         <tbody>
                             @if (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'including_tax')
@@ -628,7 +627,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </div> --}}
+                </div>
             </div>
         </div>
     </body>

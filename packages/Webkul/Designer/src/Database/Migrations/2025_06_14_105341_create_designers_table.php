@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('designers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
             $table->longText('description')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();

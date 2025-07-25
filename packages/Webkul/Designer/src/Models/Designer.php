@@ -65,6 +65,16 @@ class Designer extends Model implements DesignerContract
         return $this->hasMany(DesignerImage::class)->orderBy('position');
     }
 
+    public function logo()
+    {
+        return $this->hasOne(DesignerImage::class, 'designer_id', 'id')->where('alt', 'logo_path')->latest();
+    }
+
+    public function banner()
+    {
+        return $this->hasOne(DesignerImage::class, 'designer_id', 'id')->where('alt', 'banner_path')->latest();
+    }
+
     /**
      * Get the first image of the product.
      */

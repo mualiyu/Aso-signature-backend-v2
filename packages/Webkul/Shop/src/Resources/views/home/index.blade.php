@@ -55,6 +55,16 @@
                 />
 
                 @break
+            @case ($customization::DESIGNER_CAROUSEL)
+                <!-- Categories carousel -->
+                <x-shop::designers.carousel
+                    :title="$data['title'] ?? ''"
+                    :src="route('shop.api.designers.index', $data['filters'] ?? [])"
+                    :navigation-link="route('shop.home.index')"
+                    aria-label="Designers Carousel"
+                />
+                       {{-- <h1> TEST DESIGNER </h1> --}}
+                @break
             @case ($customization::PRODUCT_CAROUSEL)
                 <!-- Product Carousel -->
                 <x-shop::products.carousel

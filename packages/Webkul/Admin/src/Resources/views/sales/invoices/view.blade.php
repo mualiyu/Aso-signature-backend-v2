@@ -40,12 +40,21 @@
             {!! view_render_event('bagisto.admin.sales.invoice.page_action.before', ['order' => $order]) !!}
 
             <a
-                href="{{ route('admin.sales.invoices.print', $invoice->id) }}"
+                href="{{ route('admin.sales.invoices.print', [$invoice->id, 'customer']) }}"
                 class="inline-flex w-full max-w-max cursor-pointer items-center justify-between gap-x-2 px-1 py-1.5 text-center font-semibold text-gray-600 transition-all hover:rounded-md hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800"
             >
                 <span class="icon-printer text-2xl"></span>
 
                 @lang('admin::app.sales.invoices.view.print')
+            </a>
+
+            <a
+                href="{{ route('admin.sales.invoices.print', [$invoice->id, 'designer']) }}"
+                class="inline-flex w-full max-w-max cursor-pointer items-center justify-between gap-x-2 px-1 py-1.5 text-center font-semibold text-gray-600 transition-all hover:rounded-md hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+                <span class="icon-printer text-2xl"></span>
+
+                Print Designer Copy
             </a>
 
             <!-- Send Duplicate Invoice Modal -->
@@ -193,7 +202,7 @@
                                         <p class="text-gray-600 dark:text-gray-300">
                                             @lang('admin::app.sales.invoices.view.price-excl-tax', ['price' => core()->formatBasePrice($item->base_price)])
                                         </p>
-                                        
+
                                         <p class="text-gray-600 dark:text-gray-300">
                                             @lang('admin::app.sales.invoices.view.price-incl-tax', ['price' => core()->formatBasePrice($item->base_price_incl_tax)])
                                         </p>
@@ -224,7 +233,7 @@
                                         <p class="text-gray-600 dark:text-gray-300">
                                             @lang('admin::app.sales.invoices.view.sub-total-excl-tax', ['sub_total' => core()->formatBasePrice($item->base_total)])
                                         </p>
-                                        
+
                                         <p class="text-gray-600 dark:text-gray-300">
                                             @lang('admin::app.sales.invoices.view.sub-total-incl-tax', ['sub_total' => core()->formatBasePrice($item->base_total_incl_tax)])
                                         </p>
@@ -246,7 +255,7 @@
                             <p class="font-semibold !leading-5 text-gray-600 dark:text-gray-300">
                                 @lang('admin::app.sales.invoices.view.sub-total-summary-excl-tax')
                             </p>
-                            
+
                             <p class="font-semibold !leading-5 text-gray-600 dark:text-gray-300">
                                 @lang('admin::app.sales.invoices.view.sub-total-summary-incl-tax')
                             </p>
@@ -258,22 +267,22 @@
 
                         @if (core()->getConfigData('sales.taxes.sales.display_shipping_amount') == 'both')
                             <p class="!leading-5 text-gray-600 dark:text-gray-300">
-                                @lang('admin::app.sales.invoices.view.shipping-and-handling-excl-tax')                    
+                                @lang('admin::app.sales.invoices.view.shipping-and-handling-excl-tax')
                             </p>
-                            
+
                             <p class="!leading-5 text-gray-600 dark:text-gray-300">
-                                @lang('admin::app.sales.invoices.view.shipping-and-handling-incl-tax')                    
+                                @lang('admin::app.sales.invoices.view.shipping-and-handling-incl-tax')
                             </p>
                         @else
                             <p class="!leading-5 text-gray-600 dark:text-gray-300">
-                                @lang('admin::app.sales.invoices.view.shipping-and-handling')                    
+                                @lang('admin::app.sales.invoices.view.shipping-and-handling')
                             </p>
                         @endif
 
                         <p class="!leading-5 text-gray-600 dark:text-gray-300">
                             @lang('admin::app.sales.invoices.view.summary-tax')
                         </p>
-                        
+
                         @if ($invoice->base_discount_amount > 0)
                             <p class="!leading-5 text-gray-600 dark:text-gray-300">
                                 @lang('admin::app.sales.invoices.view.summary-discount')
@@ -295,7 +304,7 @@
                             <p class="font-semibold !leading-5 text-gray-600 dark:text-gray-300">
                                 {{ core()->formatBasePrice($invoice->base_sub_total) }}
                             </p>
-                            
+
                             <p class="font-semibold !leading-5 text-gray-600 dark:text-gray-300">
                                 {{ core()->formatBasePrice($invoice->base_sub_total_incl_tax) }}
                             </p>
@@ -314,7 +323,7 @@
                             <p class="!leading-5 text-gray-600 dark:text-gray-300">
                                 {{ core()->formatBasePrice($invoice->base_shipping_amount) }}
                             </p>
-                            
+
                             <p class="!leading-5 text-gray-600 dark:text-gray-300">
                                 {{ core()->formatBasePrice($invoice->base_shipping_amount_incl_tax) }}
                             </p>

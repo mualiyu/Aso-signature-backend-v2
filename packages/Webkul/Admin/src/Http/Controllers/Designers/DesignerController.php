@@ -20,6 +20,7 @@ use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Customer\Repositories\CustomerNoteRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\Designer\Models\Designer;
+use Webkul\Designer\Models\DesignerImage;
 
 class DesignerController extends Controller
 {
@@ -77,7 +78,10 @@ class DesignerController extends Controller
      */
     public function store()
     {
+
         $validatedData = request()->validate([
+            'logo_path'     => 'required',
+            'banner_path'   => 'nullable',
             'name'          => 'string|required',
             'email'         => 'required|unique:designers,email',
             'phone'         => 'unique:designers,phone',
@@ -100,6 +104,51 @@ class DesignerController extends Controller
         // ]);
 
         if ($designer) {
+
+            // foreach (request()->file('logo_path') as $file) {
+            //     $logoPath = $file->store('designer_images');
+
+            //     $designerImage = DesignerImage::create([
+            //     'src' => $logoPath,
+            //     'alt' => 'logo_path',
+            //     'width' => 150,
+            //     'height' => 200,
+            //     ]);
+            //     // $designerImage->designer_id = $designer->id;
+            //     // $designerImage->src = $logoPath;
+            //     // $designerImage->save();
+            // }
+            // foreach (request()->file('banner_path') as $file) {
+            //     $bannerPath = $file->store('designer_images');
+            //     // save or process $path as needed
+            //     $designerImage = DesignerImage::create([
+            //     'src' => $bannerPath,
+            //     'alt' => 'banner_path',
+            //     'width' => 1920,
+            //     'height' => 600,
+            //     ]);
+            //     // $designerImage->designer_id = $designer->id;
+            //     // $designerImage->src = $bannerPath;
+            //     // $designerImage->save();
+            // }
+
+            $logoPath = request()->file('logo_path')->store('designer_images', 'public');
+
+            $bannerPath = request()->file('banner_path')->store('designer_images', 'public');
+
+            $designerImage = new DesignerImage();
+            $designerImage->designer_id = $designer->id;
+            $designerImage->src = $logoPath;
+            $designerImage->alt = "logo_path";
+            $designerImage->save();
+
+            $designerImage = new DesignerImage();
+            $designerImage->designer_id = $designer->id;
+            $designerImage->src = $bannerPath;
+            $designerImage->alt = "banner_path";
+            $designerImage->save();
+
+
             return redirect()->route('admin.designers.designers.index')->with('success', 'Designer created successfully');
         }
 
@@ -113,10 +162,13 @@ class DesignerController extends Controller
      */
     public function update(int $id)
     {
+
         $validatedData = request()->validate([
+            'logo_path'     => 'required',
+            'banner_path'   => 'nullable',
             'name'          => 'string|required',
-            'email'         => 'required|unique:designers,email,'.$id,
-            'phone'         => 'unique:designers,phone,'.$id,
+            'email'         => 'required|unique:designers,email,' . $id,
+            'phone'         => 'unique:designers,phone,' . $id,
             'description'   => 'string|nullable',
             'website'       => 'url|nullable',
             'instagram'     => 'url|nullable',
@@ -135,6 +187,24 @@ class DesignerController extends Controller
         }
 
         $designer->update($validatedData);
+
+        if (request()->has('logo_path') && request()->file('logo_path') != null) {
+            $logoPath = request()->file('logo_path')->store('designer_images', 'public');
+            $designerImage = new DesignerImage();
+            $designerImage->designer_id = $designer->id;
+            $designerImage->src = $logoPath;
+            $designerImage->alt = "logo_path";
+            $designerImage->save();
+        }
+
+        if (request()->has('banner_path') && request()->file('banner_path') != null) {
+            $bannerPath = request()->file('banner_path')->store('designer_images', 'public');
+            $designerImage = new DesignerImage();
+            $designerImage->designer_id = $designer->id;
+            $designerImage->src = $bannerPath;
+            $designerImage->alt = "banner_path";
+            $designerImage->save();
+        }
 
         // return response()->json([
         //     'message' => 'Designer updated successfully',
@@ -248,8 +318,8 @@ class DesignerController extends Controller
     public function search()
     {
         $customers = $this->customerRepository->scopeQuery(function ($query) {
-            return $query->where('email', 'like', '%'.urldecode(request()->input('query')).'%')
-                ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'like', '%'.urldecode(request()->input('query')).'%')
+            return $query->where('email', 'like', '%' . urldecode(request()->input('query')) . '%')
+                ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'like', '%' . urldecode(request()->input('query')) . '%')
                 ->orderBy('created_at', 'desc');
         })->paginate(self::COUNT);
 

@@ -134,13 +134,22 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function printInvoice(int $id)
+    public function printInvoice(int $id, $type)
     {
         $invoice = $this->invoiceRepository->findOrFail($id);
 
-        return $this->downloadPDF(
-            view('admin::sales.invoices.pdf', compact('invoice'))->render(),
-            'invoice-'.$invoice->created_at->format('d-m-Y')
-        );
+        if ($type === 'customer') {
+            # code...
+            return $this->downloadPDF(
+                view('admin::sales.invoices.pdf', compact('invoice', 'type'))->render(),
+                'invoice-'.$invoice->created_at->format('d-m-Y')
+            );
+        }else{
+            return $this->downloadPDF(
+                view('admin::sales.invoices.pdf-designer', compact('invoice', 'type'))->render(),
+                'designer-invoice-'.$invoice->created_at->format('d-m-Y')
+            );
+        }
+
     }
 }
