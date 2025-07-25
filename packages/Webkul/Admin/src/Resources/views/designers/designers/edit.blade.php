@@ -44,9 +44,9 @@
                                 onclick="$refs.24_imageInput.click()"
                                 >
                                 <div class="flex flex-col items-center">
-                                    <img src="{{ url('/storage/' .$designer->logo->src) ?? "" }}" alt="Preview" style="position:relative; z-index:1; object-fit:cover; display: {{ $designer->logo->src ? 'block' : 'none' }}; height: 100px" class="w-full top-0  object-cover "
+                                    <img src="{{ $designer->logo()->exists() ? url('/storage/' .$designer->logo->src) : '' }}" alt="Preview" style="position:relative; z-index:1; object-fit:cover; display: {{ $designer->logo()->exists() ? 'block' : 'none' }}; height: 100px" class="w-full top-0 object-cover"
                                         id="24_imagePreview">
-                                    <div id="ddff" style="display: {{ $designer->logo->src ? 'none' : 'block' }};">
+                                    <div id="ddff" style="display: {{  $designer->logo()->exists() ? 'none' : 'block' }};">
                                         <span class="icon-image text-2xl ml-5"></span>
                                         <p
                                             class="grid text-center text-sm font-semibold text-gray-600 dark:text-gray-300">
@@ -92,9 +92,10 @@
                             onclick="$refs.32_imageInput.click()"
                             >
                             <div class="flex flex-col items-center">
-                                <img src="{{ url('/storage/' .$designer->banner->src) ?? "" }}" alt="Preview" style="position:relative; z-index:1; object-fit:cover; display: {{ $designer->banner->src ? 'block' : 'none' }}; height: 100px;" class="w-full top-0 object-cover"
+
+                                <img src="{{  $designer->banner()->exists() ? url('/storage/' .$designer->banner->src) : '' }}" alt="Preview" style="position:relative; z-index:1; object-fit:cover; display: {{ $designer->banner()->exists() ? 'block' : 'none' }}; height: 100px;" class="w-full top-0 object-cover"
                                     id="32_imageInput">
-                                <div id="ddfff" style="display: {{ $designer->banner->src ? 'none' : 'block' }};">
+                                <div id="ddfff" style="display: {{ $designer->banner()->exists() ? 'none' : 'block' }};">
                                     <span class="icon-image text-2xl ml-5"></span>
                                     <p
                                         class="grid text-center text-sm font-semibold text-gray-600 dark:text-gray-300">

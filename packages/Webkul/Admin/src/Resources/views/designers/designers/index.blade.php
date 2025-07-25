@@ -71,17 +71,26 @@
                 <div class="grid grid-cols-[2fr_1fr_1fr] border rounded-lg p-4 bg-white dark:bg-gray-900">
                     <!-- Designer Basic Info -->
                     <div class="flex flex-col gap-1.5">
-                        <p class="text-base font-semibold text-gray-800 dark:text-white">
-                            {{ $designer->name }}
-                        </p>
+                        <div class="flex items-center gap-2">
+                            @if ($designer->logo()->exists())
+                            <img src="{{ url('/storage/'.$designer->logo->src) ?? asset('admin::default.png') }}" alt="Designer Logo" class="w-10 h-10 rounded-full">
+                            @else
+                            <img src="{{ asset('themes/aso.svg') }}" alt="Designer Logo" class="w-10 h-10 rounded-full">
+                            @endif
+                            <div>
+                                <p class="text-base font-semibold text-gray-800 dark:text-white">
+                                    {{ $designer->name }}
+                                </p>
 
-                        <p class="text-gray-600 dark:text-gray-300">
-                            {{ $designer->email }}
-                        </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    {{ $designer->email }}
+                                </p>
 
-                        <p class="text-gray-600 dark:text-gray-300">
-                            {{ $designer->phone ?? 'N/A' }}
-                        </p>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    {{ $designer->phone ?? 'N/A' }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Designer Status & Social Links -->
