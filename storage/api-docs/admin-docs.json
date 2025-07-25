@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "https://aso-signature.test",
+            "url": "http://aso-signature-backend.test",
             "description": "Bagisto Admin End Rest API"
         }
     ],

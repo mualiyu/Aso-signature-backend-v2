@@ -236,9 +236,192 @@
                                     :label="trans('admin::app.customers.customers.view.edit.suspended')"
                                     ::checked="customer.is_suspended"
                                 />
+                            </x-admin::form.control-group>`
+                        </div>
+
+
+                        <hr>
+                        
+                        <!-- Measurements Card -->
+                        <div class="flex flex-col gap-4">
+                            <x-admin::form.control-group class="w-full">
+                                <x-admin::form.control-group.label>
+                                    @lang('Body Measurements')
+                                </x-admin::form.control-group.label>
+
+                                <div class="grid grid-cols-3 gap-4">
+                                    <!-- Upper Body Measurements -->
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Neck</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="neck"
+                                            value="16"
+                                            label="Neck"
+                                            placeholder="Neck (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Shoulder Width</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="shoulder_width"
+                                            value="18"
+                                            label="Shoulder Width"
+                                            placeholder="Shoulder Width (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Chest</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="chest"
+                                            value="40"
+                                            label="Chest"
+                                            placeholder="Chest (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Bust</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="bust"
+                                            value="38"
+                                            label="Bust"
+                                            placeholder="Bust (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Arm Circumference</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="arm_circumference"
+                                            value="14"
+                                            label="Arm Circumference"
+                                            placeholder="Arm Circumference (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Sleeve Length</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="sleeve_length"
+                                            value="25"
+                                            label="Sleeve Length"
+                                            placeholder="Sleeve Length (inches)"
+                                        />
+                                    </div>
+
+                                    <!-- Torso Measurements -->
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Back Width</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="back_width"
+                                            value="16"
+                                            label="Back Width"
+                                            placeholder="Back Width (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Back Length</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="back_length"
+                                            value="27"
+                                            label="Back Length"
+                                            placeholder="Back Length (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Front Length</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="front_length"
+                                            value="26"
+                                            label="Front Length"
+                                            placeholder="Front Length (inches)"
+                                        />
+                                    </div>
+
+                                    <!-- Lower Body Measurements -->
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Waist</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="waist"
+                                            value="34"
+                                            label="Waist"
+                                            placeholder="Waist (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Hip</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="hip"
+                                            value="40"
+                                            label="Hip"
+                                            placeholder="Hip (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Inseam</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="inseam"
+                                            value="32"
+                                            label="Inseam"
+                                            placeholder="Inseam (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Outseam</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="outseam"
+                                            value="42"
+                                            label="Outseam"
+                                            placeholder="Outseam (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Thigh</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="thigh"
+                                            value="22"
+                                            label="Thigh"
+                                            placeholder="Thigh (inches)"
+                                        />
+                                    </div>
+
+                                    <div class="flex flex-col">
+                                        <label class="mb-1 text-sm text-gray-800 dark:text-white">Knee</label>
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            name="knee"
+                                            value="15"
+                                            label="Knee"
+                                            placeholder="Knee (inches)"
+                                        />
+                                    </div>
+                                </div>
                             </x-admin::form.control-group>
                         </div>
-                        
+
+                        <hr>
                         {!! view_render_event('bagisto.admin.customers.customers.view.edit.after', ['customer' => $customer]) !!}
                     </x-slot>
 

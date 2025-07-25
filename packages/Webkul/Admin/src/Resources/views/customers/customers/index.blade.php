@@ -222,11 +222,11 @@
                         </div>
 
                         <div class="flex items-center">
-                            <a
+                            {{-- <a
                                 class="icon-login cursor-pointer p-1.5 text-2xl hover:rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ltr:ml-1 rtl:mr-1"
                                 :href=`{{ route('admin.customers.customers.login_as_customer', '') }}/${record.customer_id}`
                                 target="_blank"
-                            >
+                            > --}}
                             </a>
 
                             <a

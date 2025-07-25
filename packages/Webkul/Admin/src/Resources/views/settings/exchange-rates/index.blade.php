@@ -17,6 +17,7 @@
                     href="{{ route('admin.settings.exchange_rates.update_rates') }}"
                     class="primary-button"
                 >
+                {{-- yyy --}}
                     @lang('admin::app.settings.exchange-rates.index.update-rates')
                 </a>
 

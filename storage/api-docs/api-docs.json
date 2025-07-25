@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Aso Signature Store Front Rest API Documentation",
-        "description": "Aso Signature Store Front Rest API Documentation",
+        "title": "Bagisto Store Front Rest API Documentation",
+        "description": "Bagisto Store Front Rest API Documentation",
         "contact": {
             "email": "shop@example.com"
         },
@@ -10,8 +10,8 @@
     },
     "servers": [
         {
-            "url": "https://aso-signature.test",
-            "description": "Aso Signature Rest API"
+            "url": "http://aso-signature-backend.test",
+            "description": "Bagisto Rest API"
         }
     ],
     "paths": {
@@ -3129,7 +3129,7 @@
                                             "first_name": "John",
                                             "last_name": "Doe",
                                             "email": "john@example.com",
-                                            "company_name": "Aso Signature",
+                                            "company_name": "Bagisto",
                                             "city": "Marrero",
                                             "state": "LA",
                                             "country": "US",
@@ -3198,7 +3198,7 @@
                                             "first_name": "John",
                                             "last_name": "Doe",
                                             "email": "john@example.com",
-                                            "company_name": "Aso Signature",
+                                            "company_name": "Bagisto",
                                             "city": "Mansfield",
                                             "state": "OH",
                                             "country": "US",
@@ -6603,7 +6603,7 @@
                         "title": "Hostname",
                         "description": "Channel host name, website URL",
                         "type": "string",
-                        "example": "https://demo.Aso Signature.com/"
+                        "example": "https://demo.bagisto.com/"
                     },
                     "logo": {
                         "title": "Logo",
@@ -7024,7 +7024,7 @@
                         "title": "Company Name",
                         "description": "Customer's Company Name",
                         "type": "string",
-                        "example": "Aso Signature-Laravel"
+                        "example": "Bagisto-Laravel"
                     },
                     "vat_id": {
                         "title": "VAT ID",

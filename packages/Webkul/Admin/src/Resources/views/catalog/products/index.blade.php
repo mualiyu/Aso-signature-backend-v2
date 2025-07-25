@@ -364,7 +364,33 @@
                                             name="sku"
                                             ::rules="{ required: true, regex: /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/ }"
                                             :label="trans('admin::app.catalog.products.index.create.sku')"
+                                            {{-- auto generate value Aso-00000 --}}
+                                            :value="$baseSku"
+
                                         />
+
+                                        <x-admin::form.control-group.error control-name="sku" />
+                                    </x-admin::form.control-group>
+
+
+                                    <!-- SKU -->
+                                    <x-admin::form.control-group>
+                                        <x-admin::form.control-group.label class="required">
+                                            Designer
+                                        </x-admin::form.control-group.label>
+
+                                        <x-admin::form.control-group.control
+                                            type="select"
+                                            name="attribute_family_id"
+                                            rules="required"
+                                            :label="trans('admin::app.catalog.products.index.create.family')"
+                                        >
+                                            @foreach($families as $family)
+                                                <option value="{{ $family->id }}">
+                                                    {{ $family->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-admin::form.control-group.control>
 
                                         <x-admin::form.control-group.error control-name="sku" />
                                     </x-admin::form.control-group>

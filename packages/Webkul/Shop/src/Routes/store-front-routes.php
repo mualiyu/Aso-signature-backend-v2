@@ -27,12 +27,12 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
     /**
      * Store front home.
      */
-    Route::get('/', function () {
-        return redirect()->route('admin.dashboard.index');
-    })->name('shop.home.index');
-    // Route::get('/', [HomeController::class, 'index'])
-    //     ->name('shop.home.index')
-    //     ->middleware('cacheResponse');
+    // Route::get('/', function () {
+    //     return redirect()->route('admin.dashboard.index');
+    // })->name('shop.home.index');
+    Route::get('/', [HomeController::class, 'index'])
+        ->name('shop.home.index')
+        ->middleware('cacheResponse');
 
     Route::get('contact-us', [HomeController::class, 'contactUs'])
         ->name('shop.home.contact_us')

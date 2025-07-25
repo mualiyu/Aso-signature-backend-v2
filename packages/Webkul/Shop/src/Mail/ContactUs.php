@@ -23,8 +23,8 @@ class ContactUs extends Mailable
         return new Envelope(
             to: [
                 new Address(
-                    core()->getAdminEmailDetails()['email'],
-                    core()->getAdminEmailDetails()['name']
+                    env('ADMIN_MAIL_ADDRESS'),
+                    env('ADMIN_MAIL_NAME')
                 ),
             ],
             subject: trans('shop::app.emails.contact-us.inquiry-from').' '.$this->contactUs['name'].' '.trans('shop::app.emails.contact-us.contact-from'),

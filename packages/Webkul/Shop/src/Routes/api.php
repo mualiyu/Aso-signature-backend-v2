@@ -7,12 +7,14 @@ use Webkul\Shop\Http\Controllers\API\CategoryController;
 use Webkul\Shop\Http\Controllers\API\CompareController;
 use Webkul\Shop\Http\Controllers\API\CoreController;
 use Webkul\Shop\Http\Controllers\API\CustomerController;
+use Webkul\Shop\Http\Controllers\API\DesignerController;
 use Webkul\Shop\Http\Controllers\API\OnepageController;
 use Webkul\Shop\Http\Controllers\API\ProductController;
 use Webkul\Shop\Http\Controllers\API\ReviewController;
 use Webkul\Shop\Http\Controllers\API\WishlistController;
 
 Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'], function () {
+
     Route::controller(CoreController::class)->prefix('core')->group(function () {
         Route::get('countries', 'getCountries')->name('shop.api.core.countries');
 
@@ -29,6 +31,16 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
         Route::get('max-price/{id?}', 'getProductMaxPrice')->name('shop.api.categories.max_price');
     });
 
+    Route::controller(DesignerController::class)->prefix('designers')->group(function () {
+        Route::get('', 'index')->name('shop.api.designers.index');
+
+        // Route::get('tree', 'tree')->name('shop.api.designers.tree');
+
+        // Route::get('attributes', 'getAttributes')->name('shop.api.designers.attributes');
+
+        // Route::get('max-price/{id?}', 'getProductMaxPrice')->name('shop.api.designers.max_price');
+    });
+
     Route::controller(ProductController::class)->prefix('products')->group(function () {
         Route::get('', 'index')->name('shop.api.products.index');
 
@@ -36,6 +48,8 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::get('{id}/up-sell', 'upSellProducts')->name('shop.api.products.up-sell.index');
     });
+
+
 
     Route::controller(ReviewController::class)->prefix('product/{id}')->group(function () {
         Route::get('reviews', 'index')->name('shop.api.products.reviews.index');
@@ -94,7 +108,12 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
      */
     Route::controller(CustomerController::class)->prefix('customer')->group(function () {
         Route::post('login', 'login')->name('shop.api.customers.session.create');
+
+        // contact us route
+        Route::post('contactus', 'sendContactUsMail')->name('shop.api.contact-us.store');
     });
+
+
 
     Route::group(['middleware' => ['customer'], 'prefix' => 'customer'], function () {
 

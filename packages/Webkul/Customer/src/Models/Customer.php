@@ -158,6 +158,22 @@ class Customer extends Authenticatable implements CustomerContract
         return $this->hasMany(CustomerAddressProxy::modelClass(), 'customer_id');
     }
 
+    // measurement relation
+    /**
+     * Get the customer's measurements.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurements()
+    {
+        return $this->hasMany(Measurement::class, 'customer_id');
+    }
+    // public function measurements()
+    // {
+    //     return $this->hasMany(MeasurementProxy::modelClass(), 'customer_id');
+    // }
+
+
     /**
      * Get default customer address that owns the customer.
      *

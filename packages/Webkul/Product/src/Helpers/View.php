@@ -31,6 +31,7 @@ class View
 
                     if ($attributeOption) {
                         $value = $attributeOption->label ?? null;
+                        $opt_id = $attributeOption->id ?? null;
 
                         if (! $value) {
                             continue;
@@ -61,6 +62,7 @@ class View
                 'value'      => $value,
                 'admin_name' => $attribute->admin_name,
                 'type'       => $attribute->type,
+                'integer_value'  => $opt_id ?? null,
             ];
         }
 

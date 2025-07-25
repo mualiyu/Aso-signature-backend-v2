@@ -5,7 +5,12 @@ namespace Webkul\Shop\Http\Controllers\API;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
+use Webkul\Shop\Http\Requests\ContactRequest;
 use Webkul\Shop\Http\Requests\Customer\LoginRequest;
+use Webkul\Shop\Mail\ContactUs;
 
 class CustomerController extends APIController
 {
@@ -48,5 +53,54 @@ class CustomerController extends APIController
         Event::dispatch('customer.after.login', auth()->guard()->user());
 
         return response()->json([]);
+    }
+
+    public function sendContactUsMail(Request $request)
+    {
+        return "yes";
+
+        $validator = Validator::make($request->all(), [
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'contact' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $contactRequest = $validator->validated();
+
+        try {
+
+            Mail::queue(new ContactUs([
+                'name' => $contactRequest['firstName'] . ' ' . $contactRequest['lastName'],
+                'email' => $contactRequest['email'],
+                'contact' => $contactRequest['contact'],
+                'message' => $contactRequest['message'],
+            ]));
+
+             return response()->json([
+                'message' => "Thank you for contacting us. We will get back to you soon.",
+                'status' => 'success',
+            ], 200);
+
+        } catch (\Exception $e) {
+            // session()->flash('error', $e->getMessage());
+            return response()->json([
+                'message' => "There was an error sending your message. Please try again later.",
+                'status' => 'error',
+            ], 500);
+
+            // report($e);
+        }
+
+        // return back();
+
     }
 }

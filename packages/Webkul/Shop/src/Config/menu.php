@@ -20,18 +20,27 @@ return [
         'icon'  => 'icon-location',
         'sort'  => 2,
     ], [
+        'key'   => 'account.measurements',
+        'name'  => 'Measurements',
+        'route' => 'shop.customers.account.measurements.index',
+        'icon'  => 'icon-orders',
+        // 'icon'  => 'icon-location',
+        'sort'  => 2,
+    ], [
         'key'   => 'account.orders',
         'name'  => 'shop::app.layouts.orders',
         'route' => 'shop.customers.account.orders.index',
         'icon'  => 'icon-orders',
         'sort'  => 3,
-    ], [
-        'key'   => 'account.downloadables',
-        'name'  => 'shop::app.layouts.downloadable-products',
-        'route' => 'shop.customers.account.downloadable_products.index',
-        'icon'  => 'icon-download',
-        'sort'  => 4,
-    ], [
+    ],
+    // [
+    //     'key'   => 'account.downloadables',
+    //     'name'  => 'shop::app.layouts.downloadable-products',
+    //     'route' => 'shop.customers.account.downloadable_products.index',
+    //     'icon'  => 'icon-download',
+    //     'sort'  => 4,
+    // ],
+    [
         'key'   => 'account.reviews',
         'name'  => 'shop::app.layouts.reviews',
         'route' => 'shop.customers.account.reviews.index',

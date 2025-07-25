@@ -114,20 +114,20 @@
                                         </div>
 
                                         @if ($customAttributeValue['type'] == 'file')
-                                            <a 
-                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}" 
+                                            <a
+                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
                                                 download="{{ $customAttributeValue['label'] }}"
                                             >
                                                 <span class="icon-download text-2xl"></span>
                                             </a>
                                         @elseif ($customAttributeValue['type'] == 'image')
-                                            <a 
-                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}" 
+                                            <a
+                                                href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
                                                 download="{{ $customAttributeValue['label'] }}"
                                             >
-                                                <img 
-                                                    class="h-5 min-h-5 w-5 min-w-5" 
-                                                    src="{{ Storage::url($customAttributeValue['value']) }}" 
+                                                <img
+                                                    class="h-5 min-h-5 w-5 min-w-5"
+                                                    src="{{ Storage::url($customAttributeValue['value']) }}"
                                                 />
                                             </a>
                                         @else
@@ -318,6 +318,23 @@
                                         </div>
                                     @endif
                                 </div>
+
+                                @isset($customAttributeValue)
+                                    <div class="flex justify-between gap-4">
+                                        {{-- @foreach ($customAttributeValue as $key => $item)
+                                        {{ $key }} : {{ $item }}
+                                        @endforeach --}}
+
+                                        @if ($customAttributeValue['label'] == 'Brand' || $customAttributeValue['label'] == 'Designer')
+                                            <span class="text-xl font-small text-black">
+                                               <a style="color:rgb(81, 30, 97);" href="{{ url('/search?brand=' . $customAttributeValue['integer_value'] ?? '') }}">{{ $customAttributeValue['value'] ?? '' }}</a>
+                                            </span>
+                                        @endif
+
+
+                                    </div>
+                                @endisset
+
 
                                 {!! view_render_event('bagisto.shop.products.name.after', ['product' => $product]) !!}
 
@@ -639,7 +656,7 @@
                                 behavior: 'smooth'
                             });
                         }
-                        
+
                         let tabElement = document.querySelector('#review-tab-button');
 
                         if (tabElement) {

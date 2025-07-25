@@ -1,6 +1,6 @@
 {
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-106cb167.css",
+    "file": "assets/app-d8658834.css",
     "isEntry": true,
     "src": "src/Resources/assets/css/app.css"
   },
@@ -17,8 +17,12 @@
     "src": "src/Resources/assets/images/customers.svg"
   },
   "src/Resources/assets/images/dark-logo.svg": {
-    "file": "assets/dark-logo-ea7984e7.svg",
-    "src": "src/Resources/assets/images/dark-logo.svg"
+    "file": "assets/logo-74cc5d6c.svg",
+    "src": "src/Resources/assets/images/logo.svg"
+  },
+  "src/Resources/assets/images/dark-logo1.svg": {
+    "file": "assets/dark-logo1-ea7984e7.svg",
+    "src": "src/Resources/assets/images/dark-logo1.svg"
   },
   "src/Resources/assets/images/empty-placeholders/customers.svg": {
     "file": "assets/customers-57f8166b.svg",
@@ -61,8 +65,12 @@
     "src": "src/Resources/assets/images/settings/shipping-method.svg"
   },
   "src/Resources/assets/images/logo.svg": {
-    "file": "assets/logo-f02a1643.svg",
+    "file": "assets/logo-74cc5d6c.svg",
     "src": "src/Resources/assets/images/logo.svg"
+  },
+  "src/Resources/assets/images/logo1.svg": {
+    "file": "assets/logo1-f02a1643.svg",
+    "src": "src/Resources/assets/images/logo1.svg"
   },
   "src/Resources/assets/images/product-placeholders/front.svg": {
     "file": "assets/front-93490c30.svg",
@@ -180,7 +188,7 @@
     "css": [
       "assets/app-c04ede37.css"
     ],
-    "file": "assets/app-375e0935.js",
+    "file": "assets/app-63a3afcb.js",
     "isEntry": true,
     "src": "src/Resources/assets/js/app.js"
   },

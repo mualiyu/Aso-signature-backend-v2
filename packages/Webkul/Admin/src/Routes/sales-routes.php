@@ -25,7 +25,7 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::post('send-duplicate-email/{id}', 'sendDuplicateEmail')->name('admin.sales.invoices.send_duplicate_email');
 
-            Route::get('print/{id}', 'printInvoice')->name('admin.sales.invoices.print');
+            Route::get('print/{id}/{type}', 'printInvoice')->name('admin.sales.invoices.print');
         });
 
         /**

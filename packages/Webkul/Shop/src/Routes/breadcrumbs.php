@@ -74,3 +74,22 @@ Breadcrumbs::for('shop.customer.addresses.edit', function (BreadcrumbTrail $trai
 
     $trail->push(trans('shop::app.customer.account.address.edit.page-title'), route('shop.customer.addresses.edit', $id));
 });
+
+/**
+ * Measurements.
+ */
+Breadcrumbs::for('shop.customer.measurements.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('shop.customer.profile.index');
+
+    $trail->push(trans('shop::app.customer.account.measurements.index.page-title'), route('shop.customer.measurements.index'));
+});
+Breadcrumbs::for('shop.customer.measurements.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('shop.customer.measurements.index');
+
+    $trail->push(trans('shop::app.customer.account.measurements.create.page-title'), route('shop.customer.measurements.create'));
+});
+Breadcrumbs::for('shop.customer.measurements.edit', function (BreadcrumbTrail $trail, $id) {
+    $trail->parent('shop.customer.measurements.index');
+
+    $trail->push(trans('shop::app.customer.account.measurements.edit.page-title'), route('shop.customer.measurements.edit', $id));
+});

@@ -49,18 +49,20 @@
                     <!--Company Name -->
                     <x-shop::form.control-group>
                         <x-shop::form.control-group.label>
-                            @lang('shop::app.customers.account.addresses.create.company-name')
+                            {{-- @lang('shop::app.customers.account.addresses.create.company-name') --}}
                         </x-shop::form.control-group.label>
-            
+
                         <x-shop::form.control-group.control
-                            type="text"
+                            type="hidden"
                             name="company_name"
-                            :value="old('company_name')"
+                            value="AsoSignature"
+                            {{-- :value="old('company_name')" --}}
                             :label="trans('shop::app.customers.account.addresses.create.company-name')"
                             :placeholder="trans('shop::app.customers.account.addresses.create.company-name')"
+                            {{-- hidden --}}
                         />
-            
-                        <x-shop::form.control-group.error control-name="company_name" />
+
+                        <x-shop::form.control-group.error control-name="company_name"  />
                     </x-shop::form.control-group>
 
                     {!! view_render_event('bagisto.shop.customers.account.addresses.create_form_controls.company_name.after') !!}
@@ -192,7 +194,7 @@
                         <x-shop::form.control-group.label class="{{ core()->isCountryRequired() ? 'required' : '' }}">
                             @lang('shop::app.customers.account.addresses.create.country')
                         </x-shop::form.control-group.label>
-            
+
                         <x-shop::form.control-group.control
                             type="select"
                             name="country"
@@ -204,21 +206,21 @@
                             <option value="">
                                 @lang('shop::app.customers.account.addresses.create.select-country')
                             </option>
-            
+
                             @foreach (core()->countries() as $country)
                                 <option value="{{ $country->code }}">{{ $country->name }}</option>
                             @endforeach
                         </x-shop::form.control-group.control>
-            
+
                         <x-shop::form.control-group.error control-name="country" />
                     </x-shop::form.control-group>
-        
+
                     <!-- State Name -->
                     <x-shop::form.control-group>
                         <x-shop::form.control-group.label class="{{ core()->isStateRequired() ? 'required' : '' }}">
                             @lang('shop::app.customers.account.addresses.create.state')
                         </x-shop::form.control-group.label>
-        
+
                         <template v-if="haveStates()">
                             <x-shop::form.control-group.control
                                 type="select"
@@ -229,7 +231,7 @@
                                 :label="trans('shop::app.customers.account.addresses.create.state')"
                                 :placeholder="trans('shop::app.customers.account.addresses.create.state')"
                             >
-                                <option 
+                                <option
                                     v-for='(state, index) in countryStates[country]'
                                     :value="state.code"
                                 >
@@ -237,7 +239,7 @@
                                 </option>
                             </x-shop::form.control-group.control>
                         </template>
-        
+
                         <template v-else>
                             <x-shop::form.control-group.control
                                 type="text"
@@ -248,7 +250,7 @@
                                 :placeholder="trans('shop::app.customers.account.addresses.create.state')"
                             />
                         </template>
-        
+
                         <x-shop::form.control-group.error control-name="state" />
                     </x-shop::form.control-group>
 
@@ -330,7 +332,7 @@
                         >
                         </label>
 
-                        <label 
+                        <label
                             class="block cursor-pointer text-base max-md:text-sm"
                             for="default_address"
                         >
@@ -350,11 +352,11 @@
                 {!! view_render_event('bagisto.shop.customers.account.address.create.after') !!}
             </div>
         </script>
-    
+
         <script type="module">
             app.component('v-create-customer-address', {
                 template: '#v-create-customer-address-template',
-    
+
                 data() {
                     return {
                         country: "{{ old('country') }}",
@@ -364,7 +366,7 @@
                         countryStates: @json(core()->groupedStatesByCountries()),
                     }
                 },
-    
+
                 methods: {
                     haveStates() {
                         /*

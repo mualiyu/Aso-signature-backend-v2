@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::any('{any}', function () {
-    return redirect()->route('admin.dashboard.index');
-})->where('any', '.*');
+// Route::any('{any}', function () {
+//     return redirect()->route('admin.dashboard.index');
+// })->where('any', '.*');
 
 /**
  * Store front routes.

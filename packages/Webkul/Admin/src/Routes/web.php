@@ -21,6 +21,11 @@ require 'catalog-routes.php';
 require 'customers-routes.php';
 
 /**
+ * Customers routes.
+ */
+require 'designers-routes.php';
+
+/**
  * Marketing routes.
  */
 require 'marketing-routes.php';
