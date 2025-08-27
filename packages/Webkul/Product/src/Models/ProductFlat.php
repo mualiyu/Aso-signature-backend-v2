@@ -3,6 +3,9 @@
 namespace Webkul\Product\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Webkul\Designer\Models\Designer;
+use Webkul\Designer\Models\DesignerProxy;
 use Webkul\Product\Contracts\ProductFlat as ProductFlatContract;
 
 class ProductFlat extends Model implements ProductFlatContract
@@ -54,6 +57,14 @@ class ProductFlat extends Model implements ProductFlatContract
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * Get the product that owns the product.
+     */
+    public function designer(): BelongsTo
+    {
+        return $this->belongsTo(DesignerProxy::modelClass(), 'designer_id');
     }
 
     /**

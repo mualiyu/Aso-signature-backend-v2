@@ -57,7 +57,7 @@
                 <div class="row grid grid-cols-[2fr_1fr_1fr] grid-rows-1 items-center border-b px-4 py-2.5 dark:border-gray-800">
                     <div
                         class="flex select-none items-center gap-2.5"
-                        v-for="(columnGroup, index) in [['name', 'sku', 'attribute_family'], ['base_image', 'price', 'quantity', 'product_id'], ['status', 'category_name', 'type']]"
+                        v-for="(columnGroup, index) in [['name', 'sku', 'attribute_family', 'designer'], ['base_image', 'price', 'quantity', 'product_id'], ['status', 'category_name', 'type']]"
                     >
                         @if ($hasPermission)
                             <label
@@ -161,6 +161,11 @@
 
                             <p class="text-gray-600 dark:text-gray-300">
                                 @{{ "@lang('admin::app.catalog.products.index.datagrid.attribute-family-value')".replace(':attribute_family', record.attribute_family) }}
+                            </p>
+
+                            <p class="text-green-600 dark:text-gray-300">
+                                {{-- @{{ "@lang('admin::app.catalog.products.index.datagrid.attribute-family-value')".replace(':attribute_family', record.attribute_family) }} --}}
+                                @{{ record.designer ?? 'N/A' }}
                             </p>
                         </div>
                     </div>
@@ -372,28 +377,6 @@
                                         <x-admin::form.control-group.error control-name="sku" />
                                     </x-admin::form.control-group>
 
-
-                                    <!-- SKU -->
-                                    <x-admin::form.control-group>
-                                        <x-admin::form.control-group.label class="required">
-                                            Designer
-                                        </x-admin::form.control-group.label>
-
-                                        <x-admin::form.control-group.control
-                                            type="select"
-                                            name="attribute_family_id"
-                                            rules="required"
-                                            :label="trans('admin::app.catalog.products.index.create.family')"
-                                        >
-                                            @foreach($families as $family)
-                                                <option value="{{ $family->id }}">
-                                                    {{ $family->name }}
-                                                </option>
-                                            @endforeach
-                                        </x-admin::form.control-group.control>
-
-                                        <x-admin::form.control-group.error control-name="sku" />
-                                    </x-admin::form.control-group>
 
                                     {!! view_render_event('bagisto.admin.catalog.products.create_form.general.controls.after') !!}
                                 </div>

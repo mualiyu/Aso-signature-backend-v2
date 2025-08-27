@@ -4,6 +4,8 @@ namespace Webkul\Designer\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+// use Webkul\Designer\Contracts\Designer as DesignerContract;
+// use Webkul\Designer\Repositories\DesignerRepository;
 
 class DesignerServiceProvider extends ServiceProvider
 {

@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Webkul\Admin\DataGrids\Customers\CustomerDataGrid;
 use Webkul\Admin\DataGrids\Customers\View\InvoiceDataGrid;
 use Webkul\Admin\DataGrids\Customers\View\OrderDataGrid;
@@ -82,7 +83,7 @@ class DesignerController extends Controller
         $validatedData = request()->validate([
             'logo_path'     => 'required',
             'banner_path'   => 'nullable',
-            'name'          => 'string|required',
+            'name'          => 'string|required|unique:designers,name',
             'email'         => 'required|unique:designers,email',
             'phone'         => 'unique:designers,phone',
             'description'   => 'string|nullable',
@@ -96,6 +97,12 @@ class DesignerController extends Controller
             'status'        => 'required|in:1,0',
         ]);
 
+        // add slug
+        // $validatedData['slug'] = Str::slug($validatedData['name']);
+        // manually
+        $validatedData['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $validatedData['name'])));
+        $validatedData['slug'] = rtrim($validatedData['slug'], '-');
+
         $designer = Designer::create($validatedData);
 
         // return new JsonResponse([
@@ -105,36 +112,11 @@ class DesignerController extends Controller
 
         if ($designer) {
 
-            // foreach (request()->file('logo_path') as $file) {
-            //     $logoPath = $file->store('designer_images');
-
-            //     $designerImage = DesignerImage::create([
-            //     'src' => $logoPath,
-            //     'alt' => 'logo_path',
-            //     'width' => 150,
-            //     'height' => 200,
-            //     ]);
-            //     // $designerImage->designer_id = $designer->id;
-            //     // $designerImage->src = $logoPath;
-            //     // $designerImage->save();
-            // }
-            // foreach (request()->file('banner_path') as $file) {
-            //     $bannerPath = $file->store('designer_images');
-            //     // save or process $path as needed
-            //     $designerImage = DesignerImage::create([
-            //     'src' => $bannerPath,
-            //     'alt' => 'banner_path',
-            //     'width' => 1920,
-            //     'height' => 600,
-            //     ]);
-            //     // $designerImage->designer_id = $designer->id;
-            //     // $designerImage->src = $bannerPath;
-            //     // $designerImage->save();
-            // }
-
             $logoPath = request()->file('logo_path')->store('designer_images', 'public');
 
-            $bannerPath = request()->file('banner_path')->store('designer_images', 'public');
+            if (request()->has('banner_path') && request()->file('banner_path') != null) {
+                $bannerPath = request()->file('banner_path')->store('designer_images', 'public');
+            }
 
             $designerImage = new DesignerImage();
             $designerImage->designer_id = $designer->id;
@@ -162,11 +144,11 @@ class DesignerController extends Controller
      */
     public function update(int $id)
     {
-
-        $validatedData = request()->validate([
-            'logo_path'     => 'required',
+        // return  request()->all();
+        $validator = Validator::make(request()->all(), [
+            'logo_path'     => 'nullable',
             'banner_path'   => 'nullable',
-            'name'          => 'string|required',
+            'name'          => 'string|required|unique:designers,name,' . $id,
             'email'         => 'required|unique:designers,email,' . $id,
             'phone'         => 'unique:designers,phone,' . $id,
             'description'   => 'string|nullable',
@@ -180,10 +162,22 @@ class DesignerController extends Controller
             'status'        => 'required|in:1,0',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', $validator->errors()->first());
+        }
+
+        $validatedData = $validator->validated();
+
+        // add slug
+        // $validatedData['slug'] = Str::slug($validatedData['name']);
+        // manually
+        $validatedData['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $validatedData['name'])));
+        $validatedData['slug'] = rtrim($validatedData['slug'], '-');
+
         $designer = Designer::find($id);
 
         if (!$designer) {
-            return response()->json(['message' => 'Designer not found'], 404);
+            return redirect()->back()->with(['error' => 'Designer not found'], 404);
         }
 
         $designer->update($validatedData);
@@ -307,7 +301,10 @@ class DesignerController extends Controller
             }
         }
 
-        return view('admin::designers.designers.edit', compact('designer'));
+
+        $products = $designer->products()->paginate(5);
+
+        return view('admin::designers.designers.edit', compact('designer', 'products'));
     }
 
     /**
