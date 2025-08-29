@@ -30,11 +30,11 @@
 
             </div>
         </div> --}}
-        <v-desktop-designers>
+        {{-- <v-desktop-designers>
             <div class="flex items-center gap-5">
                 <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
             </div>
-        </v-desktop-designers>
+        </v-desktop-designers> --}}
 
         <v-desktop-category>
             <div class="flex items-center gap-5">
