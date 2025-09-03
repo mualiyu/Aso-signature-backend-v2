@@ -1,34 +1,24 @@
-{!! view_render_event('bagisto.admin.catalog.product.edit.form.inventories.controls.before', ['product' => $product]) !!}
+@php
+    use Webkul\Designer\Models\Designer;
 
-<x-admin::form.control-group>
-    <x-admin::form.control-group.label>
-       Designer
-    </x-admin::form.control-group.label>
+    $selectedDesigner = old('designer_id') ?: ($product->designer_id ?? null);
+    $designers = Designer::orderBy('name')->get();
+@endphp
 
-
-
-    <x-admin::form.control-group.control
-        type="select"
-        :name="'designer_id'"
-        :value="$product->designer_id"
-        :options="$designers->pluck('name', 'id')"
-    />
-
-    {{-- {{dd($designers->pluck('name', 'id'))}} --}}
-
-    <x-admin::form.control-group.error :control-name="'designer_id'" />
-</x-admin::form.control-group>
-
-{!! view_render_event('bagisto.admin.catalog.product.edit.form.inventories.controls.after', ['product' => $product]) !!}
-
-@pushOnce('scripts')
-    <script type="module">
-        app.component('v-designers', {
-            data() {
-                return {
-                    designers: {!! json_encode($designers) !!},
-                }
-            },
-        });
-    </script>
-@endpushOnce
+<x-admin::form.control-group.control
+    type="select2"
+    id="designer_id"
+    name="designer_id"
+    :value="$selectedDesigner"
+    label="Designer"
+>
+    <option value="">Select Designer</option>
+    @foreach ($designers as $designer)
+        <option
+            value="{{ $designer->id }}"
+            {{ $selectedDesigner == $designer->id ? 'selected' : '' }}
+        >
+            {{ $designer->name }}
+        </option>
+    @endforeach
+</x-admin::form.control-group.control>

@@ -26,6 +26,7 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::get('tree', 'tree')->name('shop.api.categories.tree');
 
+
         Route::get('attributes', 'getAttributes')->name('shop.api.categories.attributes');
 
         Route::get('max-price/{id?}', 'getProductMaxPrice')->name('shop.api.categories.max_price');
@@ -34,7 +35,7 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
     Route::controller(DesignerController::class)->prefix('designers')->group(function () {
         Route::get('', 'index')->name('shop.api.designers.index');
 
-        // Route::get('tree', 'tree')->name('shop.api.designers.tree');
+        Route::get('tree', 'tree')->name('shop.api.designers.tree');
 
         // Route::get('attributes', 'getAttributes')->name('shop.api.designers.attributes');
 

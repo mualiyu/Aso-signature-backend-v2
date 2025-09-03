@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Webkul\Flutterwave\Http\Controllers\FlutterwaveController;
+// use Webkul\Shop\Http\Controllers\FlutterwaveController;
 use Webkul\Flutterwave\Http\Controllers\SmartButtonController;
 
 Route::group(['middleware' => ['web']], function () {

@@ -22,8 +22,8 @@ package-lock.json
 # /public/storage
 # /public/vendor
 /lang/vendor
-/storage/*.key
-/storage/dcc-data/
+# /storage/*.key
+# /storage/dcc-data/
 /test-results
 /vendor
 yarn.lock
