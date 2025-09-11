@@ -16,6 +16,7 @@ Homestead.yaml
 npm-debug.log
 package-lock.json
 /playwright-report
+/public/videos
 # /public/css
 # /public/js
 # /public/hot

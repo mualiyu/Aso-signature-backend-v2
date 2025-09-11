@@ -37,6 +37,7 @@ class Product extends Model implements ProductContract
         'sku',
         'parent_id',
         'designer_id',
+        'required_measurement',
     ];
 
     /**
@@ -44,6 +45,7 @@ class Product extends Model implements ProductContract
      */
     protected $casts = [
         'additional' => 'array',
+        'required_measurement' => 'array',
     ];
 
     /**

@@ -41,6 +41,17 @@ class DesignerController extends APIController
 
     }
 
+    public function list(): JsonResource
+    {
+        $designers = $this->designerRepository
+            ->where('status', '1')
+            ->with('logo')
+            ->orderBy('name', 'ASC')
+            ->get();
+
+        return new JsonResource($designers);
+    }
+
     public function tree(): JsonResource
     {
         $designers = Designer::where('status', 1)->orderBy('name', 'ASC')->get();

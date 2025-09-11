@@ -6,7 +6,7 @@
         This section will provide categories for the first, second, and third levels. If
         additional levels are required, users can customize them according to their needs.
     -->
-    <!-- Left Nagivation Section -->
+    <!-- Left Navigation Section -->
     <div class="flex items-center gap-x-10 max-[1180px]:gap-x-5">
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.before') !!}
 
@@ -17,40 +17,35 @@
 
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.after') !!}
 
+        {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.designer.before') !!}
+
+        <!-- Designers Dropdown (Fixed) -->
+        <div class="group relative flex h-[77px] items-center border-b-4 border-transparent hover:border-b-4 hover:border-navyBlue">
+            <span>
+                <a href="#" class="inline-block px-5 uppercase select-none pointer-events-none" tabindex="-1">
+                    {{-- @lang('shop::app.components.layouts.header.designers', [], 'Designers') --}}
+                    Designers
+                </a>
+            </span>
+            <v-desktop-designers></v-desktop-designers>
+        </div>
+
+        {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.designer.after') !!}
+
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.category.before') !!}
-
-        {{-- <div class="flex items-center">
-            <div
-                class="group relative flex h-[77px] items-center border-b-4 border-transparent hover:border-b-4 hover:border-navyBlue">
-                <span>
-                    <a href="#" class="inline-block px-5 uppercase">
-                        Designers
-                    </a>
-                </span>
-
-            </div>
-        </div> --}}
-        {{-- <v-desktop-designers>
-            <div class="flex items-center gap-5">
-                <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
-            </div>
-        </v-desktop-designers> --}}
 
         <v-desktop-category>
             <div class="flex items-center gap-5">
                 <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
-
                 <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
-
                 <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
             </div>
         </v-desktop-category>
 
-
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.category.after') !!}
     </div>
 
-    <!-- Right Nagivation Section -->
+    <!-- Right Navigation Section -->
     <div class="flex items-center gap-x-9 max-[1100px]:gap-x-6 max-lg:gap-x-8">
 
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.search_bar.before') !!}
@@ -304,129 +299,97 @@
         </div>
     </script>
 
-
-    <script type="text/x-template" id="v-desktop-designers-template">
-        <div
-            class="flex items-center gap-5"
-            v-if="isLoading"
-        >
-            <span
-                class="shimmer h-6 w-20 rounded"
-                role="presentation"
-            ></span>
-        </div>
-
-        <div
-            class="pointer-events-none absolute top-[78px] z-[1] max-h-[580px] w-max max-w-[1260px] translate-y-1 overflow-auto overflow-x-auto border border-b-0 border-l-0 border-r-0 border-t border-[#F3F3F3] bg-white p-9 opacity-0 shadow-[0_6px_6px_1px_rgba(0,0,0,.3)] transition duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-hover:duration-200 group-hover:ease-in ltr:-left-9 rtl:-right-9"
-            v-else
-        >
-            <div class="aigns flex justify-between gap-x-[70px]">
-                <div
-                    class="grid w-full min-w-max max-w-[150px] flex-auto grid-cols-[1fr] content-start gap-5"
+<script type="text/x-template" id="v-desktop-designers-template">
+    <div v-if="isLoading" class="flex items-center gap-5">
+        <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
+    </div>
+    <div
+        v-else
+        class="pointer-events-none absolute top-[78px] z-[1] max-h-[580px] w-max max-w-[600px] translate-y-1 overflow-auto border border-b-0 border-l-0 border-r-0 border-t border-[#F3F3F3] bg-white p-6 opacity-0 shadow-[0_6px_6px_1px_rgba(0,0,0,.3)] transition duration-300 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-hover:duration-200 group-hover:ease-in ltr:-left-9 rtl:-right-9"
+    >
+        <div class="grid grid-cols-2 gap-6">
+            <div v-for="designer in designers" :key="designer.id" class="flex items-center gap-4 py-2">
+                <img
+                    :src="designer.image"
+                    :alt="designer.name"
+                    class="h-10 w-10 rounded-full object-cover border border-zinc-200"
+                />
+                <a
+                    :href="designer.url"
+                    class="text-base font-medium text-navyBlue hover:underline"
                 >
-                    <div v-for="designer in designers" :key="designer.id">
-                        <div class="flex items-center gap-4">
-                            <img
-                                :src="designer.image"
-                                :alt="designer.name"
-                                class="h-12 w-12 rounded-full object-cover"
-                            />
-                            <a
-                                :href="designer.url"
-                                class="text-base font-medium text-navyBlue hover:underline"
-                            >
-                                @{{ designer.name }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                    @{{ designer.name }}
+                    <br>
+                    <span class="text-sm text-gray-500">@@{{ designer.slug }}</span>
+                </a>
             </div>
         </div>
-    </script>
-
+    </div>
+</script>
 
 <script type="module">
-    app.component('v-desktop-designer', {
-            template: '#v-desktop-designer-template',
+    app.component('v-desktop-designers', {
+        template: '#v-desktop-designers-template',
 
-            data() {
-                return  {
-                    isLoading: true,
+        data() {
+            return  {
+                isLoading: true,
+                designers: [],
+            }
+        },
 
-                    designers: [],
-                }
-            },
+        mounted() {
+            this.get();
+        },
 
-            mounted() {
-                this.get();
-            },
-
-            methods: {
-
-                get() {
-                    this.$axios.get("{{ route('shop.api.designers.tree') }}")
-                        .then(response => {
-                            this.isLoading = false;
-
-                            this.designers = response.data.data;
-                            // this.designers = response.data.data.designers;
-                        }).catch(error => {
-                            console.log(error);
-                        });
-                },
-
-                pairCategoryChildren(category) {
-                    return category.children.reduce((result, value, index, array) => {
-                        if (index % 2 === 0) {
-                            result.push(array.slice(index, index + 2));
-                        }
-
-                        return result;
-                    }, []);
-                }
-            },
-        });
+        methods: {
+            get() {
+                this.$axios.get("{{ route('shop.api.designers.tree') }}")
+                    .then(response => {
+                        this.isLoading = false;
+                        this.designers = response.data.data;
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            }
+        },
+    });
 
     app.component('v-desktop-category', {
-            template: '#v-desktop-category-template',
+        template: '#v-desktop-category-template',
 
-            data() {
-                return  {
-                    isLoading: true,
+        data() {
+            return  {
+                isLoading: true,
+                categories: [],
+            }
+        },
 
-                    categories: [],
+        mounted() {
+            this.get();
+        },
 
-                }
+        methods: {
+            get() {
+                this.$axios.get("{{ route('shop.api.categories.tree') }}")
+                    .then(response => {
+                        this.isLoading = false;
+                        this.categories = response.data.data;
+                    }).catch(error => {
+                        console.log(error);
+                    });
             },
 
-            mounted() {
-                this.get();
-            },
-
-            methods: {
-                get() {
-                    this.$axios.get("{{ route('shop.api.categories.tree') }}")
-                        .then(response => {
-                            this.isLoading = false;
-
-                            this.categories = response.data.data;
-                            // this.designers = response.data.data.designers;
-                        }).catch(error => {
-                            console.log(error);
-                        });
-                },
-
-                pairCategoryChildren(category) {
-                    return category.children.reduce((result, value, index, array) => {
-                        if (index % 2 === 0) {
-                            result.push(array.slice(index, index + 2));
-                        }
-
-                        return result;
-                    }, []);
-                }
-            },
-        });
+            pairCategoryChildren(category) {
+                return category.children.reduce((result, value, index, array) => {
+                    if (index % 2 === 0) {
+                        result.push(array.slice(index, index + 2));
+                    }
+                    return result;
+                }, []);
+            }
+        },
+    });
 </script>
 @endPushOnce
 

@@ -34,6 +34,7 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
     Route::controller(DesignerController::class)->prefix('designers')->group(function () {
         Route::get('', 'index')->name('shop.api.designers.index');
+        Route::get('list', 'list')->name('shop.api.designers.list');
 
         Route::get('tree', 'tree')->name('shop.api.designers.tree');
 

@@ -18,27 +18,31 @@
             class="container mt-14 max-lg:px-8 max-md:mt-7 max-md:!px-0 max-sm:mt-5"
             v-if="! isLoading && designers?.length"
         >
+
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 max-md:text-xl max-sm:text-lg max-sm:px-5">
+            Browse by Designer
+        </h2>
             <div class="relative">
                 <div
                     ref="swiperContainer"
-                    class="scrollbar-hide flex gap-10 overflow-auto scroll-smooth max-lg:gap-4 m-3"
+                    class="scrollbar-hide flex gap-10 overflow-auto scroll-smooth max-lg:gap-3 px-5 m-3"
                 >
                     <div
-                        class="grid min-w-[120px] max-w-[120px] grid-cols-1 justify-items-center gap-4 font-medium max-md:min-w-20 max-md:max-w-20 max-md:gap-2.5 max-md:first:ml-4 max-sm:min-w-[60px] max-sm:max-w-[60px] max-sm:gap-1.5"
+                        class="grid min-w-[120px] max-w-[120px] grid-cols-1 justify-items-center gap-2 font-medium max-md:min-w-20 max-md:max-w-20 max-md:gap-2.5 max-md:first:ml-4 max-sm:min-w-[100px] max-sm:max-w-[100px] max-sm:gap-3 max-sm:mx-2"
                         v-for="designer in designers"
                     >
                         <a
                             :href="`/designer/${designer.slug}`"
                             :key="designer.slug"
 
-                            class="h-[110px] w-[110px] rounded-full bg-zinc-100 max-md:h-20 max-md:w-20 max-sm:h-[60px] max-sm:w-[60px]"
+                            class="h-[110px] w-[110px] rounded-full bg-zinc-100 max-md:h-20 max-md:w-20 max-sm:h-[100px] max-sm:w-[100px]"
                             :aria-label="designer.name"
                         >
                             <x-shop::media.images.lazy
-                                ::src="designer.logo?.src || '{{ bagisto_asset('images/small-product-placeholder.webp') }}'"
+                                ::src="'/storage/'+designer.logo?.src || '{{ bagisto_asset('images/small-product-placeholder.webp') }}'"
                                 width="110"
                                 height="110"
-                                class="w-full h-full object-cover rounded-full max-sm:h-[60px] max-sm:w-[60px]"
+                                class="w-full h-full object-cover rounded-full max-sm:h-[100px] max-sm:w-[100px]"
                                 ::alt="designer.name"
                             />
                         </a>
@@ -48,7 +52,7 @@
                             class=""
                         >
                             <p
-                                class="text-center text-lg text-black max-md:text-base max-md:font-normal max-sm:text-sm"
+                                class="text-center text-lg text-black max-md:text-base max-md:font-normal max-sm:text-lg"
                                 v-text="designer.name"
                             >
                             </p>

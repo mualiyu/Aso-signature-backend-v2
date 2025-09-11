@@ -86,7 +86,7 @@
         @if (core()->getConfigData('customer.settings.newsletter.subscription'))
             <div class="grid gap-2.5">
                 <p
-                    class="max-w-[288px] text-3xl italic leading-[45px] text-navyBlue max-md:text-2xl max-sm:text-lg"
+                    class="max-w-[488px] text-3xl italic leading-[45px] text-navyBlue max-md:text-2xl max-sm:text-lg"
                     role="heading"
                     aria-level="2"
                 >

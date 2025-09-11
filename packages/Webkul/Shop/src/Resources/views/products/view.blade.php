@@ -317,6 +317,7 @@
                                         >
                                         </div>
                                     @endif
+
                                 </div>
 
                                 @isset($customAttributeValue)
@@ -480,6 +481,10 @@
                                     </div>
 
                                     {!! view_render_event('bagisto.shop.products.view.compare.after', ['product' => $product]) !!}
+
+                                    @include('shop::products.view.share')
+
+                                    @include('shop::products.view.size-guide')
                                 </div>
 
                                 {!! view_render_event('bagisto.shop.products.view.additional_actions.after', ['product' => $product]) !!}
@@ -499,6 +504,8 @@
                         isWishlist: Boolean("{{ (boolean) auth()->guard()->user()?->wishlist_items->where('channel_id', core()->getCurrentChannel()->id)->where('product_id', $product->id)->count() }}"),
 
                         isCustomer: '{{ auth()->guard('customer')->check() }}',
+
+                        isShareDropdown: false,
 
                         is_buy_now: 0,
 
@@ -561,6 +568,10 @@
                         } else {
                             window.location.href = "{{ route('shop.customer.session.index')}}";
                         }
+                    },
+
+                    shareProductDropDown() {
+                        this.isShareDropdown = ! this.isShareDropdown;
                     },
 
                     addToCompare(productId) {

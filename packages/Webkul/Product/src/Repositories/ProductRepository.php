@@ -259,11 +259,6 @@ class ProductRepository extends Repository
                     ->whereIn('product_categories.category_id', explode(',', $params['category_id']));
             }
 
-            if (! empty($params['category_id'])) {
-                $qb->leftJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
-                    ->whereIn('product_categories.category_id', explode(',', $params['category_id']));
-            }
-
             if (! empty($params['designer_id'])) {
                 $qb->whereIn('products.designer_id', explode(',', $params['designer_id']));
             }
