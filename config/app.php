@@ -217,7 +217,7 @@ return [
         Webkul\Customer\Providers\CustomerServiceProvider::class,
         Webkul\DataGrid\Providers\DataGridServiceProvider::class,
         Webkul\DataTransfer\Providers\DataTransferServiceProvider::class,
-        // Webkul\DebugBar\Providers\DebugBarServiceProvider::class,
+        Webkul\DebugBar\Providers\DebugBarServiceProvider::class,
         Webkul\FPC\Providers\FPCServiceProvider::class,
         Webkul\Installer\Providers\InstallerServiceProvider::class,
         Webkul\Inventory\Providers\InventoryServiceProvider::class,
