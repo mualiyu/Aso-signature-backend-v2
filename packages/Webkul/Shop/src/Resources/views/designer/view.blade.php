@@ -47,7 +47,7 @@
                 <!-- Minimalist Logo Overlay -->
                 @if ($designer->logo && $designer->logo->src)
                 <div class="absolute inset-0 flex flex-col  items-center justify-center bottom-0">
-                    <div class="text-center">
+                    <div class="text-center mt-4 md:mt-0">
                         <img src="{{ $designer->logo->src ? url("/storage")."/".$designer->logo->src : bagisto_asset('images/small-product-placeholder.webp') }}"
                             alt="{{ $designer->name }} Logo"
                             class="w-32 h-32 md:w-48 md:h-48 object-contain mx-auto mb-8 filter drop-shadow-2xl rounded-full " />
@@ -104,7 +104,7 @@
                                 <!-- Social Media -->
                                 <div class="text-center">
                                     {{-- <h3 class="text-2xl font-light text-gray-900 mb-1 tracking-wide">Follow</h3> --}}
-                                    <div class="flex flex-wrap justify-center gap-6">
+                                    <div class="flex flex-wrap justify-center gap-6 mb-3 md:mb-0">
                                         @if ($designer->website)
                                         <a href="{{ $designer->website }}" target="_blank"
                                            class="text-white hover:text-gray-300 transition-colors duration-300 group flex items-center gap-2">
