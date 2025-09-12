@@ -166,7 +166,7 @@
                                     @click="openVideo('male')"
                                 >
                                     <span class="icon-play text-lg text-[#ffffff]"></span>
-                                    <span>Watch Measurement Video</span>
+                                    <span class="text-xs text-[#ffffff] sm:text-base" style="color: #ffffff;">Watch Measurement Video</span>
                                 </a>
                             </div>
                         </div>
@@ -241,7 +241,7 @@
                                     @click="openVideo('female')"
                                 >
                                 <span class="icon-play text-lg text-[#ffffff]"></span>
-                                <span>Watch Measurement Video</span>
+                                <span class="text-xs text-[#ffffff] sm:text-base" style="color: #ffffff;">Watch Measurement Video</span>
                                 </a>
                             </div>
                         </div>
