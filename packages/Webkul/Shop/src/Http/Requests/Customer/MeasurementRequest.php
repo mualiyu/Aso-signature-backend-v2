@@ -44,6 +44,9 @@ class MeasurementRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:500'
+            ],
+            'redirect' => [
+                'nullable',
             ]
         ];
     }
@@ -61,7 +64,7 @@ class MeasurementRequest extends FormRequest
             'unit.required' => 'Please specify the measurement unit',
             'unit.in' => 'The unit must be either cm or inches',
             'measurement_type.required' => 'Please specify the measurement type',
-            'measurement_type.in' => 'Invalid measurement type selected'
+            'measurement_type.in' => 'Invalid measurement type selected',
         ];
     }
 

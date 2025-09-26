@@ -133,13 +133,31 @@
                         <option value="1" @selected($designer->status == 1)> Active </option>
                         <option value="0" @selected($designer->status == 0)> Inactive </option>
                         </select>
+                        @error('status')
+                            <div class="text-xs text-red-600">{{ $message }}</div>
+                        @enderror
                         <!---->
-                        <div><label class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">Name<span class="required"></span></label><input type="text" id="name" class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400" name="name" required value="{{ $designer->name }}"><!----></div>
-                        <div><label class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">Email<span class="required"></span></label><input type="email" id="email" class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400" name="email" required value="{{ $designer->email }}"><!----></div>
+                        <div>
+                            <label class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">Name<span class="required"></span></label><input type="text" id="name" class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400" name="name" required value="{{ $designer->name }}"><!---->
+                        @error('name')
+                            <div class="text-xs text-red-600">{{ $message }}</div>
+                        @enderror
+                        </div>
+                        <div>
+                            <label class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">Email<span class="required"></span></label><input type="email" id="email" class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400" name="email" required value="{{ $designer->email }}"><!---->
+                        @error('email')
+                            <div class="text-xs text-red-600">{{ $message }}</div>
+                        @enderror
+                        </div>
                 </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4 mb-4 last:!mb-0">
-                    <div><label class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">Description<span class="required"></span></label><textarea id="description" class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400" name="description" required value="{{ $designer->description }}"></textarea><!----></div>
+                    <div>
+                        <label class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">Description<span class="required"></span></label><textarea id="description" class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400" name="description" required>{{ $designer->description }}</textarea><!---->
+                        @error('description')
+                            <div class="text-xs text-red-600">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mb-4 last:!mb-0">
                 <div class="mb-4 last:!mb-0"><label
@@ -148,6 +166,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="phone" value="{{ $designer->phone }}">
                     <!---->
+                    @error('phone')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 last:!mb-0"><label
                         class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">
@@ -155,6 +176,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="website" value="{{ $designer->website }}">
                     <!---->
+                    @error('website')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 </div>
 
@@ -165,6 +189,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="instagram" value="{{ $designer->instagram }}">
                     <!---->
+                    @error('instagram')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 last:!mb-0"><label
                         class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">
@@ -172,6 +199,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="facebook" value="{{ $designer->facebook }}">
                     <!---->
+                    @error('facebook')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 last:!mb-0"><label
                         class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">
@@ -179,6 +209,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="twitter" value="{{ $designer->twitter }}">
                     <!---->
+                    @error('twitter')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 </div>
 
@@ -189,6 +222,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="pinterest" value="{{ $designer->pinterest }}">
                     <!---->
+                    @error('pinterest')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 last:!mb-0"><label
                         class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">
@@ -196,6 +232,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="linkedin" value="{{ $designer->linkedin }}">
                     <!---->
+                    @error('linkedin')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 last:!mb-0"><label
                         class="mb-1.5 flex items-center gap-1 text-xs font-medium text-gray-800 dark:text-white">
@@ -203,6 +242,9 @@
                         class="w-full rounded-md border px-3 py-2.5 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
                         name="youtube" value="{{ $designer->youtube }}">
                     <!---->
+                    @error('youtube')
+                        <div class="text-xs text-red-600">{{ $message }}</div>
+                    @enderror
                 </div>
                 </div>
 
@@ -223,4 +265,104 @@
     </div>
 
 </form>
+
+
+<div class="flex items-center justify-between mt-8" >
+        <p class="text-xl font-bold text-gray-800 dark:text-white">
+            Products
+        </p>
+    </div>
+</div>
+
+<div class="grid p-4 border  box-shadow relative rounded">
+
+    <div class="grid grid-cols-[2fr_1fr_1fr] font-bold rounded-lg p-4 bg-white dark:bg-gray-900 mb-0 last:!mb-0">
+        <!-- Product Basic Info -->
+        <div class="flex flex-col gap-1.5">
+            <p class="text-base font-sma text-gray-800 dark:text-white">
+                Name / SKU / Type
+            </p>
+        </div>
+
+        <!-- Product Status & Price -->
+        <div class="flex flex-col gap-1.5">
+            <div class="flex gap-1.5 font-sm text-gray-800 dark:text-white">
+                Status / Price / Quantity
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-x-4 font-small text-gray-800 dark:text-white">
+            Actions
+        </div>
+    </div>
+
+    <div class="grid gap-4 mt-0">
+        @forelse ($products as $product)
+            <div class="grid grid-cols-[2fr_1fr_1fr] border rounded-lg p-4 bg-white dark:bg-gray-900">
+                <!-- Product Basic Info -->
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex items-center gap-2">
+                        @if ($product->base_image_url)
+                            <img src="{{ $product->base_image_url }}" alt="Product Image" class="w-10 h-10 rounded-full">
+                        @else
+                            <img src="{{ asset('themes/aso.svg') }}" alt="Product Image" class="w-10 h-10 rounded-full">
+                        @endif
+                        <div>
+                            <p class="text-base font-semibold text-gray-800 dark:text-white">
+                                {{ $product->name ?? $product->sku }}
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-300">
+                                SKU: {{ $product->sku }}
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-300">
+                                Type: {{ $product->type }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Status & Price -->
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex gap-1.5">
+                        <span class="{{ $product->status ? 'label-active' : 'label-canceled' }}">
+                            {{ $product->status ? 'Active' : 'Inactive' }}
+                        </span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Price: {{ core()->currency($product->price ?? 0) }}
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Qty: {{ $product->totalQuantity() }}
+                    </p>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-end gap-x-4">
+                    <a
+                        href=""
+                        class="icon-edit cursor-pointer p-1.5 text-2xl hover:bg-gray-200 dark:hover:bg-gray-800"
+                    ></a>
+                </div>
+            </div>
+
+
+        @empty
+            <div class="flex items-center justify-center p-4">
+                <p class="text-gray-500 dark:text-gray-400">No products found</p>
+            </div>
+        @endforelse
+        {{-- Pagination --}}
+            <div class="flex items-center justify-between mt-4">
+                <div class="flex items-center gap-2">
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }} products
+                    </p>
+                </div>
+                <div>
+                    {{ $products->links() }}
+                </div>
+            </div>
+    </div>
+</div>
 </x-admin::layouts>

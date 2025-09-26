@@ -80,9 +80,9 @@
                                         <p class="text-base font-medium">
                                             @{{ address.first_name + ' ' + address.last_name }}
 
-                                            <template v-if="address.company_name">
+                                            {{-- <template v-if="address.company_name">
                                                 (@{{ address.company_name }})
-                                            </template>
+                                            </template> --}}
                                         </p>
                                     </div>
 
@@ -285,7 +285,7 @@
                                 @lang('shop::app.checkout.onepage.address.back')
                             </span>
                         </div>
-                        
+
                         <!-- Address Form Vue Component -->
                         <v-checkout-address-form
                             :control-name="activeAddressForm"
@@ -339,7 +339,7 @@
                 return {
                     customerSavedAddresses: {
                         'billing': [],
-                        
+
                         'shipping': [],
                     },
 
@@ -415,7 +415,7 @@
                         });
                     } else {
                         this.selectedAddresses[type + '_address_id'] = cartAddress.id;
-                        
+
                         addresses.unshift(cartAddress);
                     }
 

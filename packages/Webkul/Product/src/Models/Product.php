@@ -17,6 +17,7 @@ use Webkul\Attribute\Repositories\AttributeRepository;
 use Webkul\CatalogRule\Models\CatalogRuleProductPriceProxy;
 use Webkul\Category\Models\CategoryProxy;
 use Webkul\Core\Models\ChannelProxy;
+use Webkul\Designer\Models\Designer;
 use Webkul\Inventory\Models\InventorySourceProxy;
 use Webkul\Product\Contracts\Product as ProductContract;
 use Webkul\Product\Database\Eloquent\Builder;
@@ -36,6 +37,7 @@ class Product extends Model implements ProductContract
         'sku',
         'parent_id',
         'designer_id',
+        'required_measurement',
     ];
 
     /**
@@ -43,6 +45,7 @@ class Product extends Model implements ProductContract
      */
     protected $casts = [
         'additional' => 'array',
+        'required_measurement' => 'array',
     ];
 
     /**
@@ -67,6 +70,14 @@ class Product extends Model implements ProductContract
     public function parent(): BelongsTo
     {
         return $this->belongsTo(static::class, 'parent_id');
+    }
+
+    /**
+     * Get the product that owns the product.
+     */
+    public function designer(): BelongsTo
+    {
+        return $this->belongsTo(Designer::class, 'designer_id');
     }
 
     /**

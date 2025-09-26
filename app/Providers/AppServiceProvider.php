@@ -27,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Only enable debug tools in non-production environments
+        if (app()->environment('production')) {
+            return;
+        }
+
         $allowedIPs = array_map('trim', explode(',', config('app.debug_allowed_ips')));
 
         $allowedIPs = array_filter($allowedIPs);
