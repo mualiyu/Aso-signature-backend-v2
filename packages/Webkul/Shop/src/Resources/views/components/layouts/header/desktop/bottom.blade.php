@@ -190,6 +190,11 @@
                                     @lang('shop::app.components.layouts.header.orders')
                                 </a>
 
+                                <a class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
+                                    href="{{ route('shop.customers.account.measurements.index') }}">
+                                    Measurements
+                                </a>
+
                                 @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
                                 <a class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                     href="{{ route('shop.customers.account.wishlist.index') }}">

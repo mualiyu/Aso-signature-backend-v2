@@ -8,6 +8,7 @@ use Webkul\Shop\Http\Controllers\API\CompareController;
 use Webkul\Shop\Http\Controllers\API\CoreController;
 use Webkul\Shop\Http\Controllers\API\CustomerController;
 use Webkul\Shop\Http\Controllers\API\DesignerController;
+use Webkul\Shop\Http\Controllers\API\MeasurementController;
 use Webkul\Shop\Http\Controllers\API\OnepageController;
 use Webkul\Shop\Http\Controllers\API\ProductController;
 use Webkul\Shop\Http\Controllers\API\ReviewController;
@@ -137,6 +138,10 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
             Route::delete('all', 'destroyAll')->name('shop.api.customers.account.wishlist.destroy_all');
 
             Route::delete('{id}', 'destroy')->name('shop.api.customers.account.wishlist.destroy');
+        });
+
+        Route::controller(MeasurementController::class)->prefix('measurements')->group(function () {
+            Route::get('', 'index')->name('shop.api.customers.account.measurements.index');
         });
     });
 });

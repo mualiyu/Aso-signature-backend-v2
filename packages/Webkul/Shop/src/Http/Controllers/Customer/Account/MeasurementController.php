@@ -116,6 +116,11 @@ class MeasurementController extends Controller
 
         session()->flash('success', 'Measurement has been saved successfully.');
 
+        if ($validated['redirect']) {
+            // dd($validated['redirect']);
+            return redirect('http://aso-signature-backend.test/checkout/onepage');
+        }
+
         return redirect()->route('shop.customers.account.measurements.index');
     }
 
