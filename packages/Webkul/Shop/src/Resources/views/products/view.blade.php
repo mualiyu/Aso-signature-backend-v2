@@ -394,6 +394,15 @@
 
                                 {!! view_render_event('bagisto.shop.products.short_description.after', ['product' => $product]) !!}
 
+                                @if($product->gender)
+                                    <div class="mt-4">
+                                        <p class="text-sm text-zinc-600">
+                                            <span class="font-medium">Gender:</span>
+                                            <span class="capitalize">{{ $product->gender_name }}</span>
+                                        </p>
+                                    </div>
+                                @endif
+
                                 @include('shop::products.view.types.configurable')
 
                                 @include('shop::products.view.types.grouped')

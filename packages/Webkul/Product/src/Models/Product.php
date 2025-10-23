@@ -38,6 +38,7 @@ class Product extends Model implements ProductContract
         'parent_id',
         'designer_id',
         'required_measurement',
+        'gender',
     ];
 
     /**
@@ -526,5 +527,29 @@ class Product extends Model implements ProductContract
     protected static function newFactory(): Factory
     {
         return ProductFactory::new();
+    }
+
+    /**
+     * Get the available gender options.
+     *
+     * @return array
+     */
+    public static function getGenderOptions(): array
+    {
+        return [
+            'male' => 'Male',
+            'female' => 'Female',
+            'unisex' => 'Unisex',
+        ];
+    }
+
+    /**
+     * Get the formatted gender name.
+     *
+     * @return string|null
+     */
+    public function getGenderNameAttribute(): ?string
+    {
+        return $this->gender ? self::getGenderOptions()[$this->gender] ?? ucfirst($this->gender) : null;
     }
 }

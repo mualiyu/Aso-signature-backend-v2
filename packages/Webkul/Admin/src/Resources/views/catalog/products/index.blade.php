@@ -377,6 +377,26 @@
                                         <x-admin::form.control-group.error control-name="sku" />
                                     </x-admin::form.control-group>
 
+                                    <!-- Gender -->
+                                    <x-admin::form.control-group>
+                                        <x-admin::form.control-group.label>
+                                            Gender
+                                        </x-admin::form.control-group.label>
+
+                                        <x-admin::form.control-group.control
+                                            type="select"
+                                            name="gender"
+                                            :label="'Gender'"
+                                        >
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="unisex">Unisex</option>
+                                        </x-admin::form.control-group.control>
+
+                                        <x-admin::form.control-group.error control-name="gender" />
+                                    </x-admin::form.control-group>
+
 
                                     {!! view_render_event('bagisto.admin.catalog.products.create_form.general.controls.after') !!}
                                 </div>
