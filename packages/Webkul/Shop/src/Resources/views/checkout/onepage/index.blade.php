@@ -306,8 +306,23 @@
                     </svg>
                     Add/Edit Measurements
                 </a>
+                <a
+                    href="#"
+                    class="secondary-button w-max rounded-2xl px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="$emitter.emit('open-measurements')"
+                >
+                    Show My Measurements
+                </a>
 
-                {{-- @include('shop::checkout.onepage.measurement.measurement') --}}
+                {{-- <x-shop::button
+                    type="button"
+                    class="secondary-button w-max rounded-2xl bg-white px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="$emitter.emit('open-measurements')"
+                >
+                    Show My Measurements
+                </x-shop::button> --}}
+
+                @include('shop::checkout.onepage.measurement.measurement')
             </div>
             <style>
                 @media (max-width: 1024px) {
