@@ -62,6 +62,43 @@
         </v-checkout>
     </div>
 
+    <!-- Measurement Required Modal -->
+    <x-shop::modal
+        ref="measurementRequiredModal"
+        is-active="true"
+    >
+        <x-slot:header>
+            <h2 class="text-2xl font-medium max-md:text-base">
+                Measurements Required
+            </h2>
+        </x-slot:header>
+
+        <x-slot:content>
+            <div class="text-base">
+                For the best fit, please add your body measurements before placing your order.
+            </div>
+        </x-slot:content>
+
+        <x-slot:footer>
+            <div class="flex items-center justify-end gap-3">
+                <a
+                    href="{{ route('shop.customers.account.measurements.index') . '?redirect=' . route('shop.checkout.onepage.index') }}"
+                    class="primary-button"
+                >
+                    Add Measurements
+                </a>
+
+                {{-- <x-shop::button
+                    type="button"
+                    class="secondary-button w-max rounded-2xl bg-white px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="$refs.measurementRequiredModal.toggle()"
+                >
+                    Continue without measurements
+                </x-shop::button> --}}
+            </div>
+        </x-slot:footer>
+    </x-shop::modal>
+
     @pushOnce('scripts')
         <script
             type="text/x-template"

@@ -118,7 +118,7 @@ class MeasurementController extends Controller
 
         if ($validated['redirect']) {
             // dd($validated['redirect']);
-            return redirect('http://aso-signature-backend.test/checkout/onepage');
+            return redirect($validated['redirect']);
         }
 
         return redirect()->route('shop.customers.account.measurements.index');
