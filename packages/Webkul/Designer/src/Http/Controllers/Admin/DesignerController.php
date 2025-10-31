@@ -68,6 +68,6 @@ class DesignerController extends Controller
      */
     public function destroy(int $id)
     {
-        
+
     }
 }

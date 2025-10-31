@@ -54,6 +54,11 @@ class Admin extends Authenticatable implements AdminContract
         return Storage::url($this->image);
     }
 
+    public function isAdmin()
+    {
+        return true;
+    }
+
     /**
      * Get image url for the product image.
      */

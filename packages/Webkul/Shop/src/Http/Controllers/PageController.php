@@ -27,6 +27,7 @@ class PageController extends Controller
     {
         $page = $this->pageRepository->findByUrlKey($urlKey);
 
+
         if (! $page) {
             $urlRewrite = $this->urlRewriteRepository->findOneWhere([
                 'entity_type'  => 'cms_page',

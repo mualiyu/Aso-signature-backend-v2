@@ -6,6 +6,7 @@
         {!! view_render_event('bagisto.admin.catalog.product.edit.before', ['product' => $product]) !!}
 
         <x-admin::form method="PUT" enctype="multipart/form-data">
+
             {!! view_render_event('bagisto.admin.catalog.product.edit.actions.before', ['product' => $product]) !!}
 
             <!-- Page Header -->
@@ -131,6 +132,11 @@
 
                 <div
                     class="flex flex-col gap-2 {{ $column == 1 ? 'flex-1 max-xl:flex-auto' : 'w-[360px] max-w-full max-sm:w-full' }}">
+                    @if ($column == 2)
+                    @include('admin::catalog.products.edit.designers')
+                    @include('admin::catalog.products.edit.gender')
+                    {{-- @include('admin::catalog.products.edit.measurement') --}}
+                    @endif
                     @foreach ($groups as $group)
                     @php $customAttributes = $product->getEditableAttributes($group); @endphp
 
@@ -194,10 +200,10 @@
                         'admin::catalog.products.edit.inventories'
                         )
 
-                        @includeWhen(
+                        {{-- @includeWhen(
                         $group->code === 'designers',
                         'admin::catalog.products.edit.designers'
-                        )
+                        ) --}}
 
 
                     </div>

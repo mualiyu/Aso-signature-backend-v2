@@ -8,6 +8,13 @@ use Webkul\Product\Helpers\Review;
 class ProductResource extends JsonResource
 {
     /**
+     * Review helper instance.
+     *
+     * @var \Webkul\Product\Helpers\Review
+     */
+    protected $reviewHelper;
+
+    /**
      * Create a new resource instance.
      *
      * @param  mixed  $resource
@@ -48,6 +55,8 @@ class ProductResource extends JsonResource
             'min_price'   => core()->formatPrice($productTypeInstance->getMinimalPrice()),
             'prices'      => $productTypeInstance->getProductPrices(),
             'price_html'  => $productTypeInstance->getPriceHtml(),
+            'gender'      => $this->gender,
+            'gender_name' => $this->gender_name,
             'ratings'     => [
                 'average' => $this->reviewHelper->getAverageRating($this),
                 'total'   => $this->reviewHelper->getTotalRating($this),

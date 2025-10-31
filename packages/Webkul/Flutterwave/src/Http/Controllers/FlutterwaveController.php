@@ -35,6 +35,15 @@ class FlutterwaveController extends Controller
         // Unique transaction ref
         $tx_ref = 'FLW_' . uniqid();
 
+
+        // current currency
+        $currentCurrency = session('currency');
+        if (! $currentCurrency) {
+            // fallback to base
+            $currentCurrency = core()->getCurrentCurrencyCode();
+            // $currentCurrency = core()->getCurrentChannel()->base_currency->code;
+        }
+
         // Store tx_ref in session for later verification
         session(['flutterwave_tx_ref' => $tx_ref]);
 
@@ -42,7 +51,8 @@ class FlutterwaveController extends Controller
         $payload = [
             'tx_ref' => $tx_ref,
             'amount' => $cart->grand_total,
-            'currency' => 'NGN',
+            'currency' => $currentCurrency,
+            // 'currency' => 'NGN',
             'redirect_url' => route('flutterwave.payment.callback'),
             'payment_options' => 'card',
             'customer' => [
@@ -60,8 +70,21 @@ class FlutterwaveController extends Controller
         // $secretKey = core()->getConfigData('sales.paymentmethods.flutterwave.secret_key');
         // return $secretKey;
 
-        $response = Http::withToken($secretKey)
+
+        // return core()->getCurrentCurrencyCode();
+        // return core()->convertPrice($cart->grand_total);
+        // return core()->getConfigData('currency.options.base', core()->getCurrentChannelCode(), app()->getLocale());
+
+
+        try {
+            $response = Http::withToken($secretKey)
             ->post('https://api.flutterwave.com/v3/payments', $payload);
+        } catch (\Exception $e) {
+            Log::error('Flutterwave payment initiation failed: ' . $e->getMessage());
+            session()->flash('error', 'Unable to connect to payment gateway.');
+            return redirect()->route('shop.checkout.cart.index');
+        }
+
 
         $data = $response->json();
 
@@ -113,7 +136,7 @@ class FlutterwaveController extends Controller
             // return $cart;
             // $order = $this->orderRepository->create($cart->toArray());
 
-             $data = (new OrderResource($cart))->jsonSerialize();
+            $data = (new OrderResource($cart))->jsonSerialize();
 
             $order = $this->orderRepository->create($data);
 

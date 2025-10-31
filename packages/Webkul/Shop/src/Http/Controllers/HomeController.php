@@ -28,6 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // return core()->getCurrentCurrencyCode();
         visitor()->visit();
 
         $customizations = $this->themeCustomizationRepository->orderBy('sort_order')->findWhere([

@@ -14,14 +14,15 @@
 
             <!-- Company Name -->
             <x-shop::form.control-group>
-                <x-shop::form.control-group.label>
+                {{-- <x-shop::form.control-group.label>
                     @lang('shop::app.checkout.onepage.address.company-name')
-                </x-shop::form.control-group.label>
+                </x-shop::form.control-group.label> --}}
 
                 <x-shop::form.control-group.control
-                    type="text"
+                    type="hidden"
                     ::name="controlName + '.company_name'"
-                    ::value="address.company_name"
+                    {{-- ::value="address.company_name" --}}
+                    value="AsoSignature"
                     :placeholder="trans('shop::app.checkout.onepage.address.company-name')"
                 />
             </x-shop::form.control-group>

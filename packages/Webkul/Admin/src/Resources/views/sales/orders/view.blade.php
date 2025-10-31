@@ -452,6 +452,50 @@
                     </div>
                 </div>
 
+                <!-- Customer Measurements -->
+                @if($order->measurements && $order->measurements->count() > 0)
+                    <x-admin::accordion>
+                        <x-slot:header>
+                            <p class="p-2.5 text-base font-semibold text-gray-600 dark:text-gray-300">
+                                Customer Measurements ({{ $order->measurements->count() }})
+                            </p>
+                        </x-slot:header>
+
+                        <x-slot:content>
+                            <div class="grid gap-4">
+                                @foreach($order->measurements->groupBy('measurement_type') as $type => $measurements)
+                                    <div>
+                                        <p class="font-semibold text-gray-800 dark:text-white capitalize mb-2">
+                                            {{ ucfirst($type) }}
+                                        </p>
+
+                                        <div class="grid grid-cols-3 gap-2 text-sm">
+                                            @foreach($measurements as $measurement)
+                                                <div class="flex justify-left">
+                                                    <span class="text-gray-600 dark:text-gray-300 capitalize">
+                                                        {{ ucfirst(str_replace('_', ' ', $measurement->name)) }}:
+                                                    </span>
+                                                    <span class="font-semibold text-gray-800 dark:text-white">
+                                                        &nbsp;{{ $measurement->value }} {{ $measurement->unit }}
+                                                    </span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Download Button -->
+                            <div class="mt-4">
+                                <a href="{{ route('admin.sales.orders.measurements.download', $order->id) }}"
+                                   class="secondary-button px-4 py-2">
+                                    @lang('Download Measurements CSV')
+                                </a>
+                            </div>
+                        </x-slot:content>
+                    </x-admin::accordion>
+                @endif
+
                 <!-- Customer's comment form -->
                 <div class="box-shadow rounded bg-white dark:bg-gray-900">
                     <p class="p-4 pb-0 text-base font-semibold text-gray-800 dark:text-white">
@@ -734,6 +778,8 @@
                         @endif
                     </x-slot>
                 </x-admin::accordion>
+
+
 
                 <!-- Invoice Information-->
                 <x-admin::accordion>
