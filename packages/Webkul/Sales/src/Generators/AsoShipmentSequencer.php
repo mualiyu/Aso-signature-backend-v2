@@ -16,7 +16,7 @@ class AsoShipmentSequencer implements SequencerContract
     {
         // Generate random 6-character alphanumeric string
         $random = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6));
-        
+
         return 'SHP-' . now()->format('YmdHis') . '-' . $random;
     }
 }

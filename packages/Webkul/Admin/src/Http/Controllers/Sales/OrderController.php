@@ -269,9 +269,9 @@ class OrderController extends Controller
     public function downloadMeasurements(int $id)
     {
         $order = $this->orderRepository->findOrFail($id);
-        
+
         $fileName = 'order-' . $order->increment_id . '-measurements.csv';
-        
+
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
@@ -279,7 +279,7 @@ class OrderController extends Controller
 
         $callback = function() use ($order) {
             $file = fopen('php://output', 'w');
-            
+
             // CSV Headers
             fputcsv($file, [
                 'Order ID',
