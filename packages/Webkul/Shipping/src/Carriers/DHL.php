@@ -118,10 +118,10 @@ class DHL extends AbstractShipping
             $product = $item->product;
 
             if ($item->getTypeInstance()->isStockable() && $product) {
-                // Get dimensions from product attributes
-                $length = $product->length ?? 0;
-                $width = $product->width ?? 0;
-                $height = $product->height ?? 0;
+                // Get dimensions from product attributes (cast to float to avoid string * int errors)
+                $length = (float) ($product->length ?? 0);
+                $width = (float) ($product->width ?? 0);
+                $height = (float) ($product->height ?? 0);
 
                 $maxLength = max($maxLength, $length);
                 $maxWidth = max($maxWidth, $width);
