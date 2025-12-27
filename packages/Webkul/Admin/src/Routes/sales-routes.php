@@ -49,6 +49,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
             Route::get('search', 'search')->name('admin.sales.orders.search');
 
             Route::get('{id}/measurements/download', 'downloadMeasurements')->name('admin.sales.orders.measurements.download');
+
+            Route::get('{id}/designer-order/download', 'downloadDesignerOrder')->name('admin.sales.orders.designer.download');
         });
 
         /**

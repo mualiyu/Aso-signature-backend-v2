@@ -107,6 +107,16 @@
             @endif
 
             {!! view_render_event('bagisto.admin.sales.order.page_action.after', ['order' => $order]) !!}
+
+            <!-- Download Designer Order PDF -->
+            <a
+                href="{{ route('admin.sales.orders.designer.download', $order->id) }}"
+                class="transparent-button px-1 py-1.5 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
+            >
+                <span class="icon-printer text-2xl"></span>
+
+                Download Designer Order
+            </a>
         </div>
 
         <!-- Order details -->
@@ -816,8 +826,14 @@
                                     >
                                         @lang('admin::app.sales.orders.view.download-pdf')
                                     </a>
+
+                                    <a
+                                        href="{{ route('admin.sales.invoices.print', [$invoice->id, 'designer']) }}"
+                                        class="text-sm text-blue-600 transition-all hover:underline"
+                                    >
+                                        Download Designer Invoice
+                                    </a>
                                 </div>
-                            </div>
 
                             @if ($index < count($order->invoices) - 1)
                                 <span class="mb-4 mt-4 block w-full border-b dark:border-gray-800"></span>

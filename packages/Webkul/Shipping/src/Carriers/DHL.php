@@ -78,7 +78,7 @@ class DHL extends AbstractShipping
         }
 
         // Call DHL API to get rates
-        $rate = $this->getDHLRate($shippingAddress, $totalWeight, $dimensions);
+        $rate = $this->getDHLRate($cart, $shippingAddress, $totalWeight, $dimensions);
 
         return $rate;
     }
@@ -146,12 +146,13 @@ class DHL extends AbstractShipping
     /**
      * Get DHL shipping rate using MyDHL API via Guzzle.
      *
+     * @param  \Webkul\Checkout\Models\Cart  $cart
      * @param  \Webkul\Checkout\Models\CartAddress  $address
      * @param  float  $weight
      * @param  array  $dimensions
      * @return \Webkul\Checkout\Models\CartShippingRate|false
      */
-    protected function getDHLRate($address, $weight, $dimensions)
+    protected function getDHLRate($cart, $address, $weight, $dimensions)
     {
         try {
             $sandboxMode = $this->getConfigData('sandbox_mode');
@@ -180,10 +181,40 @@ class DHL extends AbstractShipping
                 ? 'https://express.api.dhl.com/mydhlapi/test'
                 : 'https://express.api.dhl.com/mydhlapi';
 
+            // Log credentials being used (without exposing secrets)
+            Log::info('DHL API Credentials Check', [
+                'api_key' => substr($apiKey, 0, 10) . '...',
+                'api_secret' => substr($apiSecret, 0, 10) . '...',
+                'account_number' => $accountNumber,
+                'sandbox_mode' => $sandboxMode,
+                'endpoint' => $baseUrl,
+            ]);
+
             // Get origin address
             $originAddress = $this->getOriginAddress();
 
             // Prepare DHL API request for rates estimation
+            // Fix: Remove invalid fields and fix data types per DHL API requirements
+            $receiverAddressLine1 = $address->address1 ?? ($address->address2 ?? 'N/A');
+            $receiverAddressLine2 = $address->address2 ?? 'N/A'; // Can't be empty string
+
+            // Detect if shipping is international (different countries)
+            $isInternational = strtoupper($originAddress['country']) !== strtoupper($address->country);
+
+            Log::info('DHL Shipping Type', [
+                'origin_country' => $originAddress['country'],
+                'destination_country' => $address->country,
+                'is_international' => $isInternational,
+            ]);
+
+            // Calculate cart total for customs value (if international)
+            $cartTotal = 0;
+            if ($isInternational && $cart) {
+                foreach ($cart->items as $item) {
+                    $cartTotal += $item->base_total;
+                }
+            }
+
             $requestBody = [
                 'customerDetails' => [
                     'shipperDetails' => [
@@ -195,8 +226,8 @@ class DHL extends AbstractShipping
                         'postalCode' => $address->postcode,
                         'cityName' => $address->city,
                         'countryCode' => $address->country,
-                        'addressLine1' => $address->address1 ?? '',
-                        'addressLine2' => $address->address2 ?? '',
+                        'addressLine1' => $receiverAddressLine1,
+                        'addressLine2' => $receiverAddressLine2, // Must have minLength: 1
                     ],
                 ],
                 'accounts' => [
@@ -205,26 +236,30 @@ class DHL extends AbstractShipping
                         'typeCode' => 'shipper',
                     ],
                 ],
-                'productCode' => 'N', // Express Worldwide
+                // Removed productCode - DHL will return all available products for the route
+                // No productCode specified = DHL returns all available products
                 'unitOfMeasurement' => 'metric',
-                'plannedShippingDateAndTime' => [
-                    'plannedShippingDate' => now()->format('Y-m-d'),
-                ],
+                // Use next business day for pickup date (DHL requires future date)
+                'plannedShippingDateAndTime' => $this->getNextBusinessDay()->format('Y-m-d\TH:i:s\Z'),
                 'packages' => [
                     [
-                        'weight' => round($weight, 2),
+                        'weight' => max(0.1, round($weight, 2)), // Minimum 0.1 kg
                         'dimensions' => [
-                            'length' => round($dimensions['length'], 2),
-                            'width' => round($dimensions['width'], 2),
-                            'height' => round($dimensions['height'], 2),
+                            'length' => max(1, round($dimensions['length'], 2)), // Minimum 1 cm
+                            'width' => max(1, round($dimensions['width'], 2)), // Minimum 1 cm
+                            'height' => max(1, round($dimensions['height'], 2)), // Minimum 1 cm
                         ],
                     ],
                 ],
-                'isCustomsDeclarable' => false,
-                'monetaryAmount' => [],
-                'getAllValueAddedServices' => false,
-                'requestEstimatedDeliveryDate' => true,
-                'getAdditionalInformation' => false,
+                'isCustomsDeclarable' => $isInternational, // True for international, false for domestic
+                'monetaryAmount' => $isInternational && $cartTotal > 0 ? [
+                    [
+                        'typeCode' => 'declaredValue',
+                        'value' => round($cartTotal, 2), // Fix: DHL expects 'value' not 'amount'
+                        'currency' => core()->getBaseCurrencyCode(), // Fix: DHL expects 'currency' not 'currencyCode'
+                    ],
+                ] : [],
+                'getAdditionalInformation' => [], // Fix: Should be array, not boolean
             ];
 
             $messageReference = uniqid();
@@ -252,16 +287,45 @@ class DHL extends AbstractShipping
             } else {
                 // Improve error logging for API response
                 $errorBody = json_decode($response->body(), true);
-                $errorMessage = $errorBody['reasons'][0]['msg'] ?? 'Unknown error';
+
+                // Extract error message from different possible response formats
+                $errorMessage = 'Unknown error';
+                if (isset($errorBody['reasons']) && is_array($errorBody['reasons']) && !empty($errorBody['reasons'])) {
+                    $errorMessage = $errorBody['reasons'][0]['msg'] ?? $errorBody['reasons'][0]['message'] ?? 'Unknown error';
+                } elseif (isset($errorBody['message'])) {
+                    $errorMessage = $errorBody['message'];
+                } elseif (isset($errorBody['error'])) {
+                    $errorMessage = $errorBody['error'];
+                } elseif (isset($errorBody['detail'])) {
+                    $errorMessage = $errorBody['detail'];
+                }
 
                 Log::error('DHL API Error', [
                     'status' => $response->status(),
                     'error' => $errorMessage,
-                    'details' => $errorBody['details'] ?? []
+                    'full_response' => $response->body(),
+                    'parsed_response' => $errorBody,
                 ]);
+
+                // For 422 errors, provide more specific guidance
+                if ($response->status() == 422) {
+                    $errorMessage = 'Validation Error: ' . $errorMessage . ' (Check postal codes, country codes, or package dimensions)';
+                }
 
                 return $this->getTestRateWithError($errorMessage);
             }
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            // Network/DNS connectivity issue
+            Log::error('DHL Network Error', [
+                'message' => $e->getMessage(),
+                'error' => 'Cannot reach DHL API - check internet connection and DNS',
+            ]);
+
+            if ($this->getConfigData('fallback_enabled')) {
+                return $this->getFallbackRate();
+            }
+
+            return $this->getTestRateWithError('Network Error: Cannot connect to DHL API. Please check your internet connection.');
         } catch (\Exception $e) {
             Log::error('DHL Shipping Error', [
                 'message' => $e->getMessage(),
@@ -278,17 +342,21 @@ class DHL extends AbstractShipping
     }
 
     /**
-     * Parse DHL API response and return rate.
+     * Parse DHL API response and return rate(s).
      *
      * @param  array  $response
-     * @return \Webkul\Checkout\Models\CartShippingRate
+     * @return \Webkul\Checkout\Models\CartShippingRate|array
      */
     protected function parseDHLResponse($response)
     {
-        $cartShippingRate = new CartShippingRate();
+        if (!isset($response['products']) || !is_array($response['products']) || empty($response['products'])) {
+            return false;
+        }
 
-        if (isset($response['products']) && is_array($response['products']) && !empty($response['products'])) {
-            $product = $response['products'][0];
+        $rates = [];
+
+        foreach ($response['products'] as $product) {
+            $cartShippingRate = new CartShippingRate();
 
             $cartShippingRate->carrier = $this->getCode();
             $cartShippingRate->carrier_title = $this->getConfigData('title');
@@ -301,18 +369,61 @@ class DHL extends AbstractShipping
 
             $cartShippingRate->method_description = 'Delivery: ' . ($estimatedDeliveryDate ?: $deliveryTime ?: 'Standard delivery');
 
-            // Convert price to base currency
-            $price = $product['totalPrice'][0]['price'] ?? 0;
-            $currencyCode = $product['totalPrice'][0]['currencyName'] ?? 'USD';
+            // Extract NGN price from totalPrice array
+            $ngnPrice = 0;
+            if (isset($product['totalPrice']) && is_array($product['totalPrice'])) {
+                foreach ($product['totalPrice'] as $priceEntry) {
+                    if (isset($priceEntry['priceCurrency']) && strtoupper($priceEntry['priceCurrency']) === 'NGN') {
+                        $ngnPrice = $priceEntry['price'] ?? 0;
+                        break; // Use first NGN price found
+                    }
+                }
+            }
 
-            $cartShippingRate->price = core()->convertPrice($price, $currencyCode);
-            $cartShippingRate->base_price = $price;
-        } else {
-            // No products returned
-            return false;
+            // If no NGN price found, fallback to first price
+            if ($ngnPrice <= 0 && isset($product['totalPrice'][0]['price'])) {
+                $ngnPrice = $product['totalPrice'][0]['price'];
+            }
+
+            // Get user's selected currency and base currency
+            $userCurrencyCode = core()->getCurrentCurrencyCode();
+            $baseCurrencyCode = core()->getBaseCurrencyCode();
+
+            // Convert NGN price to base currency first
+            // base_price should be in base currency
+            if (strtoupper($baseCurrencyCode) === 'NGN') {
+                $basePrice = $ngnPrice;
+            } else {
+                // Convert NGN to base currency (e.g., USD)
+                $basePrice = core()->convertToBasePrice($ngnPrice, 'NGN');
+            }
+
+            // Convert base price to user's selected currency
+            // If user currency is same as base, no conversion needed
+            if (strtoupper($userCurrencyCode) === strtoupper($baseCurrencyCode)) {
+                $convertedPrice = $basePrice;
+            } else {
+                // Convert from base currency to user's currency
+                $convertedPrice = core()->convertPrice($basePrice, $userCurrencyCode);
+            }
+
+            $cartShippingRate->base_price = round($basePrice, 2);
+            $cartShippingRate->price = round($convertedPrice, 2);
+
+            $rates[] = $cartShippingRate;
+
+            Log::info('DHL Rate Conversion', [
+                'product' => $product['productName'] ?? 'Unknown',
+                'ngn_price' => $ngnPrice,
+                'base_currency' => $baseCurrencyCode,
+                'base_price' => $basePrice,
+                'user_currency' => $userCurrencyCode,
+                'converted_price' => $convertedPrice,
+            ]);
         }
 
-        return $cartShippingRate;
+        // Return single rate or array of rates
+        return count($rates) === 1 ? $rates[0] : $rates;
     }
 
     /**
@@ -328,8 +439,9 @@ class DHL extends AbstractShipping
         $cartShippingRate->method = $this->getCode() . '_test';
         $cartShippingRate->method_title = 'DHL Express (Configure in Admin)';
         $cartShippingRate->method_description = 'Please configure DHL API credentials in Admin Panel';
-        $cartShippingRate->price = core()->convertPrice(0);
+
         $cartShippingRate->base_price = 0;
+        $cartShippingRate->price = 0;
 
         return $cartShippingRate;
     }
@@ -348,8 +460,9 @@ class DHL extends AbstractShipping
         $cartShippingRate->method = $this->getCode() . '_error';
         $cartShippingRate->method_title = 'DHL Express (Invalid Credentials)';
         $cartShippingRate->method_description = 'Please check DHL API credentials in Admin Panel';
-        $cartShippingRate->price = core()->convertPrice(0);
+
         $cartShippingRate->base_price = 0;
+        $cartShippingRate->price = 0;
 
         Log::warning('DHL Error: ' . $error);
 
@@ -369,8 +482,12 @@ class DHL extends AbstractShipping
         $cartShippingRate->method = $this->getCode() . '_fallback';
         $cartShippingRate->method_title = 'DHL (Estimated)';
         $cartShippingRate->method_description = 'Estimated shipping cost';
-        $cartShippingRate->price = core()->convertPrice($this->getConfigData('fallback_rate') ?: 0);
-        $cartShippingRate->base_price = $this->getConfigData('fallback_rate') ?: 0;
+
+        // Use fallback rate directly without conversion
+        $fallbackPrice = (float) ($this->getConfigData('fallback_rate') ?: 0);
+
+        $cartShippingRate->base_price = round($fallbackPrice, 2);
+        $cartShippingRate->price = round($fallbackPrice, 2);
 
         return $cartShippingRate;
     }
@@ -389,4 +506,29 @@ class DHL extends AbstractShipping
             'address1' => $this->getConfigData('origin_address') ?? '',
         ];
     }
+
+    /**
+     * Get next business day for DHL pickup date.
+     * DHL requires a future date for pickup.
+     *
+     * @return \Carbon\Carbon
+     */
+    protected function getNextBusinessDay()
+    {
+        $date = now();
+
+        // If it's after 3 PM, use next day
+        if ($date->hour >= 15) {
+            $date = $date->addDay();
+        }
+
+        // Skip weekends (Saturday = 6, Sunday = 0)
+        while ($date->dayOfWeek === 0 || $date->dayOfWeek === 6) {
+            $date = $date->addDay();
+        }
+
+        // Set to 10 AM for pickup time
+        return $date->setTime(10, 0, 0);
+    }
 }
+

@@ -16,9 +16,12 @@ use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Sales\Repositories\OrderCommentRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
+use Webkul\Core\Traits\PDFHandler;
 
 class OrderController extends Controller
 {
+    use PDFHandler;
+
     /**
      * Create a new controller instance.
      *
@@ -312,5 +315,21 @@ class OrderController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Download designer order details PDF
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadDesignerOrder(int $id)
+    {
+        $order = $this->orderRepository->findOrFail($id);
+
+        return $this->downloadPDF(
+            view('admin::sales.orders.pdf-designer', compact('order'))->render(),
+            'designer-order-' . $order->increment_id . '-' . $order->created_at->format('d-m-Y')
+        );
     }
 }

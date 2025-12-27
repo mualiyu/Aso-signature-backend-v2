@@ -51,6 +51,7 @@ class ShipmentRepository extends Repository
                 'order_id'            => $order->id,
                 'total_qty'           => 0,
                 'total_weight'        => 0,
+                'carrier_code'        => $data['shipment']['carrier_code'] ?? null,
                 'carrier_title'       => $data['shipment']['carrier_title'],
                 'track_number'        => $data['shipment']['track_number'],
                 'customer_id'         => $order->customer_id,
