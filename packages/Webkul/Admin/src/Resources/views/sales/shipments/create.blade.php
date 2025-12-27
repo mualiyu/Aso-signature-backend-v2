@@ -3,9 +3,9 @@
     <div
         class="transparent-button px-1 py-1.5 hover:bg-gray-200 dark:text-white dark:hover:bg-gray-800"
     >
-        <span class="icon-ship text-2xl"></span> 
+        <span class="icon-ship text-2xl"></span>
 
-        @lang('admin::app.sales.orders.view.ship')     
+        @lang('admin::app.sales.orders.view.ship')
     </div>
 </v-create-shipment>
 
@@ -24,13 +24,13 @@
                     role="button"
                     tabindex="0"
                 >
-                </span> 
+                </span>
 
-                @lang('admin::app.sales.orders.view.ship')     
+                @lang('admin::app.sales.orders.view.ship')
             </div>
 
             <!-- Shipment Create Drawer -->
-            <x-admin::form  
+            <x-admin::form
                 method="POST"
                 :action="route('admin.sales.shipments.store', $order->id)"
             >
@@ -59,21 +59,45 @@
                     <x-slot:content class="!p-0">
                         <div class="grid p-4 pt-2">
                             <div class="grid grid-cols-2 gap-x-5">
-                                <!-- Carrier Name -->
+                                <!-- Carrier Selection -->
                                 <x-admin::form.control-group>
                                     <x-admin::form.control-group.label>
                                         @lang('admin::app.sales.shipments.create.carrier-name')
                                     </x-admin::form.control-group.label>
 
                                     <x-admin::form.control-group.control
+                                        type="select"
+                                        id="shipment[carrier_code]"
+                                        name="shipment[carrier_code]"
+                                        v-model="carrierCode"
+                                        @change="onCarrierChange"
+                                        :label="trans('admin::app.sales.shipments.create.carrier-name')"
+                                    >
+                                        <option value="">@lang('admin::app.sales.shipments.create.select-carrier')</option>
+                                        <option value="dhl">DHL Express</option>
+                                        <option value="other">@lang('admin::app.sales.shipments.create.other')</option>
+                                    </x-admin::form.control-group.control>
+
+                                    <!-- Carrier Name (shown when "Other" is selected) -->
+                                    <x-admin::form.control-group.control
+                                        v-if="carrierCode === 'other'"
                                         type="text"
-                                        id="shipment[carrier_title]" 
-                                        name="shipment[carrier_title]" 
+                                        id="shipment[carrier_title]"
+                                        name="shipment[carrier_title]"
                                         :label="trans('admin::app.sales.shipments.create.carrier-name')"
                                         :placeholder="trans('admin::app.sales.shipments.create.carrier-name')"
+                                        class="mt-2"
                                     />
 
-                                    <x-admin::form.control-group.error control-name="carrier_name" />
+                                    <!-- Hidden field for DHL carrier title -->
+                                    <input
+                                        v-if="carrierCode === 'dhl'"
+                                        type="hidden"
+                                        name="shipment[carrier_title]"
+                                        value="DHL Express"
+                                    />
+
+                                    <x-admin::form.control-group.error control-name="shipment[carrier_code]" />
                                 </x-admin::form.control-group>
 
                                 <!-- Tracking Number -->
@@ -82,12 +106,13 @@
                                         @lang('admin::app.sales.shipments.create.tracking-number')
                                     </x-admin::form.control-group.label>
 
-                                    <x-admin::form.control-group.control
+                                    <input
                                         type="text"
                                         id="shipment[track_number]"
                                         name="shipment[track_number]"
-                                        :label="trans('admin::app.sales.shipments.create.tracking-number')"
-                                        :placeholder="trans('admin::app.sales.shipments.create.tracking-number')"
+                                        class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm transition-all hover:border-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed dark:border-gray-800 dark:bg-gray-900 dark:text-white"
+                                        placeholder="@lang('admin::app.sales.shipments.create.tracking-number')"
+                                        v-bind:disabled="carrierCode === 'dhl'"
                                     />
 
                                     <x-admin::form.control-group.error control-name="shipment[track_number]" />
@@ -102,8 +127,8 @@
 
                                 <x-admin::form.control-group.control
                                     type="select"
-                                    id="shipment[source]" 
-                                    name="shipment[source]" 
+                                    id="shipment[source]"
+                                    name="shipment[source]"
                                     rules="required"
                                     v-model="source"
                                     :label="trans('admin::app.sales.shipments.create.source')"
@@ -137,19 +162,19 @@
                                                 @else
                                                     <div class="relative h-[60px] max-h-[60px] w-full max-w-[60px] rounded border border-dashed border-gray-300 dark:border-gray-800 dark:mix-blend-exclusion dark:invert">
                                                         <img src="{{ bagisto_asset('images/product-placeholders/front.svg') }}">
-                                                        
-                                                        <p class="absolute bottom-1.5 w-full text-center text-[6px] font-semibold text-gray-400"> 
-                                                            @lang('admin::app.sales.invoices.view.product-image') 
+
+                                                        <p class="absolute bottom-1.5 w-full text-center text-[6px] font-semibold text-gray-400">
+                                                            @lang('admin::app.sales.invoices.view.product-image')
                                                         </p>
                                                     </div>
                                                 @endif
-                
+
                                                 <div class="grid place-content-start gap-1.5">
                                                     <!-- Item Name -->
                                                     <p class="text-base font-semibold text-gray-800 dark:text-white">
                                                         {{ $item->name }}
                                                     </p>
-                
+
                                                     <div class="flex flex-col place-items-start gap-1.5">
                                                         <p class="text-gray-600 dark:text-gray-300">
                                                             @lang('admin::app.sales.shipments.create.amount-per-unit', [
@@ -157,7 +182,7 @@
                                                                 'qty'    => $item->qty_ordered,
                                                             ])
                                                         </p>
-                
+
                                                         <!--Additional Attributes -->
                                                         @if (isset($item->additional['attributes']))
                                                             <p class="text-gray-600 dark:text-gray-300">
@@ -200,7 +225,7 @@
 
                                                     <!-- Available Quantity -->
                                                     <p class="text-gray-600 dark:text-gray-300">
-                                                        @lang('admin::app.sales.shipments.create.qty-available') :                  
+                                                        @lang('admin::app.sales.shipments.create.qty-available') :
 
                                                         @php
                                                             $product = $item->getTypeInstance()->getOrderedItem($item)->product;
@@ -222,12 +247,12 @@
                                                         <x-admin::form.control-group.label class="required !block">
                                                             @lang('admin::app.sales.shipments.create.qty-to-ship')
                                                         </x-admin::form.control-group.label>
-                                                        
+
                                                         <x-admin::form.control-group.control
                                                             type="text"
                                                             class="!w-[100px]"
-                                                            :id="$inputName" 
-                                                            :name="$inputName" 
+                                                            :id="$inputName"
+                                                            :name="$inputName"
                                                             :rules="'required|numeric|min_value:0|max_value:' . $item->qty_ordered"
                                                             :value="$item->qty_to_ship"
                                                             :label="trans('admin::app.sales.shipments.create.qty-to-ship')"
@@ -235,13 +260,13 @@
                                                             ::disabled="'{{ empty($sourceQty) }}' || source != '{{ $inventorySource->id }}'"
                                                             :ref="$inputName"
                                                         />
-                            
+
                                                         <x-admin::form.control-group.error :control-name="$inputName" />
                                                     </x-admin::form.control-group>
                                                 </div>
                                             </div>
                                         @endforeach
-                                    @endif    
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -258,12 +283,23 @@
         data() {
             return {
                 source: "",
+                carrierCode: "",
             };
         },
 
         methods: {
             onSourceChange() {
-                this.setOriginalQuantityToAllShipmentInputElements();   
+                this.setOriginalQuantityToAllShipmentInputElements();
+            },
+
+            onCarrierChange() {
+                // If DHL is selected, clear tracking number (will be auto-filled from API)
+                if (this.carrierCode === 'dhl') {
+                    const trackNumberInput = document.getElementById('shipment[track_number]');
+                    if (trackNumberInput) {
+                        trackNumberInput.value = '';
+                    }
+                }
             },
 
             getAllShipmentInputElements() {
@@ -283,7 +319,7 @@
             setOriginalQuantityToAllShipmentInputElements() {
                 this.getAllShipmentInputElements().forEach((element) => {
                     let data = Object.assign({}, element.dataset);
-                    
+
                     element.value = data.originalQuantity;
                 });
             }

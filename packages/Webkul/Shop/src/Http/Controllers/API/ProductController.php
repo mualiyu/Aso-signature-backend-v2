@@ -37,6 +37,8 @@ class ProductController extends APIController
                 'visible_individually' => 1,
             ]));
 
+            // dd(request());
+
         if (! empty(request()->query('query'))) {
             /**
              * Update or create search term only if

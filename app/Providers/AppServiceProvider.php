@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Webkul\User\Models\AdminProxy;
+use Webkul\User\Models\Admin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
         ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
             Artisan::call('db:seed');
         });
+
+        // Gate::define('viewPulse', function (Admin $user) {
+        //     return $user->isAdmin();
+        // });
     }
 
     /**
@@ -27,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Only enable debug tools in non-production environments
+        if (app()->environment('production')) {
+            return;
+        }
+
         $allowedIPs = array_map('trim', explode(',', config('app.debug_allowed_ips')));
 
         $allowedIPs = array_filter($allowedIPs);

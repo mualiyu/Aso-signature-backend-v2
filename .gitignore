@@ -16,14 +16,15 @@ Homestead.yaml
 npm-debug.log
 package-lock.json
 /playwright-report
+/public/videos
 # /public/css
 # /public/js
 # /public/hot
 # /public/storage
 # /public/vendor
 /lang/vendor
-/storage/*.key
-/storage/dcc-data/
+# /storage/*.key
+# /storage/dcc-data/
 /test-results
 /vendor
 yarn.lock

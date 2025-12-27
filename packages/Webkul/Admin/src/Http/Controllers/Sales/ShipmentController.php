@@ -7,6 +7,8 @@ use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\ShipmentRepository;
+use Webkul\Shipping\Services\DHLShipmentService;
+use Illuminate\Support\Facades\Log;
 
 class ShipmentController extends Controller
 {
@@ -18,7 +20,8 @@ class ShipmentController extends Controller
     public function __construct(
         protected OrderRepository $orderRepository,
         protected OrderItemRepository $orderItemRepository,
-        protected ShipmentRepository $shipmentRepository
+        protected ShipmentRepository $shipmentRepository,
+        protected DHLShipmentService $dhlShipmentService
     ) {}
 
     /**
@@ -79,6 +82,26 @@ class ShipmentController extends Controller
             session()->flash('error', trans('admin::app.sales.shipments.create.quantity-invalid'));
 
             return redirect()->back();
+        }
+
+        // Check if DHL carrier is selected
+        $carrierCode = $data['shipment']['carrier_code'] ?? null;
+
+        if ($carrierCode === 'dhl') {
+            // Create DHL shipment via API
+            // Pass shipment data structure correctly
+            $dhlResult = $this->dhlShipmentService->createShipment($order, $data['shipment']);
+
+            if (!$dhlResult['success']) {
+                session()->flash('error', 'DHL Shipment Error: ' . ($dhlResult['error'] ?? 'Unknown error'));
+                return redirect()->back();
+            }
+
+            // Update shipment data with DHL tracking number
+            $data['shipment']['track_number'] = $dhlResult['data']['tracking_number'] ?? null;
+            $data['shipment']['carrier_title'] = 'DHL Express';
+            $data['shipment']['dhl_label'] = $dhlResult['data']['label'] ?? null;
+            $data['shipment']['dhl_shipment_id'] = $dhlResult['data']['shipment_id'] ?? null;
         }
 
         $this->shipmentRepository->create(array_merge($data, [

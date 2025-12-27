@@ -19,4 +19,12 @@ return [
         'default_rate' => '0',
         'class'        => 'Webkul\Shipping\Carriers\Free',
     ],
+
+    'dhl' => [
+        'code'  => 'dhl',
+        'title' => 'DHL Express',
+        'description' => 'DHL Express Shipping',
+        'active' => true,
+        'class' => 'Webkul\Shipping\Carriers\DHL',
+    ],
 ];

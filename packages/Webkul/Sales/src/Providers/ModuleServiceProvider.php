@@ -20,5 +20,6 @@ class ModuleServiceProvider extends CoreModuleServiceProvider
         \Webkul\Sales\Models\Refund::class,
         \Webkul\Sales\Models\RefundItem::class,
         \Webkul\Sales\Models\OrderTransaction::class,
+        \Webkul\Sales\Models\OrderMeasurement::class,
     ];
 }
