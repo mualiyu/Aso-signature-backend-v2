@@ -12,12 +12,19 @@
             </p>
 
             <div class="flex items-center gap-x-2.5">
+                <!-- Provider Selector -->
+                <div class="flex items-center gap-x-2">
+                    <span class="text-sm text-gray-600 dark:text-gray-300">Provider:</span>
+                    <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 dark:bg-blue-900/30 dark:text-blue-400">
+                        {{ ucfirst(config('services.exchange_api.default', 'currencylayer')) }}
+                    </span>
+                </div>
+
                 <!-- Update Exchange Rate Button -->
                 <a
                     href="{{ route('admin.settings.exchange_rates.update_rates') }}"
                     class="primary-button"
                 >
-                {{-- yyy --}}
                     @lang('admin::app.settings.exchange-rates.index.update-rates')
                 </a>
 
@@ -50,10 +57,37 @@
                 </p>
 
                 <div class="flex items-center gap-x-2.5">
+                    <!-- Provider Selector -->
+                    <div class="flex items-center gap-x-2">
+                        <select
+                            v-model="selectedProvider"
+                            class="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400"
+                        >
+                            <option value="currencylayer">CurrencyLayer</option>
+                            <option value="fixer">Fixer.io</option>
+                            <option value="exchange_rates">ExchangeRates.io</option>
+                            <option value="flutterwave">Flutterwave</option>
+                        </select>
+                    </div>
+
                     <!-- Update Exchange Rate Button -->
-                    <a href="{{ route('admin.settings.exchange_rates.update_rates') }}" class="primary-button">
-                        @lang('admin::app.settings.exchange-rates.index.update-rates')
-                    </a>
+                    <button
+                        @click="updateRates"
+                        class="primary-button"
+                        :class="{ 'opacity-50 cursor-not-allowed': isUpdating }"
+                        :disabled="isUpdating"
+                    >
+                        <span v-if="isUpdating">
+                            <svg class="inline animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Updating...
+                        </span>
+                        <span v-else>
+                            @lang('admin::app.settings.exchange-rates.index.update-rates')
+                        </span>
+                    </button>
 
                      <!-- Create Button -->
                     @if (bouncer()->hasPermission('settings.exchange_rates.create'))
@@ -253,6 +287,10 @@
                         selectedExchangeRates: 0,
 
                         currencies: @json($currencies),
+
+                        selectedProvider: '{{ config("services.exchange_api.default", "currencylayer") }}',
+
+                        isUpdating: false,
                     }
                 },
 
@@ -294,6 +332,25 @@
                                 if (error.response.status == 422) {
                                     setErrors(error.response.data.errors);
                                 }
+                            });
+                    },
+
+                    updateRates() {
+                        this.isUpdating = true;
+
+                        this.$axios.post("{{ route('admin.settings.exchange_rates.update_rates') }}", {
+                            provider: this.selectedProvider
+                        })
+                            .then((response) => {
+                                this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                this.$refs.datagrid.get();
+                            })
+                            .catch(error => {
+                                let message = error.response?.data?.message || 'Failed to update exchange rates';
+                                this.$emitter.emit('add-flash', { type: 'error', message: message });
+                            })
+                            .finally(() => {
+                                this.isUpdating = false;
                             });
                     },
 
