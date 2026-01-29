@@ -281,7 +281,7 @@
 
 
     <!-- Add/Edit Measurements Footer Section -->
-    <div class="w-full mt-5 text-black shadow-2xl border-t-4 border-navyBlue py-10 px-[60px] max-lg:px-8 max-sm:px-4 mt-16 fixed bottom-0 left-0 right-0 z-50" style="background: #f5f2eb;">
+    <div class="w-full text-black shadow-2xl border-t-4 border-navyBlue py-10 px-[60px] max-lg:px-8 max-sm:px-4 mt-16" style="background: #e8e7e7;">
         <div class="flex flex-col md:flex-row items-center justify-between gap-1">
             <div
                 class="flex flex-row lg:flex-col items-center justify-between gap-1 w-full mx-0 mt-5 mb-5"

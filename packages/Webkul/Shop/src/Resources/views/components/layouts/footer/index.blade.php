@@ -92,6 +92,19 @@
                             </div>
                         </div>
                     </li>
+                    <li>
+                        <a href="#" @click.prevent="$emitter.emit('open-measurement-videos')" class="group flex items-center gap-3 transition-all duration-300 hover:translate-x-1">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#F1EADF] flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300">
+                                <svg class="w-5 h-5 text-navyBlue group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-zinc-500 font-medium">Watch Videos</span>
+                                <span class="text-sm font-medium text-navyBlue">Measurement Guide</span>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -174,6 +187,19 @@
                                     <span class="text-xs font-medium text-navyBlue leading-relaxed max-sm:text-[11px]">The Cans Park, Ibrahim Babangida Blvd, Maitama, Abuja 904101</span>
                                 </div>
                             </div>
+                        </li>
+                        <li>
+                            <a href="#" @click.prevent="$emitter.emit('open-measurement-videos')" class="group flex items-center gap-2.5 transition-all duration-300">
+                                <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-lightOrange flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300 max-sm:w-8 max-sm:h-8">
+                                    <svg class="w-4 h-4 text-navyBlue group-hover:text-white transition-colors duration-300 max-sm:w-3.5 max-sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Watch Videos</span>
+                                    <span class="text-xs font-medium text-navyBlue max-sm:text-[11px]">Measurement Guide</span>
+                                </div>
+                            </a>
                         </li>
                     </ul>
                 </div>

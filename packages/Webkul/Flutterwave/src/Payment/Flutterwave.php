@@ -21,8 +21,8 @@ class Flutterwave extends Payment
 
     public function getImage()
     {
-        $url = $this->getConfigData('image');
+        $url = $this->getConfigData('logo');
 
-        return $url ? Storage::url($url) : bagisto_asset('images/paypal.png', 'shop');
+        return $url ? Storage::url($url) : bagisto_asset('images/flutterwave.png', 'shop');
     }
 }
