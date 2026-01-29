@@ -105,15 +105,46 @@ class ExchangeRateController extends Controller
     /**
      * Update Rates Using Exchange Rates API
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function updateRates()
     {
         try {
-            app(config('services.exchange_api.'.config('services.exchange_api.default').'.class'))->updateRates();
+            // Get provider from request or use default
+            $provider = request()->input('provider', config('services.exchange_api.default'));
+
+            // Validate provider exists
+            $availableProviders = ['currencylayer', 'fixer', 'exchange_rates', 'flutterwave'];
+
+            if (!in_array($provider, $availableProviders)) {
+                throw new \Exception("Invalid exchange rate provider: {$provider}");
+            }
+
+            $providerClass = config("services.exchange_api.{$provider}.class");
+
+            if (!$providerClass || !class_exists($providerClass)) {
+                throw new \Exception("Exchange rate provider class not found for: {$provider}");
+            }
+
+            app($providerClass)->updateRates();
+
+            // Handle AJAX request
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'message' => trans('admin::app.settings.exchange-rates.index.update-success'),
+                    'provider' => $provider,
+                ]);
+            }
 
             session()->flash('success', trans('admin::app.settings.exchange-rates.index.update-success'));
         } catch (\Exception $e) {
+            // Handle AJAX request
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 422);
+            }
+
             session()->flash('error', $e->getMessage());
         }
 

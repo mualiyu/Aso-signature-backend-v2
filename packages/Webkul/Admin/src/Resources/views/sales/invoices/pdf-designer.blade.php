@@ -138,7 +138,7 @@
                 text-align: center;
                 font-size: 24px;
                 text-transform: uppercase;
-                color: #000DBB;
+                color: ##4f1f69;
                 padding: 24px 0;
                 margin: 0;
             }
@@ -177,7 +177,7 @@
 
             table thead th {
                 background-color: #E9EFFC;
-                color: #000DBB;
+                color: ##4f1f69;
                 padding: 6px 18px;
                 text-align: left;
             }
@@ -247,7 +247,8 @@
         <div class="page">
             <!-- Header -->
             <div class="page-header">
-                <b>@lang('admin::app.sales.invoices.invoice-pdf.invoice')</b>
+                {{-- <b>Designers Invoice</b> --}}
+                <b>Production Order</b>
             </div>
 
             <div class="page-content">
@@ -353,61 +354,22 @@
                     </tbody>
                 </table>
 
-                <!-- Billing & Shipping Address -->
+                <!-- Customer Information (No Addresses) -->
                 <table class="{{ core()->getCurrentLocale()->direction }}">
                     <thead>
                         <tr>
-                            @if ($invoice->order->billing_address)
-                                <th style="width: 50%;">
-                                    <b>
-                                        @lang('admin::app.sales.invoices.invoice-pdf.bill-to')
-                                    </b>
-                                </th>
-                            @endif
-
-                            @if ($invoice->order->shipping_address)
-                                <th style="width: 50%">
-                                    <b>
-                                        @lang('admin::app.sales.invoices.invoice-pdf.ship-to')
-                                    </b>
-                                </th>
-                            @endif
+                            <th style="width: 100%;">
+                                <b>Customer Information</b>
+                            </th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr>
-                            @if ($invoice->order->billing_address)
-                                <td style="width: 50%">
-                                    <div>{{ $invoice->order->billing_address->company_name ?? '' }}<div>
-
-                                    <div>{{ $invoice->order->billing_address->name }}</div>
-
-                                    <div>{{ $invoice->order->billing_address->address }}</div>
-
-                                    <div>{{ $invoice->order->billing_address->postcode . ' ' . $invoice->order->billing_address->city }}</div>
-
-                                    <div>{{ $invoice->order->billing_address->state . ', ' . core()->country_name($invoice->order->billing_address->country) }}</div>
-
-                                    <div>@lang('admin::app.sales.invoices.invoice-pdf.contact'): {{ $invoice->order->billing_address->phone }}</div>
-                                </td>
-                            @endif
-
-                            @if ($invoice->order->shipping_address)
-                                <td style="width: 50%">
-                                    <div>{{ $invoice->order->shipping_address->company_name ?? '' }}<div>
-
-                                    <div>{{ $invoice->order->shipping_address->name }}</div>
-
-                                    <div>{{ $invoice->order->shipping_address->address }}</div>
-
-                                    <div>{{ $invoice->order->shipping_address->postcode . ' ' . $invoice->order->shipping_address->city }}</div>
-
-                                    <div>{{ $invoice->order->shipping_address->state . ', ' . core()->country_name($invoice->order->shipping_address->country) }}</div>
-
-                                    <div>@lang('admin::app.sales.invoices.invoice-pdf.contact'): {{ $invoice->order->shipping_address->phone }}</div>
-                                </td>
-                            @endif
+                            <td style="width: 100%; padding: 8px 18px;">
+                                <div><b>Name:</b> {{ $invoice->order->customer_full_name }}</div>
+                                <div><b>Email:</b> {{ $invoice->order->customer_email }}</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -416,11 +378,11 @@
                 <table class="{{ core()->getCurrentLocale()->direction }}">
                     <thead>
                         <tr>
-                            <th style="width: 50%">
+                            {{-- <th style="width: 50%">
                                 <b>
                                     @lang('admin::app.sales.invoices.invoice-pdf.payment-method')
                                 </b>
-                            </th>
+                            </th> --}}
 
                             @if ($invoice->order->shipping_address)
                                 <th style="width: 50%">
@@ -434,7 +396,7 @@
 
                     <tbody>
                         <tr>
-                            <td style="width: 50%">
+                            {{-- <td style="width: 50%">
                                 {{ core()->getConfigData('sales.payment_methods.' . $invoice->order->payment->method . '.title') }}
 
                                 @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($invoice->order->payment->method); @endphp
@@ -446,7 +408,7 @@
                                         <span>{{ $additionalDetails['value'] }}</span>
                                     </div>
                                 @endif
-                            </td>
+                            </td> --}}
 
                             @if ($invoice->order->shipping_address)
                                 <td style="width: 50%">
@@ -457,7 +419,7 @@
                     </tbody>
                 </table>
 
-                <!-- Items -->
+                <!-- Items (No Prices) -->
                 <div class="items">
                     <table class="{{ core()->getCurrentLocale()->direction }}">
                         <thead>
@@ -471,28 +433,38 @@
                                 </th>
 
                                 <th>
-                                    @lang('admin::app.sales.invoices.invoice-pdf.price')
-                                </th>
-
-                                <th>
                                     @lang('admin::app.sales.invoices.invoice-pdf.qty')
                                 </th>
-
-                                <th>
-                                    @lang('admin::app.sales.invoices.invoice-pdf.subtotal')
-                                </th>
+                                {{-- <th>
+                                    link to product
+                                </th> --}}
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach ($invoice->items as $item)
+                                @php
+                                    $product = $item->product;
+                                    $productUrl = $product ? route('shop.product_or_category.index', $product->url_key) : '#';
+                                    $designer = $product && $product->designer ? $product->designer : null;
+                                @endphp
                                 <tr>
                                     <td>
-                                        {{ $item->getTypeInstance()->getOrderedItem($item)->sku }}
+                                        <a href="{{ $productUrl }}" style="color: #0000EE; text-decoration: underline;">
+                                            {{ $item->getTypeInstance()->getOrderedItem($item)->sku }}
+                                        </a>
                                     </td>
 
                                     <td>
-                                        {{ $item->name }}
+                                        <a href="{{ $productUrl }}" style="color: #0000EE; text-decoration: underline;">
+                                            {{ $item->name }}
+                                        </a>
+
+                                        @if ($designer)
+                                            <div style="font-size: 9px; color: #333; margin-top: 4px;">
+                                                <b>Designer:</b> {{ $designer->name }}
+                                            </div>
+                                        @endif
 
                                         @if (isset($item->additional['attributes']))
                                             <div>
@@ -501,46 +473,14 @@
                                                 @endforeach
                                             </div>
                                         @endif
-                                    </td>
 
-                                    <td>
-                                        @if (core()->getConfigData('sales.taxes.sales.display_prices') == 'including_tax')
-                                            {!! core()->formatBasePrice($item->base_price_incl_tax, true) !!}
-                                        @elseif (core()->getConfigData('sales.taxes.sales.display_prices') == 'both')
-                                            {!! core()->formatBasePrice($item->base_price_incl_tax, true) !!}
-
-                                            <div class="small-text">
-                                                @lang('admin::app.sales.invoices.invoice-pdf.excl-tax')
-
-                                                <span>
-                                                    {{ core()->formatPrice($item->base_price) }}
-                                                </span>
-                                            </div>
-                                        @else
-                                            {!! core()->formatBasePrice($item->base_price, true) !!}
-                                        @endif
+                                        <div style="font-size: 8px; color: #666; margin-top: 4px;">
+                                            {{ $productUrl }}
+                                        </div>
                                     </td>
 
                                     <td>
                                         {{ $item->qty }}
-                                    </td>
-
-                                    <td>
-                                        @if (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'including_tax')
-                                            {!! core()->formatBasePrice($item->base_total_incl_tax, true) !!}
-                                        @elseif (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'both')
-                                            {!! core()->formatBasePrice($item->base_total_incl_tax, true) !!}
-
-                                            <div class="small-text">
-                                                @lang('admin::app.sales.invoices.invoice-pdf.excl-tax')
-
-                                                <span>
-                                                    {{ core()->formatPrice($item->base_total) }}
-                                                </span>
-                                            </div>
-                                        @else
-                                            {!! core()->formatBasePrice($item->base_total, true) !!}
-                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -548,86 +488,40 @@
                     </table>
                 </div>
 
-                <!-- Summary Table -->
-                <div class="summary">
-                    <table class="{{ core()->getCurrentLocale()->direction }}">
-                        <tbody>
-                            @if (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'including_tax')
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.subtotal')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_sub_total_incl_tax, true) !!}</td>
-                                </tr>
-                            @elseif (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'both')
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.subtotal-incl-tax')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_sub_total_incl_tax, true) !!}</td>
-                                </tr>
+                <!-- Customer Measurements -->
+                @if($invoice->order->measurements && $invoice->order->measurements->count() > 0)
+                    <div class="summary" style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 15px; font-size: 14px;"><b>Customer Measurements</b></h3>
 
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.subtotal-excl-tax')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_sub_total, true) !!}</td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.subtotal')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_sub_total, true) !!}</td>
-                                </tr>
-                            @endif
-
-                            @if (core()->getConfigData('sales.taxes.sales.display_shipping_amount') == 'including_tax')
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.shipping-handling')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_shipping_amount_incl_tax, true) !!}</td>
-                                </tr>
-                            @elseif (core()->getConfigData('sales.taxes.sales.display_shipping_amount') == 'both')
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.shipping-handling-incl-tax')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_shipping_amount_incl_tax, true) !!}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.shipping-handling-excl-tax')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_shipping_amount, true) !!}</td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td>@lang('admin::app.sales.invoices.invoice-pdf.shipping-handling')</td>
-                                    <td>-</td>
-                                    <td>{!! core()->formatBasePrice($invoice->base_shipping_amount, true) !!}</td>
-                                </tr>
-                            @endif
-
-                            <tr>
-                                <td>@lang('admin::app.sales.invoices.invoice-pdf.tax')</td>
-                                <td>-</td>
-                                <td>{!! core()->formatBasePrice($invoice->base_tax_amount, true) !!}</td>
-                            </tr>
-
-                            <tr>
-                                <td>@lang('admin::app.sales.invoices.invoice-pdf.discount')</td>
-                                <td>-</td>
-                                <td>{!! core()->formatBasePrice($invoice->base_discount_amount, true) !!}</td>
-                            </tr>
-
-                            <tr>
-                                <td style="border-top: 1px solid #FFFFFF;">
-                                    <b>@lang('admin::app.sales.invoices.invoice-pdf.grand-total')</b>
-                                </td>
-                                <td style="border-top: 1px solid #FFFFFF;">-</td>
-                                <td style="border-top: 1px solid #FFFFFF;">
-                                    <b>{!! core()->formatBasePrice($invoice->base_grand_total, true) !!}</b>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        @foreach($invoice->order->measurements->groupBy('measurement_type') as $type => $measurements)
+                            <table class="{{ core()->getCurrentLocale()->direction }}" style="margin-bottom: 20px;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="background-color: #f5f5f5; text-align: left; padding: 8px;">
+                                            <b style="text-transform: capitalize;">{{ $type }}</b>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($measurements as $measurement)
+                                        <tr>
+                                            <td style="width: 60%; text-transform: capitalize;">
+                                                {{ str_replace('_', ' ', $measurement->name) }}
+                                            </td>
+                                            <td style="width: 40%;">
+                                                <b>{{ $measurement->value }} {{ $measurement->unit }}</b>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="summary" style="margin-top: 30px;">
+                        <p style="text-align: center; color: #666; font-style: italic;">No measurements available for this order.</p>
+                    </div>
+                @endif
             </div>
         </div>
     </body>

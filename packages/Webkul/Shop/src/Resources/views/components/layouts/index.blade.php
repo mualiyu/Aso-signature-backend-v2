@@ -97,6 +97,12 @@
             <!-- Confirm Modal Blade Component -->
             <x-shop::modal.confirm />
 
+            <!-- Global Measurement Videos Component -->
+            <x-shop::measurement-videos />
+
+            <!-- Global Advertisement Component -->
+            <x-shop::advertisement />
+
             <!-- Page Header Blade Component -->
             @if ($hasHeader)
                 <x-shop::layouts.header />

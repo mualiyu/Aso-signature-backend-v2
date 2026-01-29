@@ -55,6 +55,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        // return datagrid(ProductDataGrid::class)->process();
         if (request()->ajax()) {
             return datagrid(ProductDataGrid::class)->process();
         }

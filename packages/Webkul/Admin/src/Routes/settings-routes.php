@@ -62,7 +62,7 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::get('edit/{id}', 'edit')->name('admin.settings.exchange_rates.edit');
 
-            Route::get('update-rates', 'updateRates')->name('admin.settings.exchange_rates.update_rates');
+            Route::match(['get', 'post'], 'update-rates', 'updateRates')->name('admin.settings.exchange_rates.update_rates');
 
             Route::put('edit', 'update')->name('admin.settings.exchange_rates.update');
 

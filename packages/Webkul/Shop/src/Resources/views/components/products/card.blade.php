@@ -123,6 +123,14 @@
 
                 {!! view_render_event('bagisto.shop.components.products.card.name.after') !!}
 
+                <!-- Gender -->
+                <div v-if="product.gender" class="mb-2">
+                    <p class="text-xs text-zinc-500">
+                        <span class="font-medium">Gender:</span>
+                        <span class="capitalize">@{{ product.gender_name }}</span>
+                    </p>
+                </div>
+
                 <!-- Pricing -->
                 {!! view_render_event('bagisto.shop.components.products.card.price.before') !!}
 

@@ -138,7 +138,7 @@
                 text-align: center;
                 font-size: 24px;
                 text-transform: uppercase;
-                color: #000DBB;
+                color: ##4f1f69;
                 padding: 24px 0;
                 margin: 0;
             }
@@ -177,7 +177,7 @@
 
             table thead th {
                 background-color: #E9EFFC;
-                color: #000DBB;
+                color: ##4f1f69;
                 padding: 6px 18px;
                 text-align: left;
             }
@@ -391,9 +391,9 @@
                                 </td>
                             @endif
 
-                            {{-- @if ($invoice->order->shipping_address)
+                            @if ($invoice->order->shipping_address)
                                 <td style="width: 50%">
-                                    <div>{{ $invoice->order->shipping_address->company_name ?? '' }}<div>
+                                    <div>{{ $invoice->order->shipping_address->company_name ?? '' }}</div>
 
                                     <div>{{ $invoice->order->shipping_address->name }}</div>
 
@@ -405,10 +405,11 @@
 
                                     <div>@lang('admin::app.sales.invoices.invoice-pdf.contact'): {{ $invoice->order->shipping_address->phone }}</div>
                                 </td>
-                            @endif --}}
-                            <td style="width: 50%">
-                                <div> Null <div>
-                            </td>
+                            @else
+                                <td style="width: 50%">
+                                    <div style="color: #999; font-style: italic;">No shipping address</div>
+                                </td>
+                            @endif
                         </tr>
                     </tbody>
                 </table>

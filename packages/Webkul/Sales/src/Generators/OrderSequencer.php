@@ -30,7 +30,9 @@ class OrderSequencer extends Sequencer
 
         $this->suffix = core()->getConfigData('sales.order_settings.order_number.order_number_suffix');
 
-        $this->generatorClass = core()->getConfigData('sales.order_settings.order_number.order_number_generator');
+        // Use ASO custom order sequencer
+        $this->generatorClass = core()->getConfigData('sales.order_settings.order_number.order_number_generator')
+            ?: \Webkul\Sales\Generators\AsoOrderSequencer::class;
 
         $this->lastId = $this->getLastId();
     }

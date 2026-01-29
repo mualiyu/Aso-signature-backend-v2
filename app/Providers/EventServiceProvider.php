@@ -11,7 +11,11 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<class-string, array<int, class-string>>
      */
-    protected $listen = [];
+    protected $listen = [
+        'checkout.order.save.after' => [
+            \Webkul\Sales\Listeners\OrderMeasurementListener::class,
+        ],
+    ];
 
     /**
      * Register any events for your application.
