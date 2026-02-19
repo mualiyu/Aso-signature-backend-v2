@@ -1,0 +1,8 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use $CONTROLLER_CLASS_NAME$;
+
+Route::group(['middleware' => ['web', 'theme', 'locale', 'currency'], 'prefix' => '$LOWER_NAME$'], function () {
+    Route::get('', [$CLASS$::class, 'index'])->name('shop.$LOWER_NAME$.index');
+});
