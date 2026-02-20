@@ -3,7 +3,7 @@
         'name' => 'bagisto/bagisto',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '8d98158004494ead809a363ce0d8d0bb4714a047',
+        'reference' => 'c4e67c053da4a583bd74188c31790856d94dfc26',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'bagisto/bagisto' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '8d98158004494ead809a363ce0d8d0bb4714a047',
+            'reference' => 'c4e67c053da4a583bd74188c31790856d94dfc26',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -1193,6 +1193,7 @@
                 "issues": "https://github.com/doctrine/annotations/issues",
                 "source": "https://github.com/doctrine/annotations/tree/2.0.2"
             },
+            "abandoned": true,
             "install-path": "../doctrine/annotations"
         },
         {
@@ -7410,6 +7411,7 @@
                 "issues": "https://github.com/paypal/paypalhttp_php/issues",
                 "source": "https://github.com/paypal/paypalhttp_php/tree/1.0.0"
             },
+            "abandoned": true,
             "install-path": "../paypal/paypalhttp"
         },
         {
