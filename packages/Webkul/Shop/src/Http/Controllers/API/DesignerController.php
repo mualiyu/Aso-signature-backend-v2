@@ -4,12 +4,9 @@ namespace Webkul\Shop\Http\Controllers\API;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Webkul\Attribute\Repositories\AttributeRepository;
-use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Designer\Models\Designer;
 use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Shop\Http\Resources\AttributeResource;
-use Webkul\Shop\Http\Resources\CategoryResource;
-use Webkul\Shop\Http\Resources\CategoryTreeResource;
+use Webkul\Shop\Http\Resources\DesignerTreeResource;
 
 class DesignerController extends APIController
 {
@@ -44,15 +41,23 @@ class DesignerController extends APIController
 
     }
 
-    /**
-     * Get all categories in tree format.
-     */
-    // public function tree(): JsonResource
-    // {
-    //     $categories = $this->categoryRepository->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id);
+    public function list(): JsonResource
+    {
+        $designers = $this->designerRepository
+            ->where('status', '1')
+            ->with('logo')
+            ->orderBy('name', 'ASC')
+            ->get();
 
-    //     return CategoryTreeResource::collection($categories);
-    // }
+        return new JsonResource($designers);
+    }
+
+    public function tree(): JsonResource
+    {
+        $designers = Designer::where('status', 1)->orderBy('name', 'ASC')->get();
+
+        return DesignerTreeResource::collection($designers);
+    }
 
     /**
      * Get filterable attributes for category.

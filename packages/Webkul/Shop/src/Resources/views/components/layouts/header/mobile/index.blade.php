@@ -6,12 +6,14 @@
     $showCompare = (bool) core()->getConfigData('catalog.products.settings.compare_option');
 
     $showWishlist = (bool) core()->getConfigData('customer.settings.wishlist.wishlist_option');
+
+    $showDesigners = (bool) true;
 @endphp
 
 <div class="flex flex-wrap gap-4 px-4 pb-4 pt-6 shadow-sm lg:hidden">
     <div class="flex w-full items-center justify-between">
         <!-- Left Navigation -->
-        <div class="flex items-center gap-x-1.5">
+        <div class="flex items-center gap-x-1.5 ">
             {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.before') !!}
 
             <x-shop::drawer
@@ -30,6 +32,7 @@
                                 alt="{{ config('app.name') }}"
                                 width="131"
                                 height="29"
+                                class="object-cover"
                             >
                         </a>
                     </div>
@@ -65,12 +68,115 @@
                         @endauth
                     </div>
 
+                    <!-- Designers Section (like @bottom.blade.php) -->
+                    @if($showDesigners)
+                        {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.designers.before') !!}
+                        {{-- <div class="mt-4">
+                            <x-shop::drawer position="bottom" width="100%">
+                                <x-slot:toggle>
+                                    <div
+                                        class="flex items-center gap-2 px-4 py-3 rounded-xl border border-zinc-200 bg-white hover:bg-gray-50 transition cursor-pointer"
+                                    >
+                                        <span class="icon-user-tie text-2xl"></span>
+                                        <span class="text-base font-medium">
+                                            Designers
+                                        </span>
+                                    </div>
+                                </x-slot>
+
+                                <x-slot:header>
+                                    <div class="flex items-center justify-between px-4 py-3 border-b border-zinc-200">
+                                        <p class="text-lg text-black font-semibold">
+                                            Designers
+                                        </p>
+                                    </div>
+                                </x-slot>
+
+                                <x-slot:content class="!px-0">
+                                    <div
+                                        class="overflow-y-auto fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-xl"
+                                        style="top: 50%;"
+                                        :style="{ height: getCurrentScreenHeight }"
+                                    >
+                                        <v-mobile-designers></v-mobile-designers>
+                                    </div>
+                                </x-slot>
+                            </x-shop::drawer>
+                        </div> --}}
+
+
+                        <x-shop::drawer
+                        position="bottom"
+                        width="100%"
+                    >
+                        <!-- Drawer Toggler -->
+                        <x-slot:toggle>
+                            <div class="flex items-center justify-between border border-b border-l-0 border-r-0 border-t-0 border-zinc-100 py-3.5 max-sm:py-2.5">
+                                <span
+                                    class="flex items-center justify-between cursor-pointer"
+                                >
+                                   Designers
+                                </span>
+
+                                <span
+                                    class="cursor-pointer text-2xl icon-arrow-right"
+
+                                >
+                                </span>
+                            </div>
+                            {{-- <div
+                                class="flex cursor-pointer items-center gap-x-2.5 px-2.5 py-3.5 text-lg font-medium uppercase max-md:py-3 max-sm:text-base"
+                                role="button"
+                            >
+                                Designers
+                            </div> --}}
+                        </x-slot>
+
+                        <!-- Drawer Header -->
+                        <x-slot:header>
+                            <div class="flex items-center justify-between">
+                                <p class="text-lg font-semibold">
+                                    Designers
+                                </p>
+                            </div>
+                        </x-slot>
+
+                        <!-- Drawer Content -->
+                        <x-slot:content class="!px-0">
+                            <div
+                                class="overflow-auto"
+                                :style="{ height: getCurrentScreenHeight }"
+                            >
+                            <v-mobile-designers></v-mobile-designers>
+                            </div>
+                        </x-slot>
+                    </x-shop::drawer>
+                        {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.designers.after') !!}
+                    @endif
+
                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.categories.before') !!}
 
                     <!-- Mobile category view -->
                     <v-mobile-category></v-mobile-category>
 
                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.categories.after') !!}
+
+                    <!-- Measurement Guide Link -->
+                    <div class="mt-4 border-t border-zinc-100 pt-4">
+                        <a
+                            href="#"
+                            class="flex items-center gap-3 rounded-xl border border-zinc-200 bg-[#4b2462]/5 p-3 text-[#4b2462] hover:bg-[#4b2462]/10 transition-colors"
+                            @click.prevent="$emitter.emit('open-measurement-videos')"
+                        >
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            </svg>
+                            <div>
+                                <span class="font-medium">Measurement Guide</span>
+                                <p class="text-xs text-gray-500">Watch how to measure yourself</p>
+                            </div>
+                        </a>
+                    </div>
                 </x-slot>
 
                 <x-slot:footer></x-slot>
@@ -78,6 +184,9 @@
 
             {!! view_render_event('bagisto.shop.components.layouts.header.mobile.drawer.after') !!}
 
+
+        </div>
+        <div class="flex items-center mb-4">
             {!! view_render_event('bagisto.shop.components.layouts.header.mobile.logo.before') !!}
 
             <a
@@ -90,9 +199,11 @@
                     alt="{{ config('app.name') }}"
                     width="131"
                     height="29"
+                    {{-- class="object-cover" --}}
+                    class="max-h-16 object-contain mx-auto"
                 >
             </a>
-            
+
             {!! view_render_event('bagisto.shop.components.layouts.header.mobile.logo.after') !!}
         </div>
 
@@ -126,7 +237,7 @@
                         <x-slot:toggle>
                             <span class="icon-users cursor-pointer text-2xl"></span>
                         </x-slot>
-    
+
                         <!-- Guest Dropdown -->
                         @guest('customer')
                             <x-slot:content>
@@ -134,14 +245,14 @@
                                     <p class="font-dmserif text-xl">
                                         @lang('shop::app.components.layouts.header.welcome-guest')
                                     </p>
-    
+
                                     <p class="text-sm">
                                         @lang('shop::app.components.layouts.header.dropdown-text')
                                     </p>
                                 </div>
-    
+
                                 <p class="mt-3 w-full border border-zinc-200"></p>
-    
+
                                 {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.customers_action.before') !!}
 
                                 <div class="mt-6 flex gap-4">
@@ -153,21 +264,21 @@
                                     >
                                         @lang('shop::app.components.layouts.header.sign-in')
                                     </a>
-    
+
                                     <a
                                         href="{{ route('shop.customers.register.index') }}"
                                         class="m-0 mx-auto block w-max cursor-pointer rounded-2xl border-2 border-navyBlue bg-white px-7 py-3.5 text-center text-base font-medium text-navyBlue ltr:ml-0 rtl:mr-0"
                                     >
                                         @lang('shop::app.components.layouts.header.sign-up')
                                     </a>
-    
+
                                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.sign_in_button.after') !!}
                                 </div>
 
                                 {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.customers_action.after') !!}
                             </x-slot>
                         @endguest
-    
+
                         <!-- Customers Dropdown -->
                         @auth('customer')
                             <x-slot:content class="!p-0">
@@ -176,31 +287,31 @@
                                         @lang('shop::app.components.layouts.header.welcome')’
                                         {{ auth()->guard('customer')->user()->first_name }}
                                     </p>
-    
+
                                     <p class="text-sm">
                                         @lang('shop::app.components.layouts.header.dropdown-text')
                                     </p>
                                 </div>
-    
+
                                 <p class="mt-3 w-full border border-zinc-200"></p>
-    
+
                                 <div class="mt-2.5 grid gap-1 pb-2.5">
                                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.profile_dropdown.links.before') !!}
-    
+
                                     <a
                                         class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                         href="{{ route('shop.customers.account.profile.index') }}"
                                     >
                                         @lang('shop::app.components.layouts.header.profile')
                                     </a>
-    
+
                                     <a
                                         class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                         href="{{ route('shop.customers.account.orders.index') }}"
                                     >
                                         @lang('shop::app.components.layouts.header.orders')
                                     </a>
-    
+
                                     @if ($showWishlist)
                                         <a
                                             class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
@@ -209,7 +320,7 @@
                                             @lang('shop::app.components.layouts.header.wishlist')
                                         </a>
                                     @endif
-    
+
                                     <!--Customers logout-->
                                     @auth('customer')
                                         <x-shop::form
@@ -217,7 +328,7 @@
                                             action="{{ route('shop.customer.session.destroy') }}"
                                             id="customerLogout"
                                         />
-    
+
                                         <a
                                             class="cursor-pointer px-5 py-2 text-base hover:bg-gray-100"
                                             href="{{ route('shop.customer.session.destroy') }}"
@@ -226,7 +337,7 @@
                                             @lang('shop::app.components.layouts.header.logout')
                                         </a>
                                     @endauth
-    
+
                                     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.index.profile_dropdown.links.after') !!}
                                 </div>
                             </x-slot>
@@ -234,7 +345,7 @@
                     </x-shop::dropdown>
                 </div>
 
-                <!-- For Medium and small screen --> 
+                <!-- For Medium and small screen -->
                 <div class="md:hidden">
                     @guest('customer')
                         <a
@@ -262,9 +373,9 @@
     {!! view_render_event('bagisto.shop.components.layouts.header.mobile.search.before') !!}
 
     <!-- Serach Catalog Form -->
-    <form action="{{ route('shop.search.index') }}" class="flex w-full items-center">
-        <label 
-            for="organic-search" 
+    <form action="{{ route('shop.search.index') }}" class="flex w-full items-center mt-2">
+        <label
+            for="organic-search"
             class="sr-only"
         >
             @lang('shop::app.components.layouts.header.search')
@@ -378,6 +489,7 @@
             </template>
         </div>
 
+
         <!-- Localization & Currency Section -->
         @if(core()->getCurrentChannel()->locales()->count() > 1 || core()->getCurrentChannel()->currencies()->count() > 1 )
             <div class="w-full border-t bg-white">
@@ -470,6 +582,44 @@
         @endif
     </script>
 
+
+    <script
+        type="text/x-template"
+        id="v-mobile-designers-template"
+    >
+        <div >
+            <div v-if="isLoading" class="flex items-center gap-5 py-4">
+                <span class="shimmer h-6 w-20 rounded" role="presentation"></span>
+            </div>
+            <div v-else>
+                <template v-if="designers.length">
+                    <div
+                        v-for="designer in designers"
+                        :key="designer.id"
+                        class="flex items-center gap-4 py-2 border-b border-zinc-100 last:border-b-0"
+                    >
+                        <img
+                            :src="'/storage/'+designer.logo.src"
+                            :alt="designer.name"
+                            class="h-10 w-10 rounded-full object-cover border border-zinc-200"
+                        />
+                        <a
+                            :href="'/designer/'+designer.slug"
+                            class="text-base font-medium text-navyBlue hover:underline"
+                        >
+                            @{{ designer.name }}
+                            <br>
+                            <span class="text-sm text-gray-500">@@{{ designer.slug }}</span>
+                        </a>
+                    </div>
+                </template>
+                <div v-else class="py-4 text-center text-zinc-500">
+                   No designers found
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script type="module">
         app.component('v-mobile-category', {
             template: '#v-mobile-category-template',
@@ -505,6 +655,40 @@
                         ...category,
                         isOpen: category.id === selectedCategory.id ? ! category.isOpen : false,
                     }));
+                },
+            },
+        });
+
+        app.component('v-mobile-designers', {
+            template: '#v-mobile-designers-template',
+
+            data() {
+                return {
+                    isLoading: true,
+                    designers: [],
+                }
+            },
+
+            mounted() {
+                this.get();
+            },
+
+            computed: {
+                getCurrentScreenHeight() {
+                    return window.innerHeight - (window.innerWidth < 920 ? 61 : 0) + 'px';
+                },
+            },
+
+            methods: {
+                get() {
+                    this.$axios.get("{{ route('shop.api.designers.list') }}")
+                        .then(response => {
+                            this.isLoading = false;
+                            this.designers = response.data.data;
+                        }).catch(error => {
+                            this.isLoading = false;
+                            console.log(error);
+                        });
                 },
             },
         });

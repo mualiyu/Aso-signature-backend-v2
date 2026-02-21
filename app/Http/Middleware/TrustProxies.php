@@ -12,7 +12,11 @@ class TrustProxies extends Middleware
      *
      * @var array<int, string>|string|null
      */
-    protected $proxies;
+    /**
+     * Trust all proxies when behind shared hosting (e.g. Namecheap Stellar).
+     * Set to specific IPs in env if you know your proxy IPs.
+     */
+    protected $proxies = '*';
 
     /**
      * The headers that should be used to detect proxies.

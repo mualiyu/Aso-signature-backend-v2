@@ -171,6 +171,25 @@
         </v-field>
 
         @break
+    @case('select2')
+        <v-field
+            v-slot="{ field, errors }"
+            {{ $attributes->only(['name', ':name', 'value', ':value', 'v-model', 'rules', ':rules', 'label', ':label']) }}
+            name="{{ $name }}"
+        >
+            <select
+                name="{{ $name }}"
+                v-bind="field"
+                :class="[errors.length ? 'border border-red-500' : '']"
+                {{ $attributes->except(['value', ':value', 'v-model', 'rules', ':rules', 'label', ':label'])->merge(['class' => 'custom-select w-full rounded-md border bg-white px-3 py-2.5 text-sm font-normal text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 select2 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400']) }}
+                x-data
+                x-init="window.jQuery && window.jQuery($el).select2({ theme: 'tailwind', width: '100%' })"
+            >
+                {{ $slot }}
+            </select>
+        </v-field>
+
+        @break
 
     @case('multiselect')
         <v-field

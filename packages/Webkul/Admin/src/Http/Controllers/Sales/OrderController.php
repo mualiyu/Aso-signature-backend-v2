@@ -16,9 +16,12 @@ use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Sales\Repositories\OrderCommentRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
+use Webkul\Core\Traits\PDFHandler;
 
 class OrderController extends Controller
 {
+    use PDFHandler;
+
     /**
      * Create a new controller instance.
      *
@@ -258,5 +261,75 @@ class OrderController extends Controller
         if (! $cart->payment) {
             throw new \Exception(trans('admin::app.sales.orders.create.specify-payment-method'));
         }
+    }
+
+    /**
+     * Download order measurements as CSV
+     *
+     * @param  int  $id
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function downloadMeasurements(int $id)
+    {
+        $order = $this->orderRepository->findOrFail($id);
+
+        $fileName = 'order-' . $order->increment_id . '-measurements.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+
+        $callback = function() use ($order) {
+            $file = fopen('php://output', 'w');
+
+            // CSV Headers
+            fputcsv($file, [
+                'Order ID',
+                'Customer Name',
+                'Customer Email',
+                'Measurement Type',
+                'Measurement Name',
+                'Value',
+                'Unit',
+                'Notes',
+                'Captured At'
+            ]);
+
+            // Data rows
+            foreach ($order->measurements as $measurement) {
+                fputcsv($file, [
+                    $order->increment_id,
+                    $order->customer_full_name,
+                    $order->customer_email,
+                    ucfirst($measurement->measurement_type),
+                    str_replace('_', ' ', ucfirst($measurement->name)),
+                    $measurement->value,
+                    $measurement->unit,
+                    $measurement->notes ?? '',
+                    $measurement->created_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Download designer order details PDF
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadDesignerOrder(int $id)
+    {
+        $order = $this->orderRepository->findOrFail($id);
+
+        return $this->downloadPDF(
+            view('admin::sales.orders.pdf-designer', compact('order'))->render(),
+            'designer-order-' . $order->increment_id . '-' . $order->created_at->format('d-m-Y')
+        );
     }
 }

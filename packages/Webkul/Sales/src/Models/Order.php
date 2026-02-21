@@ -221,6 +221,14 @@ class Order extends Model implements OrderContract
     }
 
     /**
+     * Get the measurements for the order.
+     */
+    public function measurements(): HasMany
+    {
+        return $this->hasMany(OrderMeasurementProxy::modelClass());
+    }
+
+    /**
      * Get the billing address for the order.
      */
     public function billing_address()

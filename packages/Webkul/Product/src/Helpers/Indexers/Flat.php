@@ -71,6 +71,7 @@ class Flat extends AbstractIndexer
             $paginator = $this->productRepository
                 ->with([
                     'variants',
+                    'designer',
                     'attribute_family',
                     'attribute_values',
                     'variants.attribute_family',
@@ -150,6 +151,7 @@ class Flat extends AbstractIndexer
                         'type'                => $product->type,
                         'sku'                 => $product->sku,
                         'attribute_family_id' => $product->attribute_family_id,
+                        'designer_id'         => $product->designer_id,
                     ]);
 
                     foreach ($familyAttributes as $attribute) {

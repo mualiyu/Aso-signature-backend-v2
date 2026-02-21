@@ -3,6 +3,7 @@
 namespace Webkul\Flutterwave\Payment;
 
 use Webkul\Payment\Payment\Payment;
+use Illuminate\Support\Facades\Storage;
 
 class Flutterwave extends Payment
 {
@@ -16,5 +17,12 @@ class Flutterwave extends Payment
     public function getRedirectUrl()
     {
         return route('flutterwave.payment.redirect');
+    }
+
+    public function getImage()
+    {
+        $url = $this->getConfigData('logo');
+
+        return $url ? Storage::url($url) : bagisto_asset('images/flutterwave.png', 'shop');
     }
 }

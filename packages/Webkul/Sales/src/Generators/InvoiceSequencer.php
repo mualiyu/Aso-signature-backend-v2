@@ -30,7 +30,9 @@ class InvoiceSequencer extends Sequencer
 
         $this->suffix = core()->getConfigData('sales.invoice_settings.invoice_number.invoice_number_suffix');
 
-        $this->generatorClass = core()->getConfigData('sales.invoice_settings.invoice_number.invoice_number_generator_class');
+        // Use ASO custom invoice sequencer
+        $this->generatorClass = core()->getConfigData('sales.invoice_settings.invoice_number.invoice_number_generator_class')
+            ?: \Webkul\Sales\Generators\AsoInvoiceSequencer::class;
 
         $this->lastId = $this->getLastId();
     }

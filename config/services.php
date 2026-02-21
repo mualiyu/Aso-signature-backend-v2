@@ -30,7 +30,7 @@ return [
     ],
 
     'exchange_api' => [
-        'default' => 'currencylayer',
+        'default' => env('EXCHANGE_API_DEFAULT', 'currencylayer'),
 
         'fixer' => [
             'key'   => env('FIXER_API_KEY'),
@@ -46,6 +46,12 @@ return [
             'key'   => env('EXCHANGE_RATES_API_KEY'),
             'class' => 'Webkul\Core\Helpers\Exchange\ExchangeRates',
             'url'   => env('EXCHANGE_RATES_API_ENDPOINT'),
+        ],
+
+        'flutterwave' => [
+            'key'     => env('FLUTTERWAVE_SECRET_KEY'),
+            'class'   => 'Webkul\Core\Helpers\Exchange\FlutterwaveExchange',
+            'sandbox' => env('FLUTTERWAVE_SANDBOX', true),
         ],
     ],
 

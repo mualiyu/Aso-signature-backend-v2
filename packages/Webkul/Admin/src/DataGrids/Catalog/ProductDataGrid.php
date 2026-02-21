@@ -41,6 +41,7 @@ class ProductDataGrid extends DataGrid
             ->leftJoin('attribute_families as af', 'product_flat.attribute_family_id', '=', 'af.id')
             ->leftJoin('product_inventories', 'product_flat.product_id', '=', 'product_inventories.product_id')
             ->leftJoin('product_images', 'product_flat.product_id', '=', 'product_images.product_id')
+            ->leftJoin('designers as d', 'product_flat.designer_id', '=', 'd.id')
             ->leftJoin('product_categories as pc', 'product_flat.product_id', '=', 'pc.product_id')
             ->leftJoin('category_translations as ct', function ($leftJoin) {
                 $leftJoin->on('pc.category_id', '=', 'ct.category_id')
@@ -61,6 +62,7 @@ class ProductDataGrid extends DataGrid
                 'product_flat.url_key',
                 'product_flat.visible_individually',
                 'af.name as attribute_family',
+                'd.name as designer',
             )
             ->addSelect(DB::raw('SUM(DISTINCT '.$tablePrefix.'product_inventories.qty) as quantity'))
             ->addSelect(DB::raw('COUNT(DISTINCT '.$tablePrefix.'product_images.id) as images_count'))
@@ -74,6 +76,7 @@ class ProductDataGrid extends DataGrid
         $this->addFilter('type', 'product_flat.type');
         $this->addFilter('status', 'product_flat.status');
         $this->addFilter('attribute_family', 'af.id');
+        $this->addFilter('designer', 'd.id');
 
         return $queryBuilder;
     }
@@ -115,6 +118,14 @@ class ProductDataGrid extends DataGrid
         $this->addColumn([
             'index'      => 'sku',
             'label'      => trans('admin::app.catalog.products.index.datagrid.sku'),
+            'type'       => 'string',
+            'filterable' => true,
+            'sortable'   => true,
+        ]);
+
+        $this->addColumn([
+            'index'      => 'designer',
+            'label'      => "Designer",
             'type'       => 'string',
             'filterable' => true,
             'sortable'   => true,

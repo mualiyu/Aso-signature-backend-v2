@@ -1,0 +1,22 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Webkul\Payment\Payment\Payment;
+
+class $CLASS$ extends Payment
+{
+    /**
+     * Payment method code
+     *
+     * @var string
+     */
+    protected $code  = '$LOWER_NAME$';
+
+    /**
+     * Get redirect url.
+     */
+    public function getRedirectUrl()
+    {
+    }
+}

@@ -90,6 +90,7 @@ class ProductRepository extends Repository
             'customer_group_prices',
             'inventories',
             'inventory_sources',
+            'designer',
         ])->findOrFail($id);
 
         if ($product->parent_id) {
@@ -228,6 +229,7 @@ class ProductRepository extends Repository
 
         $query = $this->with([
             'attribute_family',
+            'designer',
             'images',
             'videos',
             'attribute_values',
@@ -255,6 +257,10 @@ class ProductRepository extends Repository
             if (! empty($params['category_id'])) {
                 $qb->leftJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
                     ->whereIn('product_categories.category_id', explode(',', $params['category_id']));
+            }
+
+            if (! empty($params['designer_id'])) {
+                $qb->whereIn('products.designer_id', explode(',', $params['designer_id']));
             }
 
             if (! empty($params['channel_id'])) {
@@ -437,6 +443,7 @@ class ProductRepository extends Repository
 
         $query = $this->with([
             'attribute_family',
+            'designer',
             'images',
             'videos',
             'attribute_values',

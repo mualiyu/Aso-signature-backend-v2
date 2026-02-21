@@ -62,6 +62,43 @@
         </v-checkout>
     </div>
 
+    <!-- Measurement Required Modal -->
+    <x-shop::modal
+        ref="measurementRequiredModal"
+        is-active="true"
+    >
+        <x-slot:header>
+            <h2 class="text-2xl font-medium max-md:text-base">
+                Measurements Required
+            </h2>
+        </x-slot:header>
+
+        <x-slot:content>
+            <div class="text-base">
+                For the best fit, please add your body measurements before placing your order.
+            </div>
+        </x-slot:content>
+
+        <x-slot:footer>
+            <div class="flex items-center justify-end gap-3">
+                <a
+                    href="{{ route('shop.customers.account.measurements.index') . '?redirect=' . route('shop.checkout.onepage.index') }}"
+                    class="primary-button"
+                >
+                    Add Measurements
+                </a>
+
+                {{-- <x-shop::button
+                    type="button"
+                    class="secondary-button w-max rounded-2xl bg-white px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="$refs.measurementRequiredModal.toggle()"
+                >
+                    Continue without measurements
+                </x-shop::button> --}}
+            </div>
+        </x-slot:footer>
+    </x-shop::modal>
+
     @pushOnce('scripts')
         <script
             type="text/x-template"
@@ -241,4 +278,89 @@
             });
         </script>
     @endPushOnce
+
+
+    <!-- Add/Edit Measurements Footer Section -->
+    <div class="w-full text-black shadow-2xl border-t-4 border-navyBlue py-10 px-[60px] max-lg:px-8 max-sm:px-4 mt-16" style="background: #e8e7e7;">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-1">
+            <div
+                class="flex flex-row lg:flex-col items-center justify-between gap-1 w-full mx-0 mt-5 mb-5"
+                style="
+                    width: 100%;
+                    margin-left: 3rem;
+                    margin-right: 3rem;
+                "
+            >
+                <div>
+                    <div class="text-lg text-black font-medium">
+                        Make sure your measurements are up to date before placing your order for a perfect fit!
+                    </div>
+                </div>
+                <a
+                    href="{{ route('shop.customers.account.measurements.index'). '?redirect=' . route('shop.checkout.onepage.index') }}"
+                    class="primary-button w-max rounded-2xl px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="showMeasurementModal = true"
+                >
+                    <svg class="w-6 h-6 mr-3 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add/Edit Measurements
+                </a>
+                <a
+                    href="#"
+                    class="secondary-button w-max rounded-2xl px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="$emitter.emit('open-measurements')"
+                >
+                    Show My Measurements
+                </a>
+
+                {{-- <x-shop::button
+                    type="button"
+                    class="secondary-button w-max rounded-2xl bg-white px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
+                    @click="$emitter.emit('open-measurements')"
+                >
+                    Show My Measurements
+                </x-shop::button> --}}
+
+                @include('shop::checkout.onepage.measurement.measurement')
+            </div>
+            <style>
+                @media (max-width: 1024px) {
+                    .measurements-footer-flex {
+                        flex-direction: column !important;
+                        margin-left: 0 !important;
+                        margin-right: 0 !important;
+                    }
+                }
+                @media (max-width: 768px) {
+                    .measurements-footer-flex {
+                        margin-left: 0 !important;
+                        margin-right: 0 !important;
+                        margin-top: 1.25rem !important;
+                        margin-bottom: 1.25rem !important;
+                    }
+                }
+            </style>
+            <script>
+                // Optionally, you can add a class to the div for easier targeting
+                document.addEventListener('DOMContentLoaded', function() {
+                    var el = document.querySelector('.measurements-footer-flex');
+                    if (el) {
+                        // Already has class
+                    } else {
+                        var divs = document.querySelectorAll('div');
+                        divs.forEach(function(div) {
+                            if (
+                                div.textContent.includes('Make sure your measurements are up to date before placing your order for a perfect fit!')
+                                && div.querySelector('a')
+                            ) {
+                                div.classList.add('measurements-footer-flex');
+                            }
+                        });
+                    }
+                });
+            </script>
+        </div>
+    </div>
+    <!-- End Add/Edit Measurements Footer Section -->
 </x-shop::layouts>

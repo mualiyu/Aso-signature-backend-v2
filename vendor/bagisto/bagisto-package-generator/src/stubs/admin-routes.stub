@@ -1,0 +1,10 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use $CONTROLLER_CLASS_NAME$;
+
+Route::group(['middleware' => ['web', 'admin'], 'prefix' => 'admin/$LOWER_NAME$'], function () {
+    Route::controller($CLASS$::class)->group(function () {
+        Route::get('', 'index')->name('admin.$LOWER_NAME$.index');
+    });
+});
