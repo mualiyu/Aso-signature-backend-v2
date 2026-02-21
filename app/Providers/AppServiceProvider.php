@@ -52,10 +52,10 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
-        if (in_array(Request::ip(), $allowedIPs)) {
-            \Debugbar::enable();
-        } else {
-            \Debugbar::disable();
-        }
+        // if (in_array(Request::ip(), $allowedIPs)) {
+        //     \Debugbar::enable();
+        // } else {
+        //     \Debugbar::disable();
+        // }
     }
 }
