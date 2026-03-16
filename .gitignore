@@ -17,6 +17,9 @@ npm-debug.log
 package-lock.json
 /playwright-reportgi
 /public/videos
+public/videos
+/public/videos/*.mp4
+public/videos/*.mp4
 # /public/css
 # /public/js
 # /public/hot
