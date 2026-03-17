@@ -76,12 +76,30 @@ class DHLShipmentService
             // Format: '2010-02-11T17:10:09 GMT+01:00' (DHL shipment API requires timezone offset)
             $plannedDate = $nextBusinessDay->format('Y-m-d\TH:i:s') . ' GMT' . $nextBusinessDay->format('P');
 
+            // Determine DHL product code:
+            // 1) Prefer explicit dhl_product_code from shipment data (if provided)
+            // 2) Fallback to code encoded in order.shipping_method (e.g. 'dhl_PTP' => 'PTP')
+            // 3) As a last resort, use 'P' (may still be rejected by DHL if not allowed for the payer)
+            $productCode = $shipmentData['dhl_product_code'] ?? null;
+
+            if (! $productCode && $order->shipping_method) {
+                $shippingMethod = $order->shipping_method;
+
+                if (strpos($shippingMethod, 'dhl_') === 0) {
+                    $productCode = substr($shippingMethod, 4) ?: null;
+                }
+            }
+
+            if (! $productCode) {
+                $productCode = 'P';
+            }
+
             $requestBody = [
                 'plannedShippingDateAndTime' => $plannedDate,
                 'pickup' => [
                     'isRequested' => false,
                 ],
-                'productCode' => $shipmentData['dhl_product_code'] ?? 'P', // Default to Express Worldwide if not specified
+                'productCode' => $productCode,
                 'accounts' => [
                     [
                         'number' => $accountNumber,

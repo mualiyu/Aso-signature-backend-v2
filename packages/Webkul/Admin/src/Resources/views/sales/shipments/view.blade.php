@@ -280,6 +280,30 @@
                             <p class="text-gray-600 dark:text-gray-300">
                                 @lang('admin::app.sales.shipments.view.tracking-number')
                             </p>
+
+                            @php
+                                $trackingUrl = null;
+
+                                if (
+                                    $shipment->carrier_title === 'DHL Express'
+                                    || str_starts_with(strtolower($shipment->carrier ?? ''), 'dhl')
+                                ) {
+                                    $trackingUrl = 'https://www.dhl.com/global-en/home/tracking/tracking-express.html?tracking-id=' . urlencode($shipment->track_number);
+                                }
+                            @endphp
+
+                            @if ($trackingUrl)
+                                <p class="pt-2">
+                                    <a
+                                        href="{{ $trackingUrl }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="text-blue-600 hover:underline"
+                                    >
+                                        Track your shipment online
+                                    </a>
+                                </p>
+                            @endif
                         @endif
                     </div>
                 </x-slot>
