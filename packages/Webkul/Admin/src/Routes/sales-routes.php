@@ -74,6 +74,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::post('create/{order_id}', 'store')->name('admin.sales.shipments.store');
 
+            Route::get('view/{id}/dhl-documents', 'downloadDhlDocuments')->name('admin.sales.shipments.dhl-documents');
+
             Route::get('view/{id}', 'view')->name('admin.sales.shipments.view');
         });
 

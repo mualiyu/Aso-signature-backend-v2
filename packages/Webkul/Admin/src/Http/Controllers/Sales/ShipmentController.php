@@ -8,7 +8,8 @@ use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\ShipmentRepository;
 use Webkul\Shipping\Services\DHLShipmentService;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShipmentController extends Controller
 {
@@ -97,11 +98,10 @@ class ShipmentController extends Controller
                 return redirect()->back();
             }
 
-            // Update shipment data with DHL tracking number
+            // Update shipment data with DHL tracking number and stored PDF path
             $data['shipment']['track_number'] = $dhlResult['data']['tracking_number'] ?? null;
             $data['shipment']['carrier_title'] = 'DHL Express';
-            $data['shipment']['dhl_label'] = $dhlResult['data']['label'] ?? null;
-            $data['shipment']['dhl_shipment_id'] = $dhlResult['data']['shipment_id'] ?? null;
+            $data['shipment']['dhl_documents_path'] = $dhlResult['data']['dhl_documents_path'] ?? null;
         }
 
         $this->shipmentRepository->create(array_merge($data, [
@@ -190,5 +190,29 @@ class ShipmentController extends Controller
         $shipment = $this->shipmentRepository->findOrFail($id);
 
         return view('admin::sales.shipments.view', compact('shipment'));
+    }
+
+    /**
+     * Download DHL shipping documents PDF generated at shipment creation.
+     */
+    public function downloadDhlDocuments(int $id): Response
+    {
+        $shipment = $this->shipmentRepository->findOrFail($id);
+
+        if (empty($shipment->dhl_documents_path)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.dhl-documents-missing'));
+
+            return redirect()->back();
+        }
+
+        $path = $shipment->dhl_documents_path;
+
+        if (! Storage::disk('local')->exists($path)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.dhl-documents-missing'));
+
+            return redirect()->back();
+        }
+
+        return Storage::disk('local')->download($path, 'dhl-shipment-'.$shipment->id.'.pdf');
     }
 }

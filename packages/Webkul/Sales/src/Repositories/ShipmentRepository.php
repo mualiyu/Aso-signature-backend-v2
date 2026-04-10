@@ -48,16 +48,17 @@ class ShipmentRepository extends Repository
             $order = $this->orderRepository->find($data['order_id']);
 
             $shipment = $this->model->create([
-                'order_id'            => $order->id,
-                'total_qty'           => 0,
-                'total_weight'        => 0,
-                'carrier_code'        => $data['shipment']['carrier_code'] ?? null,
-                'carrier_title'       => $data['shipment']['carrier_title'],
-                'track_number'        => $data['shipment']['track_number'],
-                'customer_id'         => $order->customer_id,
-                'customer_type'       => $order->customer_type,
-                'order_address_id'    => $order->shipping_address->id,
-                'inventory_source_id' => $data['shipment']['source'],
+                'order_id'             => $order->id,
+                'total_qty'            => 0,
+                'total_weight'         => 0,
+                'carrier_code'         => $data['shipment']['carrier_code'] ?? null,
+                'carrier_title'        => $data['shipment']['carrier_title'],
+                'track_number'         => $data['shipment']['track_number'],
+                'dhl_documents_path'   => $data['shipment']['dhl_documents_path'] ?? null,
+                'customer_id'          => $order->customer_id,
+                'customer_type'        => $order->customer_type,
+                'order_address_id'     => $order->shipping_address->id,
+                'inventory_source_id'  => $data['shipment']['source'],
             ]);
 
             $totalQty = $totalWeight = 0;

@@ -480,6 +480,8 @@ return [
                 'sku'                  => 'SKU - :sku ',
                 'title'                => 'Shipment #:shipment_id',
                 'tracking-number'      => 'Tracking Number',
+                'dhl-download'         => 'Download DHL documents (PDF)',
+                'dhl-documents-missing'=> 'DHL shipping documents are not available for this shipment.',
             ],
         ],
 
