@@ -58,16 +58,35 @@
 
                             createOrder: (data, actions) => {
                                 return this.$axios.get("{{ route('paypal.smart-button.create-order') }}")
-                                    .then(response => response.data.result)
-                                    .then(order => order.id)
+                                    .then(response => {
+                                        console.log('PayPal createOrder raw response:', response);
+                                        console.log('PayPal createOrder response.data:', response.data);
+
+                                        const result = response.data.result;
+
+                                        console.log('PayPal createOrder result:', result);
+
+                                        if (! result || ! result.id) {
+                                            console.error('PayPal createOrder: No order ID in response', response.data);
+                                            throw new Error('No order ID returned from server');
+                                        }
+
+                                        console.log('PayPal createOrder returning order ID:', result.id);
+
+                                        return result.id;
+                                    })
                                     .catch(error => {
-                                        if (error.response.data.error === 'invalid_client') {
+                                        console.error('PayPal createOrder error:', error);
+
+                                        if (error.response && error.response.data && error.response.data.error === 'invalid_client') {
                                             options.authorizationFailed = true;
 
                                             options.alertBox('@lang('paypal::app.errors.invalid-configs')');
+                                        } else {
+                                            options.alertBox('@lang('paypal::app.errors.something-went-wrong')');
                                         }
 
-                                        return error;
+                                        throw error;
                                     });
                             },
 
