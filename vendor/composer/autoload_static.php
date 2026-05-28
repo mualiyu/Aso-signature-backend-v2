@@ -13710,6 +13710,7 @@ class ComposerStaticInit5cb31d2ae0da43f72cd149309029ea4a
         'Webkul\\Shipping\\Providers\\ModuleServiceProvider' => __DIR__ . '/../..' . '/packages/Webkul/Shipping/src/Providers/ModuleServiceProvider.php',
         'Webkul\\Shipping\\Providers\\ShippingServiceProvider' => __DIR__ . '/../..' . '/packages/Webkul/Shipping/src/Providers/ShippingServiceProvider.php',
         'Webkul\\Shipping\\Services\\DHLShipmentService' => __DIR__ . '/../..' . '/packages/Webkul/Shipping/src/Services/DHLShipmentService.php',
+        'Webkul\\Shipping\\Services\\DhlPlannedShippingDate' => __DIR__ . '/../..' . '/packages/Webkul/Shipping/src/Services/DhlPlannedShippingDate.php',
         'Webkul\\Shipping\\Shipping' => __DIR__ . '/../..' . '/packages/Webkul/Shipping/src/Shipping.php',
         'Webkul\\Shop\\CacheFilters\\Large' => __DIR__ . '/../..' . '/packages/Webkul/Shop/src/CacheFilters/Large.php',
         'Webkul\\Shop\\CacheFilters\\Medium' => __DIR__ . '/../..' . '/packages/Webkul/Shop/src/CacheFilters/Medium.php',

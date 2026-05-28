@@ -12432,6 +12432,7 @@ return array(
     'Webkul\\Shipping\\Providers\\ModuleServiceProvider' => $baseDir . '/packages/Webkul/Shipping/src/Providers/ModuleServiceProvider.php',
     'Webkul\\Shipping\\Providers\\ShippingServiceProvider' => $baseDir . '/packages/Webkul/Shipping/src/Providers/ShippingServiceProvider.php',
     'Webkul\\Shipping\\Services\\DHLShipmentService' => $baseDir . '/packages/Webkul/Shipping/src/Services/DHLShipmentService.php',
+    'Webkul\\Shipping\\Services\\DhlPlannedShippingDate' => $baseDir . '/packages/Webkul/Shipping/src/Services/DhlPlannedShippingDate.php',
     'Webkul\\Shipping\\Shipping' => $baseDir . '/packages/Webkul/Shipping/src/Shipping.php',
     'Webkul\\Shop\\CacheFilters\\Large' => $baseDir . '/packages/Webkul/Shop/src/CacheFilters/Large.php',
     'Webkul\\Shop\\CacheFilters\\Medium' => $baseDir . '/packages/Webkul/Shop/src/CacheFilters/Medium.php',
