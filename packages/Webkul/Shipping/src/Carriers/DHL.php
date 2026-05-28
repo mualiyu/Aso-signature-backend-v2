@@ -6,6 +6,7 @@ use Webkul\Checkout\Facades\Cart;
 use Webkul\Checkout\Models\CartShippingRate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Webkul\Shipping\Services\DhlPlannedShippingDate;
 
 class DHL extends AbstractShipping
 {
@@ -249,8 +250,7 @@ class DHL extends AbstractShipping
                 // Removed productCode - DHL will return all available products for the route
                 // No productCode specified = DHL returns all available products
                 'unitOfMeasurement' => 'metric',
-                // Use next business day for pickup date (DHL requires future date)
-                'plannedShippingDateAndTime' => $this->getNextBusinessDay()->format('Y-m-d\TH:i:s\Z'),
+                'plannedShippingDateAndTime' => DhlPlannedShippingDate::formatForApi(),
                 'packages' => [
                     [
                         'weight' => max(0.1, round($weight, 2)), // Minimum 0.1 kg
@@ -600,28 +600,5 @@ class DHL extends AbstractShipping
         return $addressLine;
     }
 
-    /**
-     * Get next business day for DHL pickup date.
-     * DHL requires a future date for pickup.
-     *
-     * @return \Carbon\Carbon
-     */
-    protected function getNextBusinessDay()
-    {
-        $date = now();
-
-        // If it's after 3 PM, use next day
-        if ($date->hour >= 15) {
-            $date = $date->addDay();
-        }
-
-        // Skip weekends (Saturday = 6, Sunday = 0)
-        while ($date->dayOfWeek === 0 || $date->dayOfWeek === 6) {
-            $date = $date->addDay();
-        }
-
-        // Set to 10 AM for pickup time
-        return $date->setTime(10, 0, 0);
-    }
 }
 

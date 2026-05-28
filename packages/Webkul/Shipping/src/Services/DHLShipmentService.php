@@ -56,9 +56,7 @@ class DHLShipmentService
 
             $isInternational = strtoupper($originAddress['country']) !== strtoupper($shippingAddress->country);
 
-            $nextBusinessDay = $this->getNextBusinessDay();
-            // Shipments API requires literal format: 2010-02-11T17:10:09 GMT+01:00 (not ISO Z)
-            $plannedDate = $nextBusinessDay->format('Y-m-d\TH:i:s').' GMT'.$nextBusinessDay->format('P');
+            $plannedDate = DhlPlannedShippingDate::formatForApi();
 
             $productCode = $shipmentData['dhl_product_code'] ?? null;
             if (! $productCode && $order->shipping_method && str_starts_with($order->shipping_method, 'dhl_')) {
@@ -911,21 +909,6 @@ class DHLShipmentService
             'width'  => $maxWidth,
             'height' => $maxHeight,
         ];
-    }
-
-    protected function getNextBusinessDay(): \Carbon\Carbon
-    {
-        $date = now();
-
-        if ($date->hour >= 15) {
-            $date = $date->addDay();
-        }
-
-        while ($date->dayOfWeek === 0 || $date->dayOfWeek === 6) {
-            $date = $date->addDay();
-        }
-
-        return $date->setTime(10, 0, 0);
     }
 
     /**

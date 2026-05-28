@@ -238,7 +238,7 @@ return [
         Webkul\Theme\Providers\ThemeServiceProvider::class,
         Webkul\User\Providers\UserServiceProvider::class,
         Webkul\Designer\Providers\DesignerServiceProvider::class,
-        // Webkul\Stripe\Providers\StripeServiceProvider::class,
+        Webkul\Stripe\Providers\StripeServiceProvider::class,
         Webkul\Flutterwave\Providers\FlutterwaveServiceProvider::class,
     ])->toArray(),
 
