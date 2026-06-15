@@ -2,209 +2,98 @@
 
 namespace Webkul\Shop\Http\Controllers\Customer\Account;
 
-use Webkul\Customer\Repositories\CustomerMeasurementRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
-// use Webkul\Customer\Repositories\MeasurementRepository;
+use Webkul\Customer\Models\Measurement;
+use Webkul\Customer\Services\MeasurementService;
 use Webkul\Shop\Http\Controllers\Controller;
 use Webkul\Shop\Http\Requests\Customer\MeasurementRequest;
 
 class MeasurementController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    // public function __construct(
-    //     protected CustomerMeasurementRepository $customerMeasurementRepository
-    // ) {}
+    public function __construct(
+        protected MeasurementService $measurementService
+    ) {}
 
-    /**
-     * Address route index page.
-     *
-     * @return \Illuminate\View\View
-     */
+  /**
+   * Canonical measurements page.
+   */
     public function index()
-    {
-        $measurements = auth()->guard('customer')->user()->measurements;
-
-        return view('shop::customers.account.measurements.create')
-            ->with('measurements', $measurements);
-    }
-
-    /**
-     * Show the address create form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
-    {
-        return view('shop::customers.account.measurements.create');
-    }
-
-    /**
-     * Create a new address for customer.
-     *
-     * @return view
-     */
-    public function store(MeasurementRequest $request)
     {
         $customer = auth()->guard('customer')->user();
 
-        // return $request;
+        return view('shop::customers.account.measurements.create', [
+            'payload' => $this->measurementService->buildFormPayload($customer),
+        ]);
+    }
+
+  /**
+   * Alias for the canonical measurements page.
+   */
+    public function create()
+    {
+        return $this->index();
+    }
+
+  /**
+   * Store customer measurements.
+   */
+    public function store(MeasurementRequest $request): JsonResponse|RedirectResponse
+    {
+        $customer = auth()->guard('customer')->user();
 
         Event::dispatch('customer.measurements.create.before');
 
-        $validated = $request;
-        $unit = $validated['unit'] ?? 'Inches';
-        $measurements = $validated['measurements'] ?? [];
-
-        // Prepare all measurements as flat array
-        // return $validated['measurements'] ?? [];
-
-        // Standard categories
-        foreach (['top', 'skirt', 'dress', 'trouser'] as $type) {
-            if (!empty($measurements[$type]) && is_array($measurements[$type])) {
-                foreach ($measurements[$type] as $name => $value) {
-                    if ($value !== null && $value !== '') {
-                        $allMeasurements[] = [
-                            'customer_id'      => $customer->id,
-                            'name'             => $name,
-                            'value'            => $value['value'] ?? null,
-                            'unit'             => $unit,
-                            'measurement_type' => $type,
-                            'notes'            => null,
-                        ];
-                    }
-                }
-            }
-        }
-
-        // Custom measurements
-        if (!empty($measurements['custom']) && is_array($measurements['custom'])) {
-            foreach ($measurements['custom'] as $custom) {
-                if (!empty($custom['name']) && isset($custom['value'])) {
-                    $allMeasurements[] = [
-                        'customer_id'      => $customer->id,
-                        'name'             => \Str::slug($custom['name'], '_'),
-                        'value'            => $custom['value'] ?? null,
-                        'unit'             => $unit,
-                        'measurement_type' => 'custom',
-                        'notes'            => null,
-                    ];
-                }
-            }
-        }
-
-        // return $allMeasurements;
-
-        // Store or update each measurement
-        foreach ($allMeasurements as $data) {
-            \Webkul\Customer\Models\Measurement::updateOrCreate(
-                [
-                    'customer_id'      => $data['customer_id'],
-                    'name'             => $data['name'],
-                    'measurement_type' => $data['measurement_type'],
-                ],
-                $data
-            );
-
-        }
+        $result = $this->measurementService->save($customer, $request->validated());
 
         Event::dispatch('customer.measurements.create.after');
 
-        session()->flash('success', 'Measurement has been saved successfully.');
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'message' => 'Measurements saved successfully.',
+                'status'  => 'success',
+                'data'    => $result,
+            ]);
+        }
 
-        if ($validated['redirect']) {
-            // dd($validated['redirect']);
-            return redirect($validated['redirect']);
+        session()->flash('success', 'Measurements saved successfully.');
+
+        if ($request->input('redirect')) {
+            return redirect($request->input('redirect'));
         }
 
         return redirect()->route('shop.customers.account.measurements.index');
     }
 
-    /**
-     * For editing the existing addresses of current logged in customer.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit(int $id)
-    {
-        $measurement = $this->customerMeasurementRepository->findOneWhere([
-            'id' => $id,
-            'customer_id' => auth()->guard('customer')->id(),
-        ]);
-
-        if (! $measurement) {
-            abort(404);
-        }
-
-        return view('shop::customers.account.measurements.edit')
-            ->with('measurement', $measurement);
-    }
-
-    /**
-     * Edit's the pre-made resource of customer called Address.
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(int $id, MeasurementRequest $request)
+  /**
+   * Delete a custom measurement.
+   */
+    public function destroy(int $id): JsonResponse|RedirectResponse
     {
         $customer = auth()->guard('customer')->user();
 
-        if (! $customer->measurements()->find($id)) {
-            session()->flash('warning', 'Invalid measurement.');
-            return redirect()->route('shop.customers.account.measurements.index');
-        }
-
-        Event::dispatch('customer.measurements.update.before', $id);
-
-        $measurement = $this->customerMeasurementRepository->update(
-            $request->validated(),
-            $id
-        );
-
-        Event::dispatch('customer.measurements.update.after', $measurement);
-
-        session()->flash('success', 'Measurement has been updated successfully.');
-
-        return redirect()->route('shop.customers.account.measurements.index');
-    }
-
-    /**
-     * Delete address of the current customer.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(int $id)
-    {
-        $measurement = \Webkul\Customer\Models\Measurement::where([
-            'id' => $id,
-            // 'customer_id' => auth()->guard('customer')->user()->id,
+        $measurement = Measurement::where([
+            'id'          => $id,
+            'customer_id' => $customer->id,
         ])->first();
 
         if (! $measurement) {
             abort(404);
         }
 
-        // Event::dispatch('customer.measurements.delete.before', $id);
+        $measurement->delete();
 
-        $del = \Webkul\Customer\Models\Measurement::destroy($id);
-
-        // Event::dispatch('customer.measurements.delete.after', $id);
-
-        session()->flash('success', 'Measurement has been deleted successfully.');
-
-        // return redirect()->route('shop.customers.account.measurements.index');
-
-        if (Request::ajax()) {
+        if (Request::ajax() || request()->expectsJson()) {
             return response()->json([
-                'message' => 'Measurement has been deleted successfully.',
+                'message' => 'Measurement deleted successfully.',
                 'status'  => 'success',
             ]);
         }
-        return redirect()->route('shop.customers.account.measurements.index');
 
+        session()->flash('success', 'Measurement deleted successfully.');
+
+        return redirect()->route('shop.customers.account.measurements.index');
     }
 }

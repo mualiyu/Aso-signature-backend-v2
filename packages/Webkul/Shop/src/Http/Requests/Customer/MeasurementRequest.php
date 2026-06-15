@@ -3,82 +3,58 @@
 namespace Webkul\Shop\Http\Requests\Customer;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Webkul\Customer\Data\MeasurementFields;
 
 class MeasurementRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
+        $gender = in_array($this->input('gender'), [MeasurementFields::GENDER_MALE, MeasurementFields::GENDER_FEMALE], true)
+            ? $this->input('gender')
+            : MeasurementFields::GENDER_FEMALE;
+
+        $allowedSlugs = MeasurementFields::slugsForGender($gender);
+
         return [
-            '*.name' => [
-                'nullable',
-                'string',
-                'max:255'
-            ],
-            '*.value' => [
-                'nullable',
-                'numeric',
-                'min:0'
-            ],
-            '*.unit' => [
-                'nullable',
-                'string',
-                'in:cm,inches'
-            ],
-            '*.measurement_type' => [
-                'nullable',
-                'string',
-                'in:bust,waist,hip,shoulder,arm_length,leg_length,inseam,neck,chest'
-            ],
-            '*.notes' => [
-                'nullable',
-                'string',
-                'max:500'
-            ],
-            'redirect' => [
-                'nullable',
-            ]
+            'gender' => ['required', Rule::in([MeasurementFields::GENDER_MALE, MeasurementFields::GENDER_FEMALE])],
+            'unit'   => ['required', Rule::in([MeasurementFields::UNIT_CM, MeasurementFields::UNIT_INCHES])],
+            'measurements' => ['nullable', 'array'],
+            'measurements.upper_body' => ['nullable', 'array'],
+            'measurements.lower_body' => ['nullable', 'array'],
+            'measurements.upper_body.*' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'measurements.lower_body.*' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'custom' => ['nullable', 'array'],
+            'custom.*.id' => ['nullable', 'integer'],
+            'custom.*.name' => ['nullable', 'string', 'max:255'],
+            'custom.*.value' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'redirect' => ['nullable', 'string'],
         ];
     }
 
-    /**
-     * Get custom messages for validator errors.
-     */
-    public function messages(): array
+    public function withValidator($validator): void
     {
-        return [
-            'name.required' => 'The measurement name is required',
-            'value.required' => 'The measurement value is required',
-            'value.numeric' => 'The measurement value must be a number',
-            'value.min' => 'The measurement value cannot be negative',
-            'unit.required' => 'Please specify the measurement unit',
-            'unit.in' => 'The unit must be either cm or inches',
-            'measurement_type.required' => 'Please specify the measurement type',
-            'measurement_type.in' => 'Invalid measurement type selected',
-        ];
-    }
+        $validator->after(function ($validator) {
+            $gender = $this->input('gender');
+            $allowedSlugs = MeasurementFields::slugsForGender((string) $gender);
+            $measurements = $this->input('measurements', []);
 
-    /**
-     * Get custom attributes for validator errors.
-     */
-    public function attributes(): array
-    {
-        return [
-            'name' => 'measurement name',
-            'value' => 'measurement value',
-            'unit' => 'measurement unit',
-            'measurement_type' => 'measurement type',
-            'notes' => 'notes'
-        ];
+            foreach (['upper_body', 'lower_body'] as $group) {
+                foreach ((array) ($measurements[$group] ?? []) as $slug => $entry) {
+                    if ($entry === null || $entry === '') {
+                        continue;
+                    }
+
+                    if (! in_array($slug, $allowedSlugs, true)) {
+                        $validator->errors()->add("measurements.{$group}.{$slug}", 'Invalid measurement field submitted.');
+                    }
+                }
+            }
+        });
     }
 }

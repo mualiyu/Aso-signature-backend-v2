@@ -133,12 +133,6 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
 
                     Route::post('create', 'store')->name('shop.customers.account.measurements.store');
 
-                    Route::get('edit/{id}', 'edit')->name('shop.customers.account.measurements.edit');
-
-                    Route::put('edit/{id}', 'update')->name('shop.customers.account.measurements.update');
-
-                    Route::patch('edit/{id}', 'makeDefault')->name('shop.customers.account.measurements.update.default');
-
                     Route::delete('delete/{id}', 'destroy')->name('shop.customers.account.measurements.delete');
                 });
 

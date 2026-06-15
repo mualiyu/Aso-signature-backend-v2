@@ -1,110 +1,50 @@
 <!-- Checkout Measurements Vue JS Component -->
-<v-checkout-measurements>
-    {{-- <div class="flex items-center">
-        <span class="cursor-pointer text-base font-medium text-blue-700">
-            My Measurements
-        </span>
+<x-shop::measurements.form scripts-only />
 
-    </div> --}}
-</v-checkout-measurements>
+<v-checkout-measurements></v-checkout-measurements>
 
 @pushOnce('scripts')
-    <script
-        type="text/x-template"
-        id="v-checkout-measurements-template"
-    >
-        <div>
-            <!-- Measurements Modal -->
+    <script type="text/x-template" id="v-checkout-measurements-template">
+        <teleport to="body">
             <div
-                class="flex cursor-pointer items-center gap-2.5 max-sm:gap-1.5 max-sm:text-base hover:text-blue-600 hover:underline"
-                role="button"
-                tabindex="0"
-                @click="openMeasurements()"
-            >
-                <span class="icon-ruler text-2xl" role="presentation"></span>
-                <!-- My Measurements -->
-            </div>
-
-            <div
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
                 v-show="isMeasurementsOpen"
+                class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4"
                 @click.self="closeMeasurements()"
             >
-                <div class="relative max-h-[90vh] w-full max-w-[1800px] rounded-lg bg-white p-2 sm:p-6 shadow-lg flex flex-col"
-                     style="max-width: 98vw;">
-                    <div class="mb-4 sm:mb-6 flex items-center justify-between border-b pb-2 sm:pb-4 sticky top-0 bg-white z-10">
-                        <h2 class="text-lg sm:text-2xl font-semibold text-gray-800 p-3 pl-10">My Measurements</h2>
-
-                        <button
-                            class="text-gray-500 hover:text-gray-700"
-                            @click="closeMeasurements()"
-                        >
-                            <span class="icon-cross text-2xl"></span>
-                        </button>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto pr-1">
-                        <div v-if="isLoading" class="flex justify-center py-8">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div class="relative flex max-h-[88vh] w-[calc(100%-2rem)] max-w-2xl flex-col rounded-2xl bg-white shadow-xl sm:max-w-3xl">
+                    <div class="flex shrink-0 items-center justify-between border-b border-zinc-100 px-5 py-4 sm:px-6">
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-800">My Measurements</h2>
+                            <p class="mt-0.5 text-sm text-gray-500" v-if="completeness">
+                                @{{ completeness.filled }} of @{{ completeness.total }} complete
+                            </p>
                         </div>
 
-                        <div v-else-if="measurements.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-3" style="max-height: 50vh; overflow-y: auto;">
-                            <div
-                                v-for="measurement in measurements"
-                                :key="measurement.id"
-                                class="flex flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
-                            >
-                                <div class="flex flex-col items-start">
-                                    <h3 class="font-medium text-gray-900 capitalize mb-1">
-                                        @{{ measurement.name.replace(/_/g, ' ') }}
-                                    </h3>
-                                    <p class="text-sm text-gray-600">
-                                        @{{ measurement.value }} @{{ measurement.unit }}
-                                    </p>
-                                    <p class="text-xs text-gray-500 mt-1 capitalize">
-                                        Type: @{{ measurement.measurement_type }}
-                                    </p>
-                                    <p v-if="measurement.notes" class="text-xs text-gray-500 mt-1">
-                                        Notes: @{{ measurement.notes }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div v-else class="text-center py-8">
-                            <div class="text-gray-500 mb-4">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </div>
-                            <p class="text-gray-500">No measurements have been added yet</p>
-                            <a
-                                href="{{ route('shop.customers.account.measurements.create') }}"
-                                class="mt-4 inline-block text-blue-600 hover:text-blue-800"
-                            >
-                                Add your first measurement
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 flex flex-wrap items-center gap-4 sticky bottom-0 bg-white pt-4 border-t">
-                        <a
-                            href="{{ route('shop.customers.account.measurements.create') }}"
-                            class="secondary-button max-w-none flex-auto rounded-2xl px-11 py-3 max-md:rounded-lg max-md:py-1.5"
-                        >
-                            Add New Measurement
-                        </a>
                         <button
                             type="button"
+                            class="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-zinc-100 hover:text-gray-700"
                             @click="closeMeasurements()"
-                            class="primary-button max-w-none flex-auto rounded-2xl px-11 py-3 max-md:rounded-lg max-md:py-1.5"
                         >
-                            Close
+                            <span class="icon-cross text-xl"></span>
                         </button>
+                    </div>
+
+                    <div class="min-h-0 flex-1 overflow-y-auto px-5 py-4 sm:px-6">
+                        <div v-if="isLoading" class="flex justify-center py-10">
+                            <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                        </div>
+
+                        <v-measurements-form
+                            v-else-if="payload"
+                            :initial-payload="payload"
+                            submit-url="{{ route('shop.api.customers.account.measurements.store') }}"
+                            :compact="true"
+                            :use-api="true"
+                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </teleport>
     </script>
 
     <script type="module">
@@ -113,27 +53,29 @@
 
             data() {
                 return {
-                    measurements: [],
+                    payload: null,
+                    completeness: null,
                     isLoading: false,
                     isMeasurementsOpen: false,
-                }
+                };
             },
 
             mounted() {
                 this.fetchMeasurements();
-
-                // Open from external trigger
                 this.$emitter.on('open-measurements', this.openMeasurements);
+                this.$emitter.on('measurements-updated', this.handleMeasurementsUpdated);
             },
 
             beforeUnmount() {
                 this.$emitter?.off('open-measurements', this.openMeasurements);
+                this.$emitter?.off('measurements-updated', this.handleMeasurementsUpdated);
             },
 
             methods: {
                 openMeasurements() {
                     this.isMeasurementsOpen = true;
                     document.body.style.overflow = 'hidden';
+                    this.fetchMeasurements();
                 },
 
                 closeMeasurements() {
@@ -141,12 +83,21 @@
                     document.body.style.overflow = 'auto';
                 },
 
+                handleMeasurementsUpdated(data) {
+                    this.completeness = data?.completeness || null;
+                    this.$emitter.emit('checkout-measurements-status', this.completeness);
+                    this.closeMeasurements();
+                },
+
                 fetchMeasurements() {
                     this.isLoading = true;
 
-                    this.$axios.get("/api/customer/measurements")
+                    this.$axios.get('/api/customer/measurements')
                         .then((response) => {
-                            this.measurements = response.data.data || [];
+                            const data = response.data.data || {};
+                            this.payload = data.payload || null;
+                            this.completeness = data.completeness || data.payload?.completeness || null;
+                            this.$emitter.emit('checkout-measurements-status', this.completeness);
                             this.isLoading = false;
                         })
                         .catch((error) => {
@@ -156,17 +107,17 @@
                             if (error.response?.status === 401) {
                                 this.$emitter.emit('add-flash', {
                                     type: 'error',
-                                    message: 'Please login to view your measurements'
+                                    message: 'Please login to view your measurements',
                                 });
                             } else {
                                 this.$emitter.emit('add-flash', {
                                     type: 'error',
-                                    message: 'Failed to load measurements'
+                                    message: 'Failed to load measurements',
                                 });
                             }
                         });
                 },
-            }
-        })
+            },
+        });
     </script>
 @endPushOnce

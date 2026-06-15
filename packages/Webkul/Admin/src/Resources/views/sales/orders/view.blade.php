@@ -464,6 +464,11 @@
 
                 <!-- Customer Measurements -->
                 @if($order->measurements && $order->measurements->count() > 0)
+                    @php
+                        $measurementGroupLabels = \Webkul\Customer\Data\MeasurementFields::groupLabels();
+                        $measurementLabelMap = \Webkul\Customer\Data\MeasurementFields::labelMap();
+                    @endphp
+
                     <x-admin::accordion>
                         <x-slot:header>
                             <p class="p-2.5 text-base font-semibold text-gray-600 dark:text-gray-300">
@@ -476,14 +481,14 @@
                                 @foreach($order->measurements->groupBy('measurement_type') as $type => $measurements)
                                     <div>
                                         <p class="font-semibold text-gray-800 dark:text-white capitalize mb-2">
-                                            {{ ucfirst($type) }}
+                                            {{ $measurementGroupLabels[$type] ?? ucwords(str_replace('_', ' ', $type)) }}
                                         </p>
 
                                         <div class="grid grid-cols-3 gap-2 text-sm">
                                             @foreach($measurements as $measurement)
                                                 <div class="flex justify-left">
-                                                    <span class="text-gray-600 dark:text-gray-300 capitalize">
-                                                        {{ ucfirst(str_replace('_', ' ', $measurement->name)) }}:
+                                                    <span class="text-gray-600 dark:text-gray-300">
+                                                        {{ $measurement->measurement_type === 'custom' ? ($measurement->notes ?: ucwords(str_replace('_', ' ', $measurement->name))) : ($measurementLabelMap[$measurement->name] ?? ucwords(str_replace('_', ' ', $measurement->name))) }}:
                                                     </span>
                                                     <span class="font-semibold text-gray-800 dark:text-white">
                                                         &nbsp;{{ $measurement->value }} {{ $measurement->unit }}

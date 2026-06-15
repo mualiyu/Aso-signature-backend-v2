@@ -1,17 +1,11 @@
 @php
-    // Example measurement options, replace with your actual source if needed
-    $measurementOptions = [
-        'length' => 'Length',
-        'width' => 'Width',
-        'height' => 'Height',
-        'chest' => 'Chest',
-        'waist' => 'Waist',
-        'sleeve' => 'Sleeve',
-    ];
+    use Webkul\Customer\Data\MeasurementFields;
 
+    $measurementOptions = MeasurementFields::labelMap();
     $selectedMeasurements = old('required_measurement', $product->required_measurement ?? []);
-    if (!is_array($selectedMeasurements)) {
-        $selectedMeasurements = explode(',', $selectedMeasurements);
+
+    if (! is_array($selectedMeasurements)) {
+        $selectedMeasurements = json_decode((string) $selectedMeasurements, true) ?? explode(',', (string) $selectedMeasurements);
     }
 @endphp
 

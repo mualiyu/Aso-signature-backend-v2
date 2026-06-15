@@ -142,6 +142,8 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::controller(MeasurementController::class)->prefix('measurements')->group(function () {
             Route::get('', 'index')->name('shop.api.customers.account.measurements.index');
+
+            Route::post('', 'store')->name('shop.api.customers.account.measurements.store');
         });
     });
 });
