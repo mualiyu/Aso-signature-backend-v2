@@ -531,8 +531,8 @@ class DHLShipmentService
      */
     protected function commodityCodesForProduct($product): array
     {
-        $defaultOut = $this->dhlConfig('default_commodity_code_outbound', '999999.00.00');
-        $defaultIn = $this->dhlConfig('default_commodity_code_inbound', '999999.00.00');
+        $defaultOut = $this->dhlConfig('default_commodity_code_outbound', '6204.43');
+        $defaultIn = $this->dhlConfig('default_commodity_code_inbound', '6204.43');
 
         $code = $this->resolveHsCodeFromProduct($product);
         if ($code !== '') {

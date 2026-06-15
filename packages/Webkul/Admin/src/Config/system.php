@@ -1425,7 +1425,7 @@ return [
                 'title'         => 'Default HS code (outbound)',
                 'type'          => 'text',
                 'info'          => 'Used on customs line items when product has no hs_code attribute.',
-                'default'       => '999999.00.00',
+                'default'       => '6204.43',
                 'channel_based' => true,
                 'locale_based'  => false,
             ], [
@@ -1433,7 +1433,7 @@ return [
                 'title'         => 'Default HS code (inbound)',
                 'type'          => 'text',
                 'info'          => 'Second commodity code for international declarations when required.',
-                'default'       => '999999.00.00',
+                'default'       => '6204.43',
                 'channel_based' => true,
                 'locale_based'  => false,
             ], [
