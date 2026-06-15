@@ -230,8 +230,11 @@ class DHLShipmentService
                     }
                 } else {
                     Log::warning('DHL Shipment: no PDF payload in response', [
-                        'order_id' => $order->id,
-                        'keys'     => array_keys($data ?? []),
+                        'order_id'  => $order->id,
+                        'keys'      => array_keys($data ?? []),
+                        'documents' => isset($data['documents']) && is_array($data['documents'])
+                            ? array_map(fn ($doc) => array_keys($doc), $data['documents'])
+                            : null,
                     ]);
                 }
 
@@ -640,23 +643,100 @@ class DHLShipmentService
 
     protected function extractPdfBase64(array $data): ?string
     {
+        $candidates = [];
+
         if (! empty($data['documents']) && is_array($data['documents'])) {
             foreach ($data['documents'] as $doc) {
-                if (! empty($doc['content'])) {
-                    return $doc['content'];
+                if (! empty($doc['content']) && is_string($doc['content'])) {
+                    $candidates[] = [
+                        'payload'   => $doc['content'],
+                        'type_code' => $doc['typeCode'] ?? null,
+                        'source'    => 'documents.content',
+                    ];
                 }
             }
         }
 
         if (! empty($data['labelImage']) && is_array($data['labelImage'])) {
             foreach ($data['labelImage'] as $img) {
-                if (! empty($img['graphicImage'])) {
-                    return $img['graphicImage'];
+                if (! empty($img['graphicImage']) && is_string($img['graphicImage'])) {
+                    $candidates[] = [
+                        'payload'   => $img['graphicImage'],
+                        'type_code' => $img['typeCode'] ?? null,
+                        'source'    => 'labelImage.graphicImage',
+                    ];
                 }
             }
         }
 
-        return null;
+        $this->collectBase64Candidates($data, $candidates);
+
+        if ($candidates === []) {
+            return null;
+        }
+
+        usort($candidates, function ($a, $b) {
+            return strlen($b['payload']) <=> strlen($a['payload']);
+        });
+
+        foreach ($candidates as $candidate) {
+            if ($this->isPdfBase64Payload($candidate['payload'])) {
+                Log::info('DHL: selected PDF payload', [
+                    'source'    => $candidate['source'],
+                    'type_code' => $candidate['type_code'],
+                    'bytes'     => strlen($candidate['payload']),
+                ]);
+
+                return $candidate['payload'];
+            }
+        }
+
+        $fallback = $candidates[0]['payload'];
+
+        Log::warning('DHL: using largest base64 payload without PDF magic header', [
+            'source' => $candidates[0]['source'],
+            'bytes'  => strlen($fallback),
+        ]);
+
+        return $fallback;
+    }
+
+    /**
+     * @param  list<array{payload: string, type_code: ?string, source: string}>  $candidates
+     */
+    protected function collectBase64Candidates(mixed $node, array &$candidates, string $path = ''): void
+    {
+        if (! is_array($node)) {
+            return;
+        }
+
+        foreach (['content', 'graphicImage', 'imageContent'] as $key) {
+            if (! empty($node[$key]) && is_string($node[$key]) && strlen($node[$key]) > 100) {
+                $candidates[] = [
+                    'payload'   => $node[$key],
+                    'type_code' => $node['typeCode'] ?? null,
+                    'source'    => $path !== '' ? $path.'.'.$key : $key,
+                ];
+            }
+        }
+
+        foreach ($node as $childKey => $child) {
+            if (is_array($child)) {
+                $childPath = is_string($childKey) ? ($path !== '' ? $path.'.'.$childKey : $childKey) : $path;
+                $this->collectBase64Candidates($child, $candidates, $childPath);
+            }
+        }
+    }
+
+    protected function isPdfBase64Payload(string $base64): bool
+    {
+        $binary = base64_decode($base64, true);
+
+        if ($binary === false || $binary === '') {
+            return false;
+        }
+
+        return str_starts_with($binary, '%PDF');
     }
 
     protected function storeShipmentPdf(Order $order, string $base64): string

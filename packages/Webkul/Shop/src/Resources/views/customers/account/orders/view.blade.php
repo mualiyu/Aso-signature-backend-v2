@@ -1371,38 +1371,9 @@
                         @foreach ($order->shipments as $shipment)
                             <!-- For Desktop View -->
                             <div class="max-md:hidden">
-                                <div>
-                                    <label class="text-base font-medium">
-                                        @lang('shop::app.customers.account.orders.view.shipments.tracking-number')
-                                    </label>
-
-                                    <span>
-                                        {{  $shipment->track_number }}
-                                    </span>
-
-                                    @php
-                                        $trackingUrl = null;
-
-                                        if (
-                                            $shipment->carrier_title === 'DHL Express'
-                                            || str_starts_with(strtolower($shipment->carrier ?? ''), 'dhl')
-                                        ) {
-                                            $trackingUrl = 'https://www.dhl.com/global-en/home/tracking/tracking-express.html?tracking-id=' . urlencode($shipment->track_number);
-                                        }
-                                    @endphp
-
-                                    @if ($trackingUrl)
-                                        <a
-                                            href="{{ $trackingUrl }}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            class="ml-3 text-sm text-blue-600 hover:underline"
-                                        >
-                                            {{-- @lang('shop::app.customers.account.orders.view.shipments.track-order') --}}
-                                            Track your order here!
-                                        </a>
-                                    @endif
-                                </div>
+                                @include('shop::customers.account.orders.partials.shipment-documents', [
+                                    'shipment' => $shipment,
+                                ])
 
                                 <div class="text-base font-medium">
                                     <span>
@@ -1460,49 +1431,9 @@
 
                             <!-- For Mobile view -->
                             <div class="grid gap-4 md:hidden">
-                                <div class="rounded-lg border">
-                                    <div class="grid gap-1.5 px-4 py-2.5 text-xs font-medium text-zinc-500 [&>*]:flex [&>*]:justify-between">
-                                        <div class="flex justify-between gap-2">
-                                            <span>
-                                                @lang('shop::app.customers.account.orders.view.shipments.tracking-number'):
-                                            </span>
-
-                                            <span class="text-right">
-                                                {{  $shipment->track_number }}
-                                            </span>
-                                        </div>
-
-                                        @php
-                                            $trackingUrl = null;
-
-                                            if (
-                                                $shipment->carrier_title === 'DHL Express'
-                                                || str_starts_with(strtolower($shipment->carrier ?? ''), 'dhl')
-                                            ) {
-                                                $trackingUrl = 'https://www.dhl.com/global-en/home/tracking/tracking-express.html?tracking-id=' . urlencode($shipment->track_number);
-                                            }
-                                        @endphp
-
-                                        @if ($trackingUrl)
-                                            <div class="flex justify-between pt-1">
-                                                <span>
-                                                    Track your shipment online:
-                                                </span>
-
-                                                <a
-                                                    href="{{ $trackingUrl }}"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    class="text-blue-600 hover:underline"
-                                                >
-                                                    track online
-                                                </a>
-                                            </div>
-                                        @endif
-
-                                        Track your shipment online
-                                    </div>
-                                </div>
+                                @include('shop::customers.account.orders.partials.shipment-documents', [
+                                    'shipment' => $shipment,
+                                ])
 
                                 <x-shop::accordion
                                     :is-active="true"

@@ -283,8 +283,14 @@
         data() {
             return {
                 source: "",
-                carrierCode: "",
+                carrierCode: @json(str_starts_with((string) ($order->shipping_method ?? ''), 'dhl') ? 'dhl' : ''),
             };
+        },
+
+        mounted() {
+            if (this.carrierCode === 'dhl') {
+                this.onCarrierChange();
+            }
         },
 
         methods: {

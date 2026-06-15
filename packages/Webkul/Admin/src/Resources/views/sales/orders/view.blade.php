@@ -869,13 +869,40 @@
                                     </p>
                                 </div>
 
-                                <div class="flex gap-2.5">
+                                <div class="flex flex-wrap gap-x-4 gap-y-1">
                                     <a
                                         href="{{ route('admin.sales.shipments.view', $shipment->id) }}"
                                         class="text-sm text-blue-600 transition-all hover:underline"
                                     >
                                         @lang('admin::app.sales.orders.view.view')
                                     </a>
+
+                                    @if ($shipment->track_number)
+                                        <span class="text-sm text-gray-600 dark:text-gray-300">
+                                            {{ $shipment->track_number }}
+                                        </span>
+                                    @endif
+
+                                    @if ($shipment->dhl_documents_path)
+                                        <a
+                                            href="{{ route('admin.sales.shipments.dhl-documents', $shipment->id) }}"
+                                            class="text-sm text-blue-600 transition-all hover:underline"
+                                        >
+                                            @lang('admin::app.sales.shipments.view.dhl-download')
+                                        </a>
+                                    @endif
+
+                                    @php
+                                        $isDhlShipment = $shipment->carrier_code === 'dhl'
+                                            || $shipment->carrier_title === 'DHL Express'
+                                            || str_starts_with(strtolower((string) ($shipment->carrier_code ?? '')), 'dhl');
+                                    @endphp
+
+                                    @if ($isDhlShipment && $shipment->dhl_last_checkpoint_description)
+                                        <span class="text-sm text-gray-600 dark:text-gray-300">
+                                            {{ $shipment->dhl_last_checkpoint_description }}
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                         @empty

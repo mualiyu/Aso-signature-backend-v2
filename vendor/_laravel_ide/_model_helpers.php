@@ -2606,6 +2606,9 @@ namespace Webkul\Sales\Models {
 	 * @property mixed $customer_type
 	 * @property int|null $customer_id
 	 * @property bool $email_sent
+	 * @property string|null $dhl_tracking_fetched_at
+	 * @property mixed $dhl_last_checkpoint_description
+	 * @property mixed $dhl_last_checkpoint_code
 	 * @property mixed $dhl_documents_path
 	 * @property mixed $track_number
 	 * @property mixed $carrier_title
@@ -2628,6 +2631,9 @@ namespace Webkul\Sales\Models {
 	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereCarrierTitle($value)
 	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereTrackNumber($value)
 	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereDhlDocumentsPath($value)
+	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereDhlLastCheckpointCode($value)
+	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereDhlLastCheckpointDescription($value)
+	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereDhlTrackingFetchedAt($value)
 	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereEmailSent($value)
 	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereCustomerId($value)
 	 * @method static \Illuminate\Database\Eloquent\Builder<Shipment>|Shipment whereCustomerType($value)

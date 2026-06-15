@@ -274,6 +274,11 @@ return [
                         'sku'                 => 'SKU',
                         'subtotal'            => 'Subtotal',
                         'tracking-number'     => 'Tracking Number',
+                        'track-online'        => 'Track shipment online',
+                        'dhl-download'        => 'Download DHL paperwork (PDF)',
+                        'dhl-status'          => 'Shipping status',
+                        'shipping-updates'    => 'Shipping updates',
+                        'dhl-documents-pending' => 'DHL paperwork is being prepared. Refresh this page shortly or contact support if it does not appear.',
                     ],
 
                     'refunds' => [

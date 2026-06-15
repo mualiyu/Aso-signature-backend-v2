@@ -2,10 +2,13 @@
 
 namespace Webkul\Shop\Http\Controllers\Customer\Account;
 
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Core\Traits\PDFHandler;
 use Webkul\Sales\Repositories\InvoiceRepository;
 use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Sales\Repositories\ShipmentRepository;
 use Webkul\Shop\DataGrids\OrderDataGrid;
 use Webkul\Shop\Http\Controllers\Controller;
 
@@ -20,7 +23,8 @@ class OrderController extends Controller
      */
     public function __construct(
         protected OrderRepository $orderRepository,
-        protected InvoiceRepository $invoiceRepository
+        protected InvoiceRepository $invoiceRepository,
+        protected ShipmentRepository $shipmentRepository
     ) {}
 
     /**
@@ -51,6 +55,8 @@ class OrderController extends Controller
         ]);
 
         abort_if(! $order, 404);
+
+        $order->load(['shipments.items']);
 
         return view('shop::customers.account.orders.view', compact('order'));
     }
@@ -122,5 +128,34 @@ class OrderController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Download DHL shipping documents for the customer's order shipment.
+     */
+    public function downloadDhlDocuments(int $shipmentId): Response
+    {
+        $customerId = auth()->guard('customer')->id();
+
+        $shipment = $this->shipmentRepository
+            ->getModel()
+            ->newQuery()
+            ->where('id', $shipmentId)
+            ->whereHas('order', function ($query) use ($customerId) {
+                $query->where('customer_id', $customerId);
+            })
+            ->firstOrFail();
+
+        if (empty($shipment->dhl_documents_path)) {
+            abort(404);
+        }
+
+        $path = $shipment->dhl_documents_path;
+
+        if (! Storage::disk('local')->exists($path)) {
+            abort(404);
+        }
+
+        return Storage::disk('local')->download($path, 'dhl-shipment-'.$shipment->id.'.pdf');
     }
 }

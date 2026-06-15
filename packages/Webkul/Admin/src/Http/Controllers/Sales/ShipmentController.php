@@ -2,14 +2,16 @@
 
 namespace Webkul\Admin\Http\Controllers\Sales;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 use Webkul\Admin\DataGrids\Sales\OrderShipmentDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\ShipmentRepository;
 use Webkul\Shipping\Services\DHLShipmentService;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
+use Webkul\Shipping\Services\DhlTrackingService;
 
 class ShipmentController extends Controller
 {
@@ -22,7 +24,8 @@ class ShipmentController extends Controller
         protected OrderRepository $orderRepository,
         protected OrderItemRepository $orderItemRepository,
         protected ShipmentRepository $shipmentRepository,
-        protected DHLShipmentService $dhlShipmentService
+        protected DHLShipmentService $dhlShipmentService,
+        protected DhlTrackingService $dhlTrackingService
     ) {}
 
     /**
@@ -85,30 +88,42 @@ class ShipmentController extends Controller
             return redirect()->back();
         }
 
-        // Check if DHL carrier is selected
         $carrierCode = $data['shipment']['carrier_code'] ?? null;
+        $dhlDocumentsMissing = false;
 
         if ($carrierCode === 'dhl') {
-            // Create DHL shipment via API
-            // Pass shipment data structure correctly
             $dhlResult = $this->dhlShipmentService->createShipment($order, $data['shipment']);
 
-            if (!$dhlResult['success']) {
-                session()->flash('error', 'DHL Shipment Error: ' . ($dhlResult['error'] ?? 'Unknown error'));
+            if (! $dhlResult['success']) {
+                session()->flash('error', 'DHL Shipment Error: '.($dhlResult['error'] ?? 'Unknown error'));
+
                 return redirect()->back();
             }
 
-            // Update shipment data with DHL tracking number and stored PDF path
             $data['shipment']['track_number'] = $dhlResult['data']['tracking_number'] ?? null;
             $data['shipment']['carrier_title'] = 'DHL Express';
             $data['shipment']['dhl_documents_path'] = $dhlResult['data']['dhl_documents_path'] ?? null;
+
+            $dhlDocumentsMissing = ! empty($data['shipment']['track_number'])
+                && empty($data['shipment']['dhl_documents_path']);
         }
 
-        $this->shipmentRepository->create(array_merge($data, [
+        $shipment = $this->shipmentRepository->create(array_merge($data, [
             'order_id' => $orderId,
         ]));
 
+        if ($carrierCode === 'dhl' && ! empty($shipment->track_number)) {
+            $this->dhlTrackingService->refreshShipment($shipment);
+        }
+
         session()->flash('success', trans('admin::app.sales.shipments.create.success'));
+
+        if ($dhlDocumentsMissing) {
+            session()->flash(
+                'warning',
+                trans('admin::app.sales.shipments.create.dhl-documents-warning')
+            );
+        }
 
         return redirect()->route('admin.sales.orders.view', $orderId);
     }
@@ -195,10 +210,46 @@ class ShipmentController extends Controller
     /**
      * Download DHL shipping documents PDF generated at shipment creation.
      */
-    public function downloadDhlDocuments(int $id): Response
+    public function downloadDhlDocuments(int $id): Response|RedirectResponse
     {
         $shipment = $this->shipmentRepository->findOrFail($id);
 
+        return $this->downloadDhlDocumentsForShipment($shipment);
+    }
+
+    /**
+     * Refresh DHL tracking status for a shipment.
+     */
+    public function refreshDhlTracking(int $id): RedirectResponse
+    {
+        $shipment = $this->shipmentRepository->findOrFail($id);
+
+        if (! $this->isDhlShipment($shipment)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.dhl-tracking-not-applicable'));
+
+            return redirect()->back();
+        }
+
+        $result = $this->dhlTrackingService->refreshShipment($shipment);
+
+        if (! $result['success']) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.dhl-tracking-error', [
+                'message' => $result['error'] ?? 'Unknown error',
+            ]));
+
+            return redirect()->back();
+        }
+
+        session()->flash('success', trans('admin::app.sales.shipments.view.dhl-tracking-refreshed'));
+
+        return redirect()->back();
+    }
+
+    /**
+     * @param  \Webkul\Sales\Contracts\Shipment  $shipment
+     */
+    protected function downloadDhlDocumentsForShipment($shipment): Response|RedirectResponse
+    {
         if (empty($shipment->dhl_documents_path)) {
             session()->flash('error', trans('admin::app.sales.shipments.view.dhl-documents-missing'));
 
@@ -214,5 +265,15 @@ class ShipmentController extends Controller
         }
 
         return Storage::disk('local')->download($path, 'dhl-shipment-'.$shipment->id.'.pdf');
+    }
+
+    /**
+     * @param  \Webkul\Sales\Contracts\Shipment  $shipment
+     */
+    protected function isDhlShipment($shipment): bool
+    {
+        return $shipment->carrier_code === 'dhl'
+            || $shipment->carrier_title === 'DHL Express'
+            || str_starts_with(strtolower((string) ($shipment->carrier_code ?? '')), 'dhl');
     }
 }

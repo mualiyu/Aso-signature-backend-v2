@@ -76,6 +76,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::get('view/{id}/dhl-documents', 'downloadDhlDocuments')->name('admin.sales.shipments.dhl-documents');
 
+            Route::get('view/{id}/dhl-tracking/refresh', 'refreshDhlTracking')->name('admin.sales.shipments.dhl-tracking-refresh');
+
             Route::get('view/{id}', 'view')->name('admin.sales.shipments.view');
         });
 

@@ -155,6 +155,8 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
                     Route::post('cancel/{id}', 'cancel')->name('shop.customers.account.orders.cancel');
 
                     Route::get('print/Invoice/{id}', 'printInvoice')->name('shop.customers.account.orders.print-invoice');
+
+                    Route::get('dhl-documents/{shipmentId}', 'downloadDhlDocuments')->name('shop.customers.account.orders.dhl-documents');
                 });
 
                 /**

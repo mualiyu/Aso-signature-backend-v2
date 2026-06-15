@@ -32,3 +32,5 @@ public/videos/*.mp4
 # /vendor
 yarn.lock
 yarn-error.log
+/storage/app/public/
+/storage/app/private/
