@@ -1151,6 +1151,10 @@ return [
                 'name'  => 'emails.general.notifications.cancel_order_mail_to_admin',
                 'title' => 'admin::app.configuration.index.email.notifications.cancel-order-mail-to-admin',
                 'type'  => 'boolean',
+            ], [
+                'name'  => 'emails.general.notifications.order_status_update',
+                'title' => 'admin::app.configuration.index.email.notifications.order-status-update',
+                'type'  => 'boolean',
             ],
         ],
     ],
@@ -1568,6 +1572,38 @@ return [
                 'info'          => 'PHP timezone, e.g. Africa/Lagos. Leave empty to use the application timezone.',
                 'channel_based' => true,
                 'locale_based'  => false,
+            ], [
+                'name'          => 'pickup_close_time',
+                'title'         => 'Pickup close time (24h)',
+                'type'          => 'text',
+                'default'       => '18:00',
+                'info'          => 'Default latest time the pickup location is open, e.g. 18:00. Used to prefill the pickup booking form.',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
+                'name'          => 'pickup_location',
+                'title'         => 'Pickup location',
+                'type'          => 'text',
+                'default'       => 'reception',
+                'info'          => 'Default location where the courier collects the parcel, e.g. reception. Used to prefill the pickup booking form.',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
+                'name'          => 'pickup_location_type',
+                'title'         => 'Pickup location type',
+                'type'          => 'select',
+                'default'       => 'business',
+                'channel_based' => true,
+                'locale_based'  => false,
+                'options'       => [
+                    [
+                        'title' => 'Business',
+                        'value' => 'business',
+                    ], [
+                        'title' => 'Residence',
+                        'value' => 'residence',
+                    ],
+                ],
             ], [
                 'name'          => 'fallback_enabled',
                 'title'         => 'Enable Fallback Rate',

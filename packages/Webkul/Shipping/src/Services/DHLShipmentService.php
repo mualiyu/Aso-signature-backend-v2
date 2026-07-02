@@ -81,8 +81,6 @@ class DHLShipmentService
             $incoterm = $this->dhlConfig('incoterm', 'DAP');
             $placeOfIncoterm = trim($shippingAddress->city ?? '');
 
-
-
             $shipperLines = $this->buildRatesAddressLines(
                 $originAddress['address1'] ?? '',
                 $originAddress['address2'] ?? '',
@@ -179,7 +177,7 @@ class DHLShipmentService
                                 'width'  => max(1, round($dimensions['width'], 2)),
                                 'height' => max(1, round($dimensions['height'], 2)),
                             ],
-                            'description' => $contentDescription,
+                            'description'        => $contentDescription,
                             'customerReferences' => [
                                 [
                                     'value'    => (string) $order->increment_id,
@@ -344,6 +342,152 @@ class DHLShipmentService
     }
 
     /**
+     * Build the reusable pickup request pieces (accounts, shipper/receiver party details and the
+     * package "shipmentDetails") for a MyDHL `POST /pickups` call. This deliberately reuses the
+     * exact origin/receiver address, phone, dimension and product-code logic that drives shipment
+     * creation, so a pickup describes the same parcel the waybill does.
+     *
+     * @param  array{source: mixed, items: array<int|string, array<int|string, float|int>>, dhl_product_code?: string}  $shipmentData
+     * @return array{isInternational: bool, productCode: string, accounts: array, customerDetails: array, shipmentDetails: array}
+     */
+    public function buildPickupPartyDetails(Order $order, array $shipmentData): array
+    {
+        $accountNumber = $this->dhlConfig('account_number');
+        $originAddress = $this->getOriginAddress();
+        $shippingAddress = $order->shipping_address;
+
+        if (! $shippingAddress) {
+            throw new \RuntimeException('Order has no shipping address for the pickup receiver.');
+        }
+
+        $isInternational = strtoupper($originAddress['country']) !== strtoupper($shippingAddress->country);
+
+        /**
+         * Product code — mirror createShipment(): domestic = N, international package = P (default),
+         * document = D (from the chosen dhl_ shipping method).
+         */
+        $productCode = $shipmentData['dhl_product_code'] ?? null;
+        if (! $productCode && $order->shipping_method && str_starts_with($order->shipping_method, 'dhl_')) {
+            $productCode = substr($order->shipping_method, 4) ?: null;
+        }
+        if (! $isInternational) {
+            $productCode = 'N';
+        } elseif (! $productCode) {
+            $productCode = 'P';
+        }
+
+        // Total shipped weight for the packages covered by this pickup.
+        $totalWeight = 0;
+        if (! empty($shipmentData['items']) && is_array($shipmentData['items'])) {
+            foreach ($shipmentData['items'] as $itemId => $inventorySource) {
+                $orderItem = $order->items()->find($itemId);
+                if ($orderItem) {
+                    $qty = $inventorySource[$shipmentData['source']] ?? 0;
+                    $totalWeight += ($orderItem->weight ?? 0) * $qty;
+                }
+            }
+        }
+        if ($totalWeight <= 0) {
+            $totalWeight = 1.0;
+        }
+
+        $dimensions = $this->calculatePackageDimensions($order, $shipmentData);
+
+        // Shipper (origin / store).
+        $shipperLines = $this->buildRatesAddressLines(
+            $originAddress['address1'] ?? '',
+            $originAddress['address2'] ?? '',
+            $originAddress['city'] ?? '',
+            $originAddress['postcode'] ?? ''
+        );
+        $shipperEmail = $this->dhlConfig('origin_email') ?: $order->customer_email ?: 'noreply@example.com';
+
+        // Receiver (customer).
+        $receiverPostal = $this->buildReceiverPostalAddressLines($shippingAddress);
+
+        $receiverPersonName = trim(($shippingAddress->first_name ?? '').' '.($shippingAddress->last_name ?? ''));
+        if ($receiverPersonName === '') {
+            $receiverPersonName = 'Customer';
+        }
+
+        $receiverPhoneE164 = $this->formatPhoneForDhl(
+            $this->resolveReceiverPhoneRaw($order, $shippingAddress),
+            $shippingAddress->country ?? ''
+        );
+        $receiverEmail = $order->customer_email ?: $shipperEmail;
+
+        $receiverPostalAddress = [
+            'postalCode'   => $shippingAddress->postcode,
+            'cityName'     => $this->normalizeDhlCityNameForRates($shippingAddress->country, $shippingAddress->postcode ?? '', $shippingAddress->city ?? ''),
+            'countryCode'  => $shippingAddress->country,
+            'addressLine1' => $receiverPostal['line1'],
+            'addressLine2' => $receiverPostal['line2'],
+        ];
+        if ($receiverPostal['line3'] !== '') {
+            $receiverPostalAddress['addressLine3'] = $receiverPostal['line3'];
+        }
+
+        $shipmentDetail = [
+            'productCode'         => $productCode,
+            'isCustomsDeclarable' => $isInternational,
+            'unitOfMeasurement'   => 'metric',
+            'packages'            => [
+                [
+                    'weight'     => max(0.1, round($totalWeight, 2)),
+                    'dimensions' => [
+                        'length' => max(1, round($dimensions['length'], 2)),
+                        'width'  => max(1, round($dimensions['width'], 2)),
+                        'height' => max(1, round($dimensions['height'], 2)),
+                    ],
+                ],
+            ],
+        ];
+
+        if ($isInternational) {
+            $shipmentDetail['declaredValue'] = round((float) $order->base_grand_total, 2);
+            $shipmentDetail['declaredValueCurrency'] = core()->getBaseCurrencyCode();
+        }
+
+        return [
+            'isInternational' => $isInternational,
+            'productCode'     => $productCode,
+            'accounts'        => [
+                [
+                    'number'   => $accountNumber,
+                    'typeCode' => 'shipper',
+                ],
+            ],
+            'customerDetails' => [
+                'shipperDetails'  => [
+                    'postalAddress'      => [
+                        'postalCode'   => $originAddress['postcode'],
+                        'cityName'     => $this->normalizeDhlCityNameForRates($originAddress['country'], $originAddress['postcode'] ?? '', $originAddress['city'] ?? ''),
+                        'countryCode'  => $originAddress['country'],
+                        'addressLine1' => $shipperLines['line1'],
+                        'addressLine2' => $shipperLines['line2'],
+                    ],
+                    'contactInformation' => [
+                        'phone'       => $this->formatPhoneForDhl($this->dhlConfig('origin_phone') ?? '', $originAddress['country'] ?? ''),
+                        'email'       => $shipperEmail,
+                        'fullName'    => $this->dhlConfig('origin_company') ?: 'Shipper',
+                        'companyName' => $this->dhlConfig('origin_company') ?: 'Shipper',
+                    ],
+                ],
+                'receiverDetails' => [
+                    'postalAddress'      => $receiverPostalAddress,
+                    'contactInformation' => $this->buildReceiverContactInformation(
+                        $shippingAddress,
+                        $receiverEmail,
+                        $receiverPersonName,
+                        $receiverPhoneE164
+                    ),
+                ],
+            ],
+            'shipmentDetails' => [$shipmentDetail],
+        ];
+    }
+
+    /**
      * @return array{declaration: array, declared_total: float}
      */
     protected function buildExportDeclaration(Order $order, array $shipmentData, array $originAddress, string $incoterm, string $placeOfIncoterm): array
@@ -380,7 +524,7 @@ class DHLShipmentService
                 'description'        => $description,
                 'price'              => $linePrice,
                 'quantity'           => [
-                    'unitOfMeasurement' => 'PCS',
+                    'unitOfMeasurement'   => 'PCS',
                     'value'               => $qty,
                 ],
                 'weight'             => [

@@ -106,6 +106,39 @@
                 </div>
             @endif
 
+            <!-- Change Order Status (fulfilment workflow) -->
+            @if (
+                count($order->getAllowedTransitions())
+                && bouncer()->hasPermission('sales.orders.update-status')
+            )
+                <form
+                    method="POST"
+                    action="{{ route('admin.sales.orders.update-status', $order->id) }}"
+                    class="flex items-center gap-1.5"
+                >
+                    @csrf
+
+                    <select
+                        name="status"
+                        required
+                        class="w-max cursor-pointer rounded-md border border-gray-300 px-2.5 py-2 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
+                    >
+                        @foreach ($order->getAllowedTransitions() as $status)
+                            <option value="{{ $status }}">
+                                @lang("admin::app.sales.orders.view.$status")
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="primary-button px-2.5 py-1.5"
+                    >
+                        @lang('admin::app.sales.orders.view.update-status')
+                    </button>
+                </form>
+            @endif
+
             {!! view_render_event('bagisto.admin.sales.order.page_action.after', ['order' => $order]) !!}
 
             <!-- Download Designer Order PDF -->

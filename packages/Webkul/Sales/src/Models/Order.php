@@ -37,7 +37,22 @@ class Order extends Model implements OrderContract
     public const STATUS_PROCESSING = 'processing';
 
     /**
-     * Complete Order
+     * Order handed to production (bespoke tailoring workflow)
+     */
+    public const STATUS_SENT_FOR_PRODUCTION = 'sent_for_production';
+
+    /**
+     * Production finished, awaiting shipment
+     */
+    public const STATUS_READY_FOR_SHIPMENT = 'ready_for_shipment';
+
+    /**
+     * Parcel dispatched with the courier
+     */
+    public const STATUS_SHIPPED = 'shipped';
+
+    /**
+     * Complete Order (delivered)
      */
     public const STATUS_COMPLETED = 'completed';
 
@@ -74,13 +89,44 @@ class Order extends Model implements OrderContract
     ];
 
     protected $statusLabel = [
-        self::STATUS_PENDING         => 'Pending',
-        self::STATUS_PENDING_PAYMENT => 'Pending Payment',
-        self::STATUS_PROCESSING      => 'Processing',
-        self::STATUS_COMPLETED       => 'Completed',
-        self::STATUS_CANCELED        => 'Canceled',
-        self::STATUS_CLOSED          => 'Closed',
-        self::STATUS_FRAUD           => 'Fraud',
+        self::STATUS_PENDING             => 'Pending',
+        self::STATUS_PENDING_PAYMENT     => 'Pending Payment',
+        self::STATUS_PROCESSING          => 'Processing',
+        self::STATUS_SENT_FOR_PRODUCTION => 'Sent for Production',
+        self::STATUS_READY_FOR_SHIPMENT  => 'Ready for Shipment',
+        self::STATUS_SHIPPED             => 'Shipped',
+        self::STATUS_COMPLETED           => 'Delivered / Completed',
+        self::STATUS_CANCELED            => 'Canceled',
+        self::STATUS_CLOSED              => 'Closed',
+        self::STATUS_FRAUD               => 'Fraud',
+    ];
+
+    /**
+     * Statuses that make up the manual production → shipment workflow. These are advanced by an
+     * admin (or by DHL automation) and must not be silently downgraded by the quantity-based
+     * status recompute in OrderRepository::updateOrderStatus().
+     *
+     * @var array<int, string>
+     */
+    public const WORKFLOW_STATUSES = [
+        self::STATUS_SENT_FOR_PRODUCTION,
+        self::STATUS_READY_FOR_SHIPMENT,
+        self::STATUS_SHIPPED,
+    ];
+
+    /**
+     * Allowed forward transitions for the manual "change status" admin action. Cancellation is
+     * intentionally excluded here — it stays on the dedicated cancel action so its inventory /
+     * refund side-effects are not duplicated. Automated transitions (shipment created, delivery
+     * confirmed) use the OrderRepository override branch and are not constrained by this map.
+     *
+     * @var array<string, array<int, string>>
+     */
+    public const STATUS_TRANSITIONS = [
+        self::STATUS_PROCESSING          => [self::STATUS_SENT_FOR_PRODUCTION],
+        self::STATUS_SENT_FOR_PRODUCTION => [self::STATUS_READY_FOR_SHIPMENT],
+        self::STATUS_READY_FOR_SHIPMENT  => [self::STATUS_SHIPPED],
+        self::STATUS_SHIPPED             => [self::STATUS_COMPLETED],
     ];
 
     /**
@@ -390,6 +436,24 @@ class Order extends Model implements OrderContract
         }
 
         return false;
+    }
+
+    /**
+     * Statuses this order may be moved to via the manual "change status" admin action.
+     *
+     * @return array<int, string>
+     */
+    public function getAllowedTransitions(): array
+    {
+        return self::STATUS_TRANSITIONS[$this->status] ?? [];
+    }
+
+    /**
+     * Whether the order may transition to the given status through the manual admin action.
+     */
+    public function canTransitionTo(string $status): bool
+    {
+        return in_array($status, $this->getAllowedTransitions(), true);
     }
 
     /**

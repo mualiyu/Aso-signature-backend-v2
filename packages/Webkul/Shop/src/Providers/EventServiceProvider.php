@@ -47,6 +47,10 @@ class EventServiceProvider extends ServiceProvider
             [Order::class, 'afterCanceled'],
         ],
 
+        'sales.order.status.changed' => [
+            [Order::class, 'afterStatusUpdated'],
+        ],
+
         'sales.order.comment.create.after' => [
             [Order::class, 'afterCommented'],
         ],

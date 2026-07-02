@@ -2,18 +2,14 @@
 
 namespace Webkul\Shipping\Services;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Webkul\Sales\Models\Shipment;
 
 class DhlShipmentCancellationService
 {
-    /**
-     * MyDHL cancel reason code 006 = "Shipment cancelled by customer".
-     */
-    protected const CANCEL_REASON_CODE = '006';
-
-    public function __construct(protected DhlTrackingService $dhlTrackingService) {}
+    public function __construct(
+        protected DhlTrackingService $dhlTrackingService,
+        protected DhlPickupService $dhlPickupService
+    ) {}
 
     /**
      * A shipment can only be cancelled while DHL has not scanned the parcel into their network.
@@ -74,77 +70,17 @@ class DhlShipmentCancellationService
     }
 
     /**
-     * MyDHL API has no label-void endpoint; the only cancellation operation is deleting the
-     * courier pickup booked at creation. Shipments created with pickup.isRequested=false have
-     * nothing to cancel at DHL — the waybill simply expires unbilled.
+     * MyDHL API has no label-void endpoint; the only cancellation operation is deleting the courier
+     * pickup booked for the shipment. This delegates to DhlPickupService so shipment cancellation
+     * and the standalone "Cancel Pickup" action share one code path against the documented
+     * `DELETE /pickups/{dispatchConfirmationNumber}` endpoint. A shipment with no booked pickup is
+     * a no-op — the waybill simply expires unbilled.
      *
      * @return array{success: bool, skipped?: bool, error?: string}
      */
     public function cancelAtDhl(Shipment $shipment): array
     {
-        if (empty($shipment->dhl_pickup_confirmation_number)) {
-            return ['success' => true, 'skipped' => true];
-        }
-
-        try {
-            $apiKey = $this->dhlConfig('api_key');
-            $apiSecret = $this->dhlConfig('api_secret');
-
-            if (empty($apiKey) || empty($apiSecret)) {
-                throw new \Exception('DHL API credentials are not configured');
-            }
-
-            $baseUrl = $this->dhlConfig('sandbox_mode')
-                ? 'https://express.api.dhl.com/mydhlapi/test'
-                : 'https://express.api.dhl.com/mydhlapi';
-
-            $requestorName = $this->dhlConfig('origin_company') ?: 'Shipper';
-
-            $response = Http::timeout(30)
-                ->withHeaders([
-                    'Accept'                 => 'application/json',
-                    'Message-Reference'      => uniqid('', true),
-                    'Message-Reference-Date' => now()->format('Y-m-d\TH:i:s\Z'),
-                ])
-                ->withBasicAuth($apiKey, $apiSecret)
-                ->delete($baseUrl.'/shipments/'.urlencode($shipment->track_number).'/pickup', [
-                    'dispatchConfirmationNumber' => $shipment->dhl_pickup_confirmation_number,
-                    'requestorName'              => $requestorName,
-                    'reason'                     => self::CANCEL_REASON_CODE,
-                ]);
-
-            // 404/410: nothing left to cancel at DHL — treat as success.
-            if ($response->successful() || in_array($response->status(), [404, 410], true)) {
-                Log::info('DHL pickup cancelled', [
-                    'shipment_id' => $shipment->id,
-                    'tracking'    => $shipment->track_number,
-                    'dispatch'    => $shipment->dhl_pickup_confirmation_number,
-                    'status'      => $response->status(),
-                ]);
-
-                return ['success' => true];
-            }
-
-            $errorBody = $response->json();
-            $errorMessage = $errorBody['detail'] ?? $errorBody['message'] ?? 'Unable to cancel DHL pickup';
-
-            Log::error('DHL pickup cancellation failed', [
-                'shipment_id' => $shipment->id,
-                'tracking'    => $shipment->track_number,
-                'status'      => $response->status(),
-                'body'        => $response->body(),
-            ]);
-
-            return ['success' => false, 'error' => $errorMessage];
-        } catch (\Exception $e) {
-            Log::error('DHL pickup cancellation error', [
-                'shipment_id' => $shipment->id,
-                'tracking'    => $shipment->track_number,
-                'message'     => $e->getMessage(),
-            ]);
-
-            return ['success' => false, 'error' => $e->getMessage()];
-        }
+        return $this->dhlPickupService->cancelPickup($shipment);
     }
 
     /**
@@ -171,10 +107,5 @@ class DhlShipmentCancellationService
         }
 
         return false;
-    }
-
-    protected function dhlConfig(string $key, $default = null)
-    {
-        return core()->getConfigData('sales.carriers.dhl.'.$key) ?? $default;
     }
 }

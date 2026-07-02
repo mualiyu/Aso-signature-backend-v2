@@ -42,6 +42,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::post('cancel/{id}', 'cancel')->name('admin.sales.orders.cancel');
 
+            Route::post('update-status/{id}', 'updateStatus')->name('admin.sales.orders.update-status');
+
             Route::get('reorder/{id}', 'reorder')->name('admin.sales.orders.reorder');
 
             Route::post('comment/{order_id}', 'comment')->name('admin.sales.orders.comment');
@@ -75,6 +77,10 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
             Route::post('create/{order_id}', 'store')->name('admin.sales.shipments.store');
 
             Route::post('cancel/{id}', 'cancel')->name('admin.sales.shipments.cancel');
+
+            Route::post('{id}/pickup', 'bookPickup')->name('admin.sales.shipments.pickup.book');
+
+            Route::post('{id}/pickup/cancel', 'cancelPickup')->name('admin.sales.shipments.pickup.cancel');
 
             Route::get('view/{id}/dhl-documents', 'downloadDhlDocuments')->name('admin.sales.shipments.dhl-documents');
 

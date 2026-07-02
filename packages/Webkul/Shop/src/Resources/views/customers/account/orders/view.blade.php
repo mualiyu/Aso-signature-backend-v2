@@ -415,7 +415,7 @@
 
                                     @switch($order->status)
                                         @case('completed')
-                                            <p class="label-completed">{{ ucfirst($order->status) }}</p>
+                                            <p class="label-completed">{{ $order->status_label }}</p>
                                             @break
 
                                         @case('pending')
@@ -428,6 +428,12 @@
 
                                         @case('processing')
                                             <p class="label-processing">{{ ucfirst($order->status) }}</p>
+                                            @break
+
+                                        @case('sent_for_production')
+                                        @case('ready_for_shipment')
+                                        @case('shipped')
+                                            <p class="label-processing">{{ $order->status_label }}</p>
                                             @break
 
                                         @case('canceled')

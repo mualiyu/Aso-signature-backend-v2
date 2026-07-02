@@ -51,6 +51,11 @@ return [
         'route' => 'admin.sales.orders.cancel',
         'sort'  => 3,
     ], [
+        'key'   => 'sales.orders.update-status',
+        'name'  => 'admin::app.acl.update-status',
+        'route' => 'admin.sales.orders.update-status',
+        'sort'  => 4,
+    ], [
         'key'   => 'sales.invoices',
         'name'  => 'admin::app.acl.invoices',
         'route' => 'admin.sales.invoices.index',

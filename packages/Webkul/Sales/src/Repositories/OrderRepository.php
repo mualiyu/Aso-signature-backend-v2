@@ -293,6 +293,8 @@ class OrderRepository extends Repository
     {
         Event::dispatch('sales.order.update-status.before', $order);
 
+        $previousStatus = $order->status;
+
         if (! empty($orderState)) {
             $status = $orderState;
         } else {
@@ -307,6 +309,20 @@ class OrderRepository extends Repository
             } elseif ($this->isInClosedState($order)) {
                 $status = Order::STATUS_CLOSED;
             }
+
+            /**
+             * Keep a manually-advanced workflow order (sent_for_production / ready_for_shipment /
+             * shipped) from being pulled back to "processing" or pushed to "completed" by this
+             * quantity-based recompute, which also fires on invoice / partial-ship / refund. Only a
+             * genuine cancel / close outcome may override the workflow stage. Delivery marks the
+             * order completed through the explicit override branch above, never here.
+             */
+            if (
+                in_array($order->status, Order::WORKFLOW_STATUSES, true)
+                && in_array($status, [Order::STATUS_PROCESSING, Order::STATUS_COMPLETED], true)
+            ) {
+                $status = $order->status;
+            }
         }
 
         $order->status = $status;
@@ -314,6 +330,15 @@ class OrderRepository extends Repository
         $order->save();
 
         Event::dispatch('sales.order.update-status.after', $order);
+
+        /**
+         * Fire a dedicated event only when the status genuinely changed, so downstream listeners
+         * (e.g. the customer "status updated" email) run once per real transition and never on the
+         * no-op recomputes triggered by invoice / partial-ship / refund flows.
+         */
+        if ($previousStatus !== $status) {
+            Event::dispatch('sales.order.status.changed', $order);
+        }
     }
 
     /**

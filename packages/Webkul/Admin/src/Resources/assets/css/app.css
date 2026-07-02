@@ -441,6 +441,9 @@
 
     .label-pending,
     .label-processing,
+    .label-sent_for_production,
+    .label-ready_for_shipment,
+    .label-shipped,
     .label-closed,
     .label-canceled,
     .label-info,
@@ -458,6 +461,18 @@
 
 	.label-processing{
 		@apply bg-cyan-600;
+    }
+
+    .label-sent_for_production {
+        @apply bg-purple-600;
+    }
+
+    .label-ready_for_shipment {
+        @apply bg-teal-600;
+    }
+
+    .label-shipped {
+        @apply bg-blue-600;
     }
 
 	.label-completed,

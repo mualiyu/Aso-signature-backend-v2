@@ -80,6 +80,18 @@ class OrderDataGrid extends DataGrid
                     'value'  => Order::STATUS_PROCESSING,
                 ],
                 [
+                    'label'  => trans('shop::app.customers.account.orders.status.options.sent-for-production'),
+                    'value'  => Order::STATUS_SENT_FOR_PRODUCTION,
+                ],
+                [
+                    'label'  => trans('shop::app.customers.account.orders.status.options.ready-for-shipment'),
+                    'value'  => Order::STATUS_READY_FOR_SHIPMENT,
+                ],
+                [
+                    'label'  => trans('shop::app.customers.account.orders.status.options.shipped'),
+                    'value'  => Order::STATUS_SHIPPED,
+                ],
+                [
                     'label'  => trans('shop::app.customers.account.orders.status.options.completed'),
                     'value'  => Order::STATUS_COMPLETED,
                 ],
@@ -109,6 +121,15 @@ class OrderDataGrid extends DataGrid
                 switch ($row->status) {
                     case Order::STATUS_PROCESSING:
                         return '<p class="label-processing">'.trans('shop::app.customers.account.orders.status.options.processing').'</p>';
+
+                    case Order::STATUS_SENT_FOR_PRODUCTION:
+                        return '<p class="label-processing">'.trans('shop::app.customers.account.orders.status.options.sent-for-production').'</p>';
+
+                    case Order::STATUS_READY_FOR_SHIPMENT:
+                        return '<p class="label-processing">'.trans('shop::app.customers.account.orders.status.options.ready-for-shipment').'</p>';
+
+                    case Order::STATUS_SHIPPED:
+                        return '<p class="label-processing">'.trans('shop::app.customers.account.orders.status.options.shipped').'</p>';
 
                     case Order::STATUS_COMPLETED:
                         return '<p class="label-active">'.trans('shop::app.customers.account.orders.status.options.completed').'</p>';

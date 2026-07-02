@@ -24,6 +24,29 @@ class DhlPlannedShippingDate
         return (new self)->compute();
     }
 
+    /**
+     * Format an explicit pickup date (Y-m-d, as chosen by an admin) into the MyDHL
+     * plannedPickupDateAndTime format, applying the configured pickup time and timezone.
+     */
+    public static function formatDateForApi(string $date): string
+    {
+        $instance = new self;
+
+        [$hour, $minute] = $instance->parsePickupTime((string) $instance->config('pickup_time', '10:00'));
+
+        $tz = trim((string) $instance->config('pickup_timezone', ''));
+
+        try {
+            $carbon = $tz !== '' ? Carbon::parse($date, $tz) : Carbon::parse($date);
+        } catch (\Exception) {
+            $carbon = $instance->baseDate();
+        }
+
+        $carbon = $carbon->setTime($hour, $minute, 0);
+
+        return $carbon->format('Y-m-d\TH:i:s').' GMT'.$carbon->format('P');
+    }
+
     protected function config(string $key, $default = null)
     {
         return core()->getConfigData('sales.carriers.dhl.'.$key) ?? $default;

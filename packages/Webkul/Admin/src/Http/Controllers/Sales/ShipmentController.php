@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Webkul\Admin\DataGrids\Sales\OrderShipmentDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Sales\Models\Order;
 use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\ShipmentRepository;
-use Webkul\Shipping\Services\DHLShipmentService;
+use Webkul\Shipping\Services\DhlPickupService;
 use Webkul\Shipping\Services\DhlShipmentCancellationService;
+use Webkul\Shipping\Services\DHLShipmentService;
 use Webkul\Shipping\Services\DhlTrackingService;
 
 class ShipmentController extends Controller
@@ -28,7 +30,8 @@ class ShipmentController extends Controller
         protected ShipmentRepository $shipmentRepository,
         protected DHLShipmentService $dhlShipmentService,
         protected DhlTrackingService $dhlTrackingService,
-        protected DhlShipmentCancellationService $dhlShipmentCancellationService
+        protected DhlShipmentCancellationService $dhlShipmentCancellationService,
+        protected DhlPickupService $dhlPickupService
     ) {}
 
     /**
@@ -116,8 +119,21 @@ class ShipmentController extends Controller
             'order_id' => $orderId,
         ]));
 
-        if ($carrierCode === 'dhl' && ! empty($shipment->track_number)) {
-            $this->dhlTrackingService->refreshShipment($shipment);
+        if ($carrierCode === 'dhl') {
+            /**
+             * Move the order into the "Shipped" workflow stage once the parcel is fully handed to
+             * DHL. refreshShipment() below may then promote it straight to Delivered/Completed when
+             * the waybill already reports delivery.
+             */
+            $order->refresh();
+
+            if (! $order->canShip()) {
+                $this->orderRepository->updateOrderStatus($order, Order::STATUS_SHIPPED);
+            }
+
+            if (! empty($shipment->track_number)) {
+                $this->dhlTrackingService->refreshShipment($shipment);
+            }
         }
 
         session()->flash('success', trans('admin::app.sales.shipments.create.success'));
@@ -309,6 +325,116 @@ class ShipmentController extends Controller
         }
 
         return redirect()->route('admin.sales.orders.view', $orderId);
+    }
+
+    /**
+     * Book a DHL courier pickup for a shipment via the MyDHL `/pickups` endpoint. The dispatch
+     * confirmation number is stored on the shipment so the pickup can later be cancelled.
+     */
+    public function bookPickup(int $id): RedirectResponse
+    {
+        $shipment = $this->shipmentRepository->findOrFail($id);
+
+        if (! $this->isDhlShipment($shipment)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-not-applicable'));
+
+            return redirect()->back();
+        }
+
+        if (! empty($shipment->dhl_pickup_confirmation_number)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-already-booked'));
+
+            return redirect()->back();
+        }
+
+        $data = $this->validate(request(), [
+            'planned_date'         => 'required|date|after_or_equal:today',
+            'close_time'           => 'required|string',
+            'location'             => 'required|string|max:80',
+            'location_type'        => 'required|in:business,residence',
+            'special_instructions' => 'nullable|string|max:255',
+        ]);
+
+        $result = $this->dhlPickupService->bookPickup($shipment, $data);
+
+        if (! $result['success']) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-error', [
+                'message' => $result['error'] ?? 'Unknown error',
+            ]));
+
+            return redirect()->back();
+        }
+
+        $shipment->update([
+            'dhl_pickup_confirmation_number' => $result['data']['dispatch_confirmation_number'] ?? null,
+            'dhl_pickup_scheduled_at'        => $data['planned_date'],
+        ]);
+
+        Log::info('DHL pickup booked', [
+            'admin_id'    => auth()->guard('admin')->id(),
+            'shipment_id' => $shipment->id,
+            'order_id'    => $shipment->order_id,
+            'dispatch'    => $result['data']['dispatch_confirmation_number'] ?? null,
+        ]);
+
+        session()->flash('success', trans('admin::app.sales.shipments.view.pickup-success', [
+            'number' => $result['data']['dispatch_confirmation_number'] ?? '—',
+        ]));
+
+        return redirect()->back();
+    }
+
+    /**
+     * Cancel a booked DHL pickup via the MyDHL `/pickups/{dispatchConfirmationNumber}` endpoint.
+     * Blocked once DHL has scanned the parcel into their network (a booked pickup can no longer be
+     * un-booked at that point).
+     */
+    public function cancelPickup(int $id): RedirectResponse
+    {
+        $shipment = $this->shipmentRepository->findOrFail($id);
+
+        if (! $this->isDhlShipment($shipment)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-not-applicable'));
+
+            return redirect()->back();
+        }
+
+        if (empty($shipment->dhl_pickup_confirmation_number)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-not-booked'));
+
+            return redirect()->back();
+        }
+
+        if (! empty($shipment->dhl_last_checkpoint_code)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-cancel-in-transit'));
+
+            return redirect()->back();
+        }
+
+        $result = $this->dhlPickupService->cancelPickup($shipment);
+
+        if (! $result['success']) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.pickup-cancel-error', [
+                'message' => $result['error'] ?? 'Unknown error',
+            ]));
+
+            return redirect()->back();
+        }
+
+        $shipment->update([
+            'dhl_pickup_confirmation_number' => null,
+            'dhl_pickup_scheduled_at'        => null,
+        ]);
+
+        Log::info('DHL pickup cancelled', [
+            'admin_id'    => auth()->guard('admin')->id(),
+            'shipment_id' => $shipment->id,
+            'order_id'    => $shipment->order_id,
+        ]);
+
+        session()->flash('success', trans('admin::app.sales.shipments.view.pickup-cancel-success'));
+
+        return redirect()->back();
     }
 
     /**

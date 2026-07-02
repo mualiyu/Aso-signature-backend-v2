@@ -182,13 +182,16 @@ return [
                     'title' => 'Status',
 
                     'options' => [
-                        'canceled'        => 'Canceled',
-                        'closed'          => 'Closed',
-                        'completed'       => 'Completed',
-                        'fraud'           => 'Fraud',
-                        'pending'         => 'Pending',
-                        'pending-payment' => 'Pending Payment',
-                        'processing'      => 'Processing',
+                        'canceled'            => 'Canceled',
+                        'closed'              => 'Closed',
+                        'completed'           => 'Delivered / Completed',
+                        'fraud'               => 'Fraud',
+                        'pending'             => 'Pending',
+                        'pending-payment'     => 'Pending Payment',
+                        'processing'          => 'Processing',
+                        'ready-for-shipment'  => 'Ready for Shipment',
+                        'sent-for-production' => 'Sent for Production',
+                        'shipped'             => 'Shipped',
                     ],
                 ],
 
@@ -267,17 +270,17 @@ return [
                     ],
 
                     'shipments' => [
-                        'individual-shipment' => 'Shipment #:shipment_id',
-                        'product-name'        => 'Name',
-                        'qty'                 => 'Qty',
-                        'shipments'           => 'Shipments',
-                        'sku'                 => 'SKU',
-                        'subtotal'            => 'Subtotal',
-                        'tracking-number'     => 'Tracking Number',
-                        'track-online'        => 'Track shipment online',
-                        'dhl-download'        => 'Download DHL paperwork (PDF)',
-                        'dhl-status'          => 'Shipping status',
-                        'shipping-updates'    => 'Shipping updates',
+                        'individual-shipment'   => 'Shipment #:shipment_id',
+                        'product-name'          => 'Name',
+                        'qty'                   => 'Qty',
+                        'shipments'             => 'Shipments',
+                        'sku'                   => 'SKU',
+                        'subtotal'              => 'Subtotal',
+                        'tracking-number'       => 'Tracking Number',
+                        'track-online'          => 'Track shipment online',
+                        'dhl-download'          => 'Download DHL paperwork (PDF)',
+                        'dhl-status'            => 'Shipping status',
+                        'shipping-updates'      => 'Shipping updates',
                         'dhl-documents-pending' => 'DHL paperwork is being prepared. Refresh this page shortly or contact support if it does not appear.',
                     ],
 
@@ -1038,6 +1041,14 @@ return [
             'commented' => [
                 'subject' => 'New comment Added',
                 'title'   => 'New comment added to your order :order_id placed on :created_at',
+            ],
+
+            'status-updated' => [
+                'current-status' => 'Current status',
+                'greeting'       => 'There is an update on your order :order_id. Here is its latest status.',
+                'subject'        => 'Order #:order_id status update',
+                'title'          => 'Your order status has been updated',
+                'view-order'     => 'View your order',
             ],
 
             'billing-address'            => 'Billing Address',

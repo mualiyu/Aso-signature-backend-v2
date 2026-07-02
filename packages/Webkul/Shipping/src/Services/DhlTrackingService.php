@@ -4,11 +4,15 @@ namespace Webkul\Shipping\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\Shipment;
+use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Shipping\Data\DhlCheckpointCodes;
 
 class DhlTrackingService
 {
+    public function __construct(protected OrderRepository $orderRepository) {}
+
     /**
      * @return array{success: bool, checkpoints?: list<array<string, mixed>>, latest?: array<string, mixed>|null, error?: string, status?: int}
      */
@@ -101,10 +105,32 @@ class DhlTrackingService
             'dhl_tracking_fetched_at'         => now(),
         ]);
 
+        $this->syncOrderStatusFromTracking($shipment, $code);
+
         return [
             'success'  => true,
             'shipment' => $shipment->fresh(),
         ];
+    }
+
+    /**
+     * Advance the order to "completed" (Delivered / Completed) once DHL confirms delivery. Guarded
+     * on the current status being "shipped" so we never override a canceled / closed / refunded
+     * order and re-refreshing an already delivered order stays a no-op.
+     */
+    protected function syncOrderStatusFromTracking(Shipment $shipment, ?string $code): void
+    {
+        if (! DhlCheckpointCodes::isDelivered($code)) {
+            return;
+        }
+
+        $order = $shipment->order;
+
+        if (! $order || $order->status !== Order::STATUS_SHIPPED) {
+            return;
+        }
+
+        $this->orderRepository->updateOrderStatus($order, Order::STATUS_COMPLETED);
     }
 
     /**
