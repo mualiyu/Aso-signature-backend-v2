@@ -61,4 +61,32 @@
             @lang('admin::app.sales.shipments.view.dhl-refresh-tracking')
         </a>
     </p>
+
+    @if (
+        bouncer()->hasPermission('sales.shipments.cancel')
+        && ! $shipment->dhl_last_checkpoint_code
+    )
+        <form
+            method="POST"
+            ref="cancelShipmentForm{{ $shipment->id }}"
+            action="{{ route('admin.sales.shipments.cancel', $shipment->id) }}"
+        >
+            @csrf
+        </form>
+
+        <p class="pt-2">
+            <a
+                href="javascript:void(0);"
+                class="text-sm text-red-600 hover:underline"
+                @click="$emitter.emit('open-confirm-modal', {
+                    message: '@lang('admin::app.sales.shipments.view.cancel-confirm-msg')',
+                    agree: () => {
+                        this.$refs['cancelShipmentForm{{ $shipment->id }}'].submit()
+                    }
+                })"
+            >
+                @lang('admin::app.sales.shipments.view.cancel-shipment')
+            </a>
+        </p>
+    @endif
 @endif

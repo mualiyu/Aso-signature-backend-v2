@@ -283,11 +283,19 @@ class OrderController extends Controller
         $callback = function() use ($order) {
             $file = fopen('php://output', 'w');
 
+            $orderItemsById = $order->items->keyBy('id');
+            $fitPreferenceLabels = \Webkul\Customer\Data\MeasurementFields::fitPreferenceOptions();
+            $fitNoteLabels = \Webkul\Customer\Data\MeasurementFields::fitNoteOptions();
+
             // CSV Headers
             fputcsv($file, [
                 'Order ID',
                 'Customer Name',
                 'Customer Email',
+                'Item',
+                'Profile',
+                'Fit Preference',
+                'Fit Notes',
                 'Measurement Type',
                 'Measurement Name',
                 'Value',
@@ -298,10 +306,24 @@ class OrderController extends Controller
 
             // Data rows
             foreach ($order->measurements as $measurement) {
+                $orderItem = $measurement->order_item_id
+                    ? $orderItemsById->get($measurement->order_item_id)
+                    : null;
+
+                $fitNotes = collect($measurement->fit_notes ?: [])
+                    ->map(fn ($note) => $fitNoteLabels[$note] ?? $note)
+                    ->implode('; ');
+
                 fputcsv($file, [
                     $order->increment_id,
                     $order->customer_full_name,
                     $order->customer_email,
+                    $orderItem ? $orderItem->name : 'Whole Order',
+                    $measurement->profile_name ?? '',
+                    $measurement->fit_preference
+                        ? ($fitPreferenceLabels[$measurement->fit_preference] ?? $measurement->fit_preference)
+                        : '',
+                    $fitNotes,
                     ucfirst($measurement->measurement_type),
                     str_replace('_', ' ', ucfirst($measurement->name)),
                     $measurement->value,

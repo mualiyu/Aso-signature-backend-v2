@@ -18,6 +18,16 @@ class MeasurementFields
 
     public const UNIT_INCHES = 'inches';
 
+    public const FIT_SLIM = 'slim_fit';
+
+    public const FIT_REGULAR = 'regular_fit';
+
+    public const FIT_RELAXED = 'relaxed_fit';
+
+    public const FIT_FLOWING_LOOSE = 'flowing_loose_fit';
+
+    public const FIT_NOTE_OTHER = 'other';
+
     /**
      * Canonical field definitions keyed by gender and body group.
      */
@@ -108,6 +118,38 @@ class MeasurementFields
             self::GROUP_UPPER_BODY => 'Upper Body',
             self::GROUP_LOWER_BODY => 'Lower Body',
             self::GROUP_CUSTOM     => 'Custom',
+        ];
+    }
+
+    /**
+     * Fit preference options (value => label).
+     */
+    public static function fitPreferenceOptions(): array
+    {
+        return [
+            self::FIT_SLIM          => 'Slim Fit',
+            self::FIT_REGULAR       => 'Regular Fit',
+            self::FIT_RELAXED       => 'Relaxed Fit',
+            self::FIT_FLOWING_LOOSE => 'Flowing/Loose Fit',
+        ];
+    }
+
+    /**
+     * Fit note options (value => label). Stored as a JSON array on the profile.
+     */
+    public static function fitNoteOptions(): array
+    {
+        return [
+            'broad_shoulders'              => 'Broad shoulders',
+            'long_arms'                    => 'Long arms',
+            'short_arms'                   => 'Short arms',
+            'large_hips'                   => 'Large hips',
+            'big_tummy'                    => 'Big tummy',
+            'very_slim_frame'              => 'Very slim frame',
+            'tall_frame'                   => 'Tall frame',
+            'short_frame'                  => 'Short frame',
+            'prefer_modest_loose_clothing' => 'Prefer modest/loose clothing',
+            self::FIT_NOTE_OTHER           => 'Other',
         ];
     }
 

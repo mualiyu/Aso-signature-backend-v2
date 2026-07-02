@@ -11,12 +11,25 @@ class OrderMeasurement extends Model implements OrderMeasurementContract
 
     protected $fillable = [
         'order_id',
+        'order_item_id',
         'customer_id',
+        'profile_name',
         'name',
         'value',
         'unit',
         'notes',
         'measurement_type',
+        'fit_preference',
+        'fit_notes',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'fit_notes' => 'array',
     ];
 
     /**
@@ -25,6 +38,14 @@ class OrderMeasurement extends Model implements OrderMeasurementContract
     public function order()
     {
         return $this->belongsTo(OrderProxy::modelClass());
+    }
+
+    /**
+     * Get the order item that owns the measurement.
+     */
+    public function orderItem()
+    {
+        return $this->belongsTo(OrderItemProxy::modelClass(), 'order_item_id');
     }
 
     /**

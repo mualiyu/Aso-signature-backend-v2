@@ -24,8 +24,13 @@ class MeasurementController extends Controller
     {
         $customer = auth()->guard('customer')->user();
 
+        $profile = $this->measurementService->resolveProfile(
+            $customer,
+            (int) request()->query('profile') ?: null
+        );
+
         return view('shop::customers.account.measurements.create', [
-            'payload' => $this->measurementService->buildFormPayload($customer),
+            'payload' => $this->measurementService->buildFormPayload($customer, $profile),
         ]);
     }
 

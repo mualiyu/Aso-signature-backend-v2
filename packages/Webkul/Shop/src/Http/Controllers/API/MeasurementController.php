@@ -27,11 +27,16 @@ class MeasurementController extends Controller
             ], 401);
         }
 
-        $payload = $this->measurementService->buildFormPayload($customer);
+        $profile = $this->measurementService->resolveProfile(
+            $customer,
+            (int) request()->query('profile_id') ?: null
+        );
+
+        $payload = $this->measurementService->buildFormPayload($customer, $profile);
 
         return response()->json([
             'data' => [
-                'measurements' => $customer->measurements,
+                'measurements' => $profile ? $profile->measurements : collect(),
                 'payload'      => $payload,
                 'completeness' => $payload['completeness'],
             ],

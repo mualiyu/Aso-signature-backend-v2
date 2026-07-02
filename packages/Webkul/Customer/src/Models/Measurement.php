@@ -21,6 +21,7 @@ class Measurement extends Model implements MeasurementContract
      */
     protected $fillable = [
         'customer_id',
+        'profile_id',
         'name',
         'value',
         'unit',
@@ -42,5 +43,13 @@ class Measurement extends Model implements MeasurementContract
     public function customer()
     {
         return $this->belongsTo(CustomerProxy::modelClass());
+    }
+
+    /**
+     * Get the profile that owns the measurement.
+     */
+    public function profile()
+    {
+        return $this->belongsTo(MeasurementProfile::class, 'profile_id');
     }
 }

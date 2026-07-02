@@ -81,6 +81,11 @@ return [
         'route' => 'admin.sales.shipments.store',
         'sort'  => 2,
     ], [
+        'key'   => 'sales.shipments.cancel',
+        'name'  => 'admin::app.acl.cancel',
+        'route' => 'admin.sales.shipments.cancel',
+        'sort'  => 3,
+    ], [
         'key'   => 'sales.refunds',
         'name'  => 'admin::app.acl.refunds',
         'route' => 'admin.sales.refunds.index',

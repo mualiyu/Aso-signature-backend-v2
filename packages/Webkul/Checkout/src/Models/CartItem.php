@@ -54,6 +54,14 @@ class CartItem extends Model implements CartItemContract
         return $this->hasOne(ProductProxy::modelClass(), 'id', 'product_id');
     }
 
+    /**
+     * Get the measurement profile assigned to the cart item.
+     */
+    public function measurementProfile(): BelongsTo
+    {
+        return $this->belongsTo(\Webkul\Customer\Models\MeasurementProfile::class, 'measurement_profile_id');
+    }
+
     public function cart(): HasOne
     {
         return $this->hasOne(CartProxy::modelClass(), 'id', 'cart_id');

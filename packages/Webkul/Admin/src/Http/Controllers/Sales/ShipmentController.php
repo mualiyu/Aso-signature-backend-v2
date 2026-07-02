@@ -3,6 +3,7 @@
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Webkul\Admin\DataGrids\Sales\OrderShipmentDataGrid;
@@ -11,6 +12,7 @@ use Webkul\Sales\Repositories\OrderItemRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\ShipmentRepository;
 use Webkul\Shipping\Services\DHLShipmentService;
+use Webkul\Shipping\Services\DhlShipmentCancellationService;
 use Webkul\Shipping\Services\DhlTrackingService;
 
 class ShipmentController extends Controller
@@ -25,7 +27,8 @@ class ShipmentController extends Controller
         protected OrderItemRepository $orderItemRepository,
         protected ShipmentRepository $shipmentRepository,
         protected DHLShipmentService $dhlShipmentService,
-        protected DhlTrackingService $dhlTrackingService
+        protected DhlTrackingService $dhlTrackingService,
+        protected DhlShipmentCancellationService $dhlShipmentCancellationService
     ) {}
 
     /**
@@ -103,6 +106,7 @@ class ShipmentController extends Controller
             $data['shipment']['track_number'] = $dhlResult['data']['tracking_number'] ?? null;
             $data['shipment']['carrier_title'] = 'DHL Express';
             $data['shipment']['dhl_documents_path'] = $dhlResult['data']['dhl_documents_path'] ?? null;
+            $data['shipment']['dhl_pickup_confirmation_number'] = $dhlResult['data']['dhl_pickup_confirmation_number'] ?? null;
 
             $dhlDocumentsMissing = ! empty($data['shipment']['track_number'])
                 && empty($data['shipment']['dhl_documents_path']);
@@ -243,6 +247,68 @@ class ShipmentController extends Controller
         session()->flash('success', trans('admin::app.sales.shipments.view.dhl-tracking-refreshed'));
 
         return redirect()->back();
+    }
+
+    /**
+     * Cancel a DHL shipment: cancel the pickup at DHL (when one was booked), reverse all
+     * local side-effects (inventory, qty_shipped, order status) and delete the shipment
+     * so a corrected one can be created.
+     */
+    public function cancel(int $id): RedirectResponse
+    {
+        $shipment = $this->shipmentRepository->findOrFail($id);
+
+        if (! $this->isDhlShipment($shipment)) {
+            session()->flash('error', trans('admin::app.sales.shipments.view.cancel-not-applicable'));
+
+            return redirect()->back();
+        }
+
+        $eligibility = $this->dhlShipmentCancellationService->checkCancellable($shipment);
+
+        if (! $eligibility['cancellable']) {
+            session()->flash('error', $eligibility['reason'] ?? trans('admin::app.sales.shipments.view.cancel-tracking-unverified', ['message' => 'Unknown error']));
+
+            return redirect()->back();
+        }
+
+        $dhlResult = $this->dhlShipmentCancellationService->cancelAtDhl($shipment);
+
+        $orderId = $shipment->order_id;
+        $trackNumber = $shipment->track_number;
+        $documentsPath = $shipment->dhl_documents_path;
+
+        $this->shipmentRepository->cancel($shipment);
+
+        if ($documentsPath) {
+            try {
+                Storage::disk('local')->delete($documentsPath);
+            } catch (\Throwable $e) {
+                Log::warning('DHL shipment cancel: could not delete documents PDF', [
+                    'shipment_id' => $id,
+                    'path'        => $documentsPath,
+                    'message'     => $e->getMessage(),
+                ]);
+            }
+        }
+
+        Log::info('DHL shipment cancelled', [
+            'admin_id'          => auth()->guard('admin')->id(),
+            'shipment_id'       => $id,
+            'order_id'          => $orderId,
+            'tracking'          => $trackNumber,
+            'dhl_pickup_cancel' => $dhlResult,
+        ]);
+
+        session()->flash('success', trans('admin::app.sales.shipments.view.cancel-success'));
+
+        if (! $dhlResult['success']) {
+            session()->flash('warning', trans('admin::app.sales.shipments.view.cancel-pickup-warning', [
+                'message' => $dhlResult['error'] ?? 'Unknown error',
+            ]));
+        }
+
+        return redirect()->route('admin.sales.orders.view', $orderId);
     }
 
     /**

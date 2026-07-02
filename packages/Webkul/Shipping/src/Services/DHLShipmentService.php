@@ -113,16 +113,29 @@ class DHLShipmentService
                 $receiverPostalAddress['addressLine3'] = $receiverPostal['line3'];
             }
 
+            // Waybill/label "Content" must list the shipped product titles (DHL requirement).
+            $contentDescription = $this->buildShipmentContentDescription($order, $shipmentData);
+
+            $receiverCompanyName = trim((string) ($shippingAddress->company_name ?? ''));
+
             $requestBody = [
                 'plannedShippingDateAndTime' => $plannedDate,
                 'pickup'                     => [
                     'isRequested' => false,
                 ],
                 'productCode'                => $productCode,
+                'getRateEstimates'           => false,
                 'accounts'                   => [
                     [
                         'number'   => $accountNumber,
                         'typeCode' => 'shipper',
+                    ],
+                ],
+                // Prints as "Ref Code" on the label and "Shipper Reference" on the paperwork.
+                'customerReferences'         => [
+                    [
+                        'value'    => (string) $order->increment_id,
+                        'typeCode' => 'CU',
                     ],
                 ],
                 'customerDetails'            => [
@@ -146,7 +159,8 @@ class DHLShipmentService
                         ],
                     ],
                     'receiverDetails'  => [
-                        'typeCode'             => 'business',
+                        // Customers without a company are private consumers — fixes "Trader Type: Business" on customs paperwork.
+                        'typeCode'             => $receiverCompanyName !== '' ? 'business' : 'private',
                         'postalAddress'        => $receiverPostalAddress,
                         'contactInformation'   => $this->buildReceiverContactInformation(
                             $shippingAddress,
@@ -159,15 +173,22 @@ class DHLShipmentService
                 'content'                    => [
                     'packages'             => [
                         [
-                            'weight'     => max(0.1, round($totalWeight, 2)),
-                            'dimensions' => [
+                            'weight'      => max(0.1, round($totalWeight, 2)),
+                            'dimensions'  => [
                                 'length' => max(1, round($dimensions['length'], 2)),
                                 'width'  => max(1, round($dimensions['width'], 2)),
                                 'height' => max(1, round($dimensions['height'], 2)),
                             ],
+                            'description' => $contentDescription,
+                            'customerReferences' => [
+                                [
+                                    'value'    => (string) $order->increment_id,
+                                    'typeCode' => 'CU',
+                                ],
+                            ],
                         ],
                     ],
-                    'description'          => 'Shipment',
+                    'description'          => $contentDescription,
                     'unitOfMeasurement'    => 'metric',
                     'isCustomsDeclarable'  => $isInternational,
                 ],
@@ -247,10 +268,11 @@ class DHLShipmentService
                 return [
                     'success' => true,
                     'data'    => [
-                        'tracking_number'    => $trackingNumber,
-                        'shipment_id'        => $trackingNumber,
-                        'dhl_documents_path' => $documentsPath,
-                        'dhl_response'       => $data,
+                        'tracking_number'                 => $trackingNumber,
+                        'shipment_id'                     => $trackingNumber,
+                        'dhl_documents_path'              => $documentsPath,
+                        'dhl_pickup_confirmation_number'  => $data['dispatchConfirmationNumber'] ?? null,
+                        'dhl_response'                    => $data,
                     ],
                 ];
             }
@@ -383,8 +405,17 @@ class DHLShipmentService
             'exportReasonType' => 'permanent',
             'shipmentType'     => 'commercial',
             'invoice'          => [
-                'number' => (string) $order->increment_id,
-                'date'   => $invoiceDate,
+                'number'             => (string) $order->increment_id,
+                'date'               => $invoiceDate,
+                // Fills the "Name / Position" signature block on the commercial invoice.
+                'signatureName'      => $this->dhlConfig('origin_company') ?: 'Shipper',
+                'signatureTitle'     => 'Shipping Department',
+                'customerReferences' => [
+                    [
+                        'typeCode' => 'CU',
+                        'value'    => (string) $order->increment_id,
+                    ],
+                ],
             ],
             'placeOfIncoterm'  => $placeOfIncoterm,
         ];
@@ -393,6 +424,44 @@ class DHLShipmentService
             'declaration'    => $declaration,
             'declared_total' => round($declaredTotal, 2),
         ];
+    }
+
+    /**
+     * Waybill/label "Content": comma-separated shipped product titles (MyDHL content.description, max 70 chars).
+     */
+    protected function buildShipmentContentDescription(Order $order, array $shipmentData): string
+    {
+        $names = [];
+        $sourceId = $shipmentData['source'] ?? null;
+
+        foreach ($shipmentData['items'] as $itemId => $inventorySource) {
+            $qty = (float) ($inventorySource[$sourceId] ?? 0);
+            if ($qty <= 0) {
+                continue;
+            }
+
+            $orderItem = $order->items()->find($itemId);
+            if (! $orderItem) {
+                continue;
+            }
+
+            $name = $this->flattenHtmlTextToSingleLine($orderItem->name ?? '');
+            if ($name !== '' && ! in_array($name, $names, true)) {
+                $names[] = $name;
+            }
+        }
+
+        if ($names === []) {
+            return 'Shipment';
+        }
+
+        $description = implode(', ', $names);
+
+        if (mb_strlen($description, 'UTF-8') > 70) {
+            $description = rtrim(mb_substr($description, 0, 67, 'UTF-8')).'...';
+        }
+
+        return $description;
     }
 
     /**

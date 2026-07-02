@@ -22,7 +22,7 @@
         </div>
 
         <p class="mb-6 max-w-3xl text-sm text-gray-600">
-            Add your body measurements once and we will use them for every made-to-measure order. Choose your fit profile, fill in only the fields shown, and watch the guide if you need help.
+            Create measurement profiles for yourself and the people you shop for. Each profile keeps its own measurements, fit preference, and fit notes — at checkout you can pick which profile to use for every item in your order.
         </p>
 
         <div class="max-w-5xl">

@@ -74,6 +74,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::post('create/{order_id}', 'store')->name('admin.sales.shipments.store');
 
+            Route::post('cancel/{id}', 'cancel')->name('admin.sales.shipments.cancel');
+
             Route::get('view/{id}/dhl-documents', 'downloadDhlDocuments')->name('admin.sales.shipments.dhl-documents');
 
             Route::get('view/{id}/dhl-tracking/refresh', 'refreshDhlTracking')->name('admin.sales.shipments.dhl-tracking-refresh');

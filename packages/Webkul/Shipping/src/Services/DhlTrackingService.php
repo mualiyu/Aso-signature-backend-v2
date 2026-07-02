@@ -10,7 +10,7 @@ use Webkul\Shipping\Data\DhlCheckpointCodes;
 class DhlTrackingService
 {
     /**
-     * @return array{success: bool, checkpoints?: list<array<string, mixed>>, latest?: array<string, mixed>|null, error?: string}
+     * @return array{success: bool, checkpoints?: list<array<string, mixed>>, latest?: array<string, mixed>|null, error?: string, status?: int}
      */
     public function fetchTracking(string $trackingNumber): array
     {
@@ -46,6 +46,7 @@ class DhlTrackingService
                 return [
                     'success' => false,
                     'error'   => $errorMessage,
+                    'status'  => $response->status(),
                 ];
             }
 

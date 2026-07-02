@@ -9,6 +9,7 @@ use Webkul\Shop\Http\Controllers\API\CoreController;
 use Webkul\Shop\Http\Controllers\API\CustomerController;
 use Webkul\Shop\Http\Controllers\API\DesignerController;
 use Webkul\Shop\Http\Controllers\API\MeasurementController;
+use Webkul\Shop\Http\Controllers\API\MeasurementProfileController;
 use Webkul\Shop\Http\Controllers\API\OnepageController;
 use Webkul\Shop\Http\Controllers\API\ProductController;
 use Webkul\Shop\Http\Controllers\API\ReviewController;
@@ -145,5 +146,21 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
             Route::post('', 'store')->name('shop.api.customers.account.measurements.store');
         });
+
+        Route::controller(MeasurementProfileController::class)->prefix('measurement-profiles')->group(function () {
+            Route::get('', 'index')->name('shop.api.customers.account.measurement_profiles.index');
+
+            Route::post('', 'store')->name('shop.api.customers.account.measurement_profiles.store');
+
+            Route::put('{id}', 'update')->name('shop.api.customers.account.measurement_profiles.update');
+
+            Route::delete('{id}', 'destroy')->name('shop.api.customers.account.measurement_profiles.delete');
+
+            Route::post('{id}/measurements', 'saveMeasurements')->name('shop.api.customers.account.measurement_profiles.measurements.store');
+        });
     });
+
+    Route::post('checkout/cart-items/{id}/measurement-profile', [MeasurementProfileController::class, 'assignToCartItem'])
+        ->middleware('customer')
+        ->name('shop.api.checkout.cart_items.measurement_profile.store');
 });

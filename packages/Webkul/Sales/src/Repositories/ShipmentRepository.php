@@ -58,6 +58,7 @@ class ShipmentRepository extends Repository
                 'dhl_last_checkpoint_code' => $data['shipment']['dhl_last_checkpoint_code'] ?? null,
                 'dhl_last_checkpoint_description' => $data['shipment']['dhl_last_checkpoint_description'] ?? null,
                 'dhl_tracking_fetched_at' => $data['shipment']['dhl_tracking_fetched_at'] ?? null,
+                'dhl_pickup_confirmation_number' => $data['shipment']['dhl_pickup_confirmation_number'] ?? null,
                 'customer_id'          => $order->customer_id,
                 'customer_type'        => $order->customer_type,
                 'order_address_id'     => $order->shipping_address->id,
@@ -150,5 +151,90 @@ class ShipmentRepository extends Repository
         DB::commit();
 
         return $shipment;
+    }
+
+    /**
+     * Cancel a shipment: exact inverse of create(). Restores product inventories,
+     * reverses qty_shipped on order items (incl. composite children), deletes the
+     * shipment + items, and recomputes the order status so the order can be shipped again.
+     *
+     * @param  \Webkul\Sales\Contracts\Shipment  $shipment
+     * @return bool
+     */
+    public function cancel($shipment)
+    {
+        DB::beginTransaction();
+
+        try {
+            Event::dispatch('sales.shipment.cancel.before', $shipment);
+
+            $order = $shipment->order;
+
+            foreach ($shipment->items as $shipmentItem) {
+                $orderItem = $this->orderItemRepository->find($shipmentItem->order_item_id);
+
+                if (! $orderItem) {
+                    $shipmentItem->delete();
+
+                    continue;
+                }
+
+                $qty = $shipmentItem->qty;
+
+                if ($orderItem->getTypeInstance()->isComposite()) {
+                    foreach ($orderItem->children as $child) {
+                        if (! $child->qty_ordered) {
+                            $finalQty = $qty;
+                        } else {
+                            $finalQty = ($child->qty_ordered / $orderItem->qty_ordered) * $qty;
+                        }
+
+                        $this->shipmentItemRepository->returnProductInventory([
+                            'shipment'  => $shipment,
+                            'product'   => $child->product,
+                            'qty'       => $finalQty,
+                            'vendor_id' => 0,
+                        ]);
+
+                        $this->orderItemRepository->update([
+                            'qty_shipped' => max(0, $child->qty_shipped - $finalQty),
+                        ], $child->id);
+                    }
+                } else {
+                    $this->shipmentItemRepository->returnProductInventory([
+                        'shipment'  => $shipment,
+                        'product'   => $orderItem->product,
+                        'qty'       => $qty,
+                        'vendor_id' => 0,
+                    ]);
+                }
+
+                $this->orderItemRepository->update([
+                    'qty_shipped' => max(0, $orderItem->qty_shipped - $qty),
+                ], $orderItem->id);
+
+                $shipmentItem->delete();
+            }
+
+            $shipment->delete();
+
+            $order->refresh();
+
+            if ($order->hasOpenInvoice()) {
+                $this->orderRepository->updateOrderStatus($order, Order::STATUS_PENDING_PAYMENT);
+            } else {
+                $this->orderRepository->updateOrderStatus($order);
+            }
+
+            Event::dispatch('sales.shipment.cancel.after', $order);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        DB::commit();
+
+        return true;
     }
 }

@@ -1,6 +1,6 @@
 {
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-f18627f7.css",
+    "file": "assets/app-545a739a.css",
     "isEntry": true,
     "src": "src/Resources/assets/css/app.css"
   },
@@ -27,6 +27,10 @@
   "src/Resources/assets/images/favicon.ico": {
     "file": "assets/favicon-1b7c1fb6.ico",
     "src": "src/Resources/assets/images/favicon.ico"
+  },
+  "src/Resources/assets/images/flutterwave.png": {
+    "file": "assets/flutterwave-73d2c77a.png",
+    "src": "src/Resources/assets/images/flutterwave.png"
   },
   "src/Resources/assets/images/hero-image.jpg": {
     "file": "assets/hero-image-feee3420.jpg",

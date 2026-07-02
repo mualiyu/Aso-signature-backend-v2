@@ -467,32 +467,78 @@
                     @php
                         $measurementGroupLabels = \Webkul\Customer\Data\MeasurementFields::groupLabels();
                         $measurementLabelMap = \Webkul\Customer\Data\MeasurementFields::labelMap();
+                        $fitPreferenceLabels = \Webkul\Customer\Data\MeasurementFields::fitPreferenceOptions();
+                        $fitNoteLabels = \Webkul\Customer\Data\MeasurementFields::fitNoteOptions();
+                        $measurementsByItem = $order->measurements->groupBy('order_item_id');
+                        $orderItemsById = $order->items->keyBy('id');
                     @endphp
 
                     <x-admin::accordion>
                         <x-slot:header>
                             <p class="p-2.5 text-base font-semibold text-gray-600 dark:text-gray-300">
-                                Customer Measurements ({{ $order->measurements->count() }})
+                                Customer Measurements
                             </p>
                         </x-slot:header>
 
                         <x-slot:content>
                             <div class="grid gap-4">
-                                @foreach($order->measurements->groupBy('measurement_type') as $type => $measurements)
-                                    <div>
-                                        <p class="font-semibold text-gray-800 dark:text-white capitalize mb-2">
-                                            {{ $measurementGroupLabels[$type] ?? ucwords(str_replace('_', ' ', $type)) }}
-                                        </p>
+                                @foreach($measurementsByItem as $orderItemId => $itemMeasurements)
+                                    @php
+                                        $orderItem = $orderItemId ? $orderItemsById->get($orderItemId) : null;
+                                        $first = $itemMeasurements->first();
+                                        $fitNotes = $first->fit_notes ?: [];
+                                    @endphp
 
-                                        <div class="grid grid-cols-3 gap-2 text-sm">
-                                            @foreach($measurements as $measurement)
-                                                <div class="flex justify-left">
-                                                    <span class="text-gray-600 dark:text-gray-300">
-                                                        {{ $measurement->measurement_type === 'custom' ? ($measurement->notes ?: ucwords(str_replace('_', ' ', $measurement->name))) : ($measurementLabelMap[$measurement->name] ?? ucwords(str_replace('_', ' ', $measurement->name))) }}:
+                                    <div class="rounded border border-gray-200 p-3 dark:border-gray-800">
+                                        <div class="mb-3 flex flex-wrap items-center gap-2">
+                                            <p class="font-semibold text-gray-800 dark:text-white">
+                                                {{ $orderItem ? $orderItem->name : 'Whole Order' }}
+                                            </p>
+
+                                            @if($first->profile_name)
+                                                <span class="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                                    Profile: {{ $first->profile_name }}
+                                                </span>
+                                            @endif
+
+                                            @if($first->fit_preference)
+                                                <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+                                                    {{ $fitPreferenceLabels[$first->fit_preference] ?? ucwords(str_replace('_', ' ', $first->fit_preference)) }}
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        @if(count($fitNotes))
+                                            <div class="mb-3 flex flex-wrap items-center gap-1.5">
+                                                <span class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">Fit notes:</span>
+
+                                                @foreach($fitNotes as $note)
+                                                    <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                                        {{ $fitNoteLabels[$note] ?? $note }}
                                                     </span>
-                                                    <span class="font-semibold text-gray-800 dark:text-white">
-                                                        &nbsp;{{ $measurement->value }} {{ $measurement->unit }}
-                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+
+                                        <div class="grid gap-4">
+                                            @foreach($itemMeasurements->groupBy('measurement_type') as $type => $measurements)
+                                                <div>
+                                                    <p class="font-semibold text-gray-800 dark:text-white capitalize mb-2">
+                                                        {{ $measurementGroupLabels[$type] ?? ucwords(str_replace('_', ' ', $type)) }}
+                                                    </p>
+
+                                                    <div class="grid grid-cols-3 gap-2 text-sm">
+                                                        @foreach($measurements as $measurement)
+                                                            <div class="flex justify-left">
+                                                                <span class="text-gray-600 dark:text-gray-300">
+                                                                    {{ $measurement->measurement_type === 'custom' ? ($measurement->notes ?: ucwords(str_replace('_', ' ', $measurement->name))) : ($measurementLabelMap[$measurement->name] ?? ucwords(str_replace('_', ' ', $measurement->name))) }}:
+                                                                </span>
+                                                                <span class="font-semibold text-gray-800 dark:text-white">
+                                                                    &nbsp;{{ $measurement->value }} {{ $measurement->unit }}
+                                                                </span>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>

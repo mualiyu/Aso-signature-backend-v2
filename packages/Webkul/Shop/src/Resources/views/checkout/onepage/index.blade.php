@@ -63,96 +63,9 @@
     </div>
 
     @auth('customer')
-        <v-checkout-measurement-shell></v-checkout-measurement-shell>
+        @include('shop::checkout.onepage.measurement.measurement')
     @endauth
 
-    @include('shop::checkout.onepage.measurement.measurement')
-
-    @pushOnce('scripts')
-        <script type="text/x-template" id="v-checkout-measurement-shell-template">
-            <div class="w-full border-t-4 border-navyBlue bg-[#e8e7e7] px-[60px] py-8 text-black max-lg:px-8 max-sm:px-4">
-                <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                    <div>
-                        <p class="text-lg font-medium text-black">
-                            <span v-if="completeness?.isComplete">Your measurements are ready for this order.</span>
-                            <span v-else-if="completeness">@{{ completeness.missing.length }} measurement(s) still needed for a perfect fit.</span>
-                            <span v-else>Make sure your measurements are up to date before placing your order.</span>
-                        </p>
-                        <p v-if="completeness && !completeness.isComplete" class="mt-1 text-sm text-gray-600">
-                            @{{ completeness.filled }} of @{{ completeness.total }} complete
-                        </p>
-                    </div>
-
-                    <div class="flex flex-wrap gap-3">
-                        <button
-                            type="button"
-                            class="primary-button rounded-2xl px-8 py-3"
-                            @click="openEditor"
-                        >
-                            @{{ completeness?.isComplete ? 'Update measurements' : 'Add / edit measurements' }}
-                        </button>
-                        <button
-                            type="button"
-                            class="secondary-button rounded-2xl px-8 py-3"
-                            @click="openViewer"
-                        >
-                            Review measurements
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </script>
-
-        <script type="module">
-            app.component('v-checkout-measurement-shell', {
-                template: '#v-checkout-measurement-shell-template',
-
-                data() {
-                    return {
-                        completeness: null,
-                    };
-                },
-
-                mounted() {
-                    this.fetchStatus();
-                    this.$emitter.on('checkout-measurements-status', this.updateStatus);
-                    this.$emitter.on('measurements-updated', this.handleUpdated);
-                },
-
-                beforeUnmount() {
-                    this.$emitter?.off('checkout-measurements-status', this.updateStatus);
-                    this.$emitter?.off('measurements-updated', this.handleUpdated);
-                },
-
-                methods: {
-                    fetchStatus() {
-                        this.$axios.get('/api/customer/measurements')
-                            .then((response) => {
-                                const data = response.data.data || {};
-                                this.updateStatus(data.completeness || data.payload?.completeness || null);
-                            })
-                            .catch(() => {});
-                    },
-
-                    updateStatus(completeness) {
-                        this.completeness = completeness;
-                    },
-
-                    handleUpdated(data) {
-                        this.updateStatus(data?.completeness || null);
-                    },
-
-                    openEditor() {
-                        this.$emitter.emit('open-measurements');
-                    },
-
-                    openViewer() {
-                        this.$emitter.emit('open-measurements');
-                    },
-                },
-            });
-        </script>
-    @endPushOnce
 
     @pushOnce('scripts')
         <script
@@ -176,9 +89,16 @@
                         id="steps-container"
                     >
                         <!-- Included Addresses Blade File -->
-                        <template v-if="['address', 'shipping', 'payment', 'review'].includes(currentStep)">
+                        <template v-if="['address', 'measurement', 'shipping', 'payment', 'review'].includes(currentStep)">
                             @include('shop::checkout.onepage.address')
                         </template>
+
+                        <!-- Included Tailoring Measurements Blade File -->
+                        @auth('customer')
+                            <template v-if="['measurement', 'shipping', 'payment', 'review'].includes(currentStep)">
+                                @include('shop::checkout.onepage.measurement-step')
+                            </template>
+                        @endauth
 
                         <!-- Included Shipping Methods Blade File -->
                         <template v-if="cart.have_stockable_items && ['shipping', 'payment', 'review'].includes(currentStep)">
@@ -246,6 +166,8 @@
 
                         currentStep: 'address',
 
+                        isCustomer: {{ auth()->guard('customer')->check() ? 'true' : 'false' }},
+
                         shippingMethods: null,
 
                         paymentMethods: null,
@@ -270,6 +192,34 @@
                     },
 
                     stepForward(step) {
+                        // Tailoring Measurements step completed: shipping/payment methods
+                        // already arrived while it was open, so just advance.
+                        if (this.currentStep == 'measurement' && ['shipping', 'payment'].includes(step)) {
+                            this.currentStep = step;
+
+                            this.canPlaceOrder = false;
+
+                            this.scrollToCurrentStep();
+
+                            return;
+                        }
+
+                        // Address completed: logged-in customers confirm their tailoring
+                        // measurements before choosing shipping/payment.
+                        if (this.isCustomer && this.currentStep == 'address' && ['shipping', 'payment'].includes(step)) {
+                            this.currentStep = 'measurement';
+
+                            this.canPlaceOrder = false;
+
+                            if (step == 'shipping') {
+                                this.shippingMethods = null;
+                            } else {
+                                this.paymentMethods = null;
+                            }
+
+                            return;
+                        }
+
                         this.currentStep = step;
 
                         if (step == 'review') {
@@ -288,7 +238,13 @@
                     },
 
                     stepProcessed(data) {
-                        if (this.currentStep == 'shipping') {
+                        if (this.currentStep == 'measurement') {
+                            if (this.cart.have_stockable_items) {
+                                this.shippingMethods = data;
+                            } else {
+                                this.paymentMethods = data;
+                            }
+                        } else if (this.currentStep == 'shipping') {
                             this.shippingMethods = data;
                         } else if (this.currentStep == 'payment') {
                             this.paymentMethods = data;
