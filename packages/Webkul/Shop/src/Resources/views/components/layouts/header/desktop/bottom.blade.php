@@ -325,7 +325,7 @@
                 >
                     @{{ designer.name }}
                     <br>
-                    <span class="text-sm text-gray-500">@@{{ designer.slug }}</span>
+                    {{-- <span class="text-sm text-gray-500">@@{{ designer.slug }}</span> --}}
                 </a>
             </div>
         </div>

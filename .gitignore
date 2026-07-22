@@ -6,6 +6,9 @@
 .vscode
 .vagrant
 *.hot
+.cursorignore
+.cursorrules
+.editorconfig
 /stubs
 /data
 /docker-compose-collection

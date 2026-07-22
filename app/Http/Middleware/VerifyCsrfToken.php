@@ -17,5 +17,9 @@ class VerifyCsrfToken extends Middleware
         // Example:
         'https://backend.asosignature.com/api/*',
         'http://aso-signature-backend.test/api/*',
+
+        // Server-to-server callback from the Aso Measurement Service
+        // (authenticated via HMAC signature, not a session).
+        'api/measurement-service/*',
     ];
 }

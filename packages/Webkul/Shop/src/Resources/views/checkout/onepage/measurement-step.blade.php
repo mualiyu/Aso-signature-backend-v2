@@ -92,13 +92,26 @@
                             Add your body measurements once and reuse them on every order. You can create separate profiles for family and friends too.
                         </p>
 
-                        <button
-                            type="button"
-                            class="secondary-button mt-5 rounded-2xl px-8 py-3 max-md:rounded-lg"
-                            @click="openEditor"
-                        >
-                            Add your measurements
-                        </button>
+                        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+                            <button
+                                type="button"
+                                class="secondary-button rounded-2xl px-8 py-3 max-md:rounded-lg"
+                                @click="openEditor"
+                            >
+                                Add manually
+                            </button>
+
+                            @if (config('measurement_service.url'))
+                                <a
+                                    href="{{ route('shop.customers.account.measurements.smart', ['redirect' => route('shop.checkout.onepage.index')]) }}"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="primary-button rounded-2xl px-8 py-3 max-md:rounded-lg"
+                                >
+                                    ✨ Smart Measurement
+                                </a>
+                            @endif
+                        </div>
                     </div>
 
                     <!-- Per item profile assignment -->
@@ -221,7 +234,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-5 flex items-center gap-3 max-md:mt-4">
+                        <div class="mt-5 flex flex-wrap items-center gap-3 max-md:mt-4">
                             <button
                                 type="button"
                                 class="secondary-button rounded-2xl px-6 py-2.5 text-sm max-md:rounded-lg"
@@ -229,6 +242,17 @@
                             >
                                 Manage profiles
                             </button>
+
+                            @if (config('measurement_service.url'))
+                                <a
+                                    href="{{ route('shop.customers.account.measurements.smart', ['redirect' => route('shop.checkout.onepage.index')]) }}"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="text-sm font-semibold text-navyBlue underline underline-offset-2"
+                                >
+                                    ✨ Add with Smart Measurement
+                                </a>
+                            @endif
                         </div>
                     </template>
 

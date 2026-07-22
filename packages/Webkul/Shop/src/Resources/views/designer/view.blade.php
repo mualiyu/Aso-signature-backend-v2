@@ -90,14 +90,14 @@
                                             </a>
                                         </div>
                                         @endif
-                                        @if ($designer->phone)
+                                        {{-- @if ($designer->phone)
                                         <div class="group">
                                             <a href="tel:{{ $designer->phone }}"
                                                class="text-lg text-white hover:text-gray-300 transition-colors duration-300 border-b border-transparent hover:border-gray-300 pb-1">
                                                 {{ $designer->phone }}
                                             </a>
                                         </div>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 </div>
 

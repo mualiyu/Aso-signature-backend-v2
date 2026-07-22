@@ -12,7 +12,7 @@
             role="presentation"
         ></span>
 
-        Size Guide
+            How to Measure
     </div>
 </v-size-guide>
 
@@ -45,7 +45,7 @@
                     </svg>
                 </span>
 
-                Size Guide
+                How to Measure
 
                 {{-- close icon --}}
                 <span class="icon-cross text-2xl"></span>

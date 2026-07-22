@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Webkul\Shop\Http\Controllers\Customer\Account\AddressController;
 use Webkul\Shop\Http\Controllers\Customer\Account\MeasurementController;
+use Webkul\Shop\Http\Controllers\Customer\Account\MeasurementWizardController;
 use Webkul\Shop\Http\Controllers\Customer\Account\DownloadableProductController;
 use Webkul\Shop\Http\Controllers\Customer\Account\OrderController;
 use Webkul\Shop\Http\Controllers\Customer\Account\WishlistController;
@@ -135,6 +136,9 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
 
                     Route::delete('delete/{id}', 'destroy')->name('shop.customers.account.measurements.delete');
                 });
+
+                Route::get('measurements/smart', [MeasurementWizardController::class, 'launch'])
+                    ->name('shop.customers.account.measurements.smart');
 
                 /**
                  * Orders.

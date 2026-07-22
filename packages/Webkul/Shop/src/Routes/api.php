@@ -10,6 +10,7 @@ use Webkul\Shop\Http\Controllers\API\CustomerController;
 use Webkul\Shop\Http\Controllers\API\DesignerController;
 use Webkul\Shop\Http\Controllers\API\MeasurementController;
 use Webkul\Shop\Http\Controllers\API\MeasurementProfileController;
+use Webkul\Shop\Http\Controllers\API\MeasurementServiceCallbackController;
 use Webkul\Shop\Http\Controllers\API\OnepageController;
 use Webkul\Shop\Http\Controllers\API\ProductController;
 use Webkul\Shop\Http\Controllers\API\ReviewController;
@@ -22,6 +23,14 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::get('states', 'getStates')->name('shop.api.core.states');
     });
+
+    /**
+     * Signed server-to-server callback from the Aso Measurement Service.
+     * Authenticated via HMAC signature (see MeasurementWizardService), not a
+     * customer session, so it lives outside the customer middleware group.
+     */
+    Route::post('measurement-service/callback', [MeasurementServiceCallbackController::class, 'handle'])
+        ->name('shop.api.measurement_service.callback');
 
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {
         Route::get('', 'index')->name('shop.api.categories.index');
