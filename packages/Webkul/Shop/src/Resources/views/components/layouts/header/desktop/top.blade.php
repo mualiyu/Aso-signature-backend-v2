@@ -79,17 +79,18 @@
                         {{ core()->getConfigData('general.content.header_offer.redirection_title') }}
                     </a>
                 </p>
-
-                <span class="text-gray-300">|</span>
+                @if (core()->getConfigData('general.content.header_offer.redirection_link'))
+                    <span class="text-gray-300">|</span>
+                @endif
 
                 <!-- Measurement Guide Link -->
                 <button
                     type="button"
-                    class="primary-button m-0 mx-auto block w-max rounded-2xl px-5 text-center text-base max-md:rounded-sm ltr:ml-0 rtl:mr-0 flex items-center gap-0.5"
+                    class="primary-button m-0 mx-auto block w-max rounded-full px-4 py-1.5 text-center text-sm max-md:rounded-sm ltr:ml-0 rtl:mr-0 flex items-center gap-1.5"
                     @click="$emitter.emit('open-measurement-videos')"
                     role="button"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
                     Measurement Guide

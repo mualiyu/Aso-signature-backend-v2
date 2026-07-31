@@ -1,16 +1,16 @@
 {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.before') !!}
 
 <div
-    class="flex min-h-[78px] w-full justify-between border border-b border-l-0 border-r-0 border-t-0 px-[60px] max-1180:px-8">
+    class="flex min-h-[78px] w-full justify-between gap-x-6 max-xl:gap-x-4 border border-b border-l-0 border-r-0 border-t-0 px-[60px] max-xl:px-8 max-[1100px]:px-5">
     <!--
         This section will provide categories for the first, second, and third levels. If
         additional levels are required, users can customize them according to their needs.
     -->
     <!-- Left Navigation Section -->
-    <div class="flex items-center gap-x-10 max-[1180px]:gap-x-5">
+    <div class="flex min-w-0 items-center gap-x-10 max-xl:gap-x-4 max-[1100px]:gap-x-2">
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.logo.before') !!}
 
-        <a href="{{ route('shop.home.index') }}" aria-label="@lang('shop::app.components.layouts.header.bagisto')">
+        <a href="{{ route('shop.home.index') }}" class="shrink-0" aria-label="@lang('shop::app.components.layouts.header.bagisto')">
             <img src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}" width="131"
                 height="29" alt="{{ config('app.name') }}">
         </a>
@@ -22,7 +22,7 @@
         <!-- Designers Dropdown (Fixed) -->
         <div class="group relative flex h-[77px] items-center border-b-4 border-transparent hover:border-b-4 hover:border-navyBlue">
             <span>
-                <a href="#" class="inline-block px-5 uppercase select-none pointer-events-none" tabindex="-1">
+                <a href="#" class="inline-block whitespace-nowrap px-5 max-xl:px-3 uppercase select-none pointer-events-none" tabindex="-1">
                     {{-- @lang('shop::app.components.layouts.header.designers', [], 'Designers') --}}
                     Designers
                 </a>
@@ -46,13 +46,13 @@
     </div>
 
     <!-- Right Navigation Section -->
-    <div class="flex items-center gap-x-9 max-[1100px]:gap-x-6 max-lg:gap-x-8">
+    <div class="flex min-w-0 flex-1 items-center justify-end gap-x-9 max-xl:gap-x-5 max-[1100px]:gap-x-4">
 
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.search_bar.before') !!}
 
         <!-- Search Bar Container -->
-        <div class="relative w-full">
-            <form action="{{ route('shop.search.index') }}" class="flex max-w-[445px] items-center" role="search">
+        <div class="relative w-full min-w-[150px] max-w-[445px]">
+            <form action="{{ route('shop.search.index') }}" class="flex w-full items-center" role="search">
                 <label for="organic-search" class="sr-only">
                     @lang('shop::app.components.layouts.header.search')
                 </label>
@@ -81,7 +81,7 @@
         {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.search_bar.after') !!}
 
         <!-- Right Navigation Links -->
-        <div class="mt-1.5 flex gap-x-8 max-[1100px]:gap-x-6 max-lg:gap-x-8">
+        <div class="mt-1.5 flex shrink-0 gap-x-8 max-xl:gap-x-5 max-[1100px]:gap-x-4">
 
             {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.compare.before') !!}
 
@@ -261,7 +261,7 @@
                 <span>
                     <a
                         :href="category.url"
-                        class="inline-block px-5 uppercase"
+                        class="inline-block whitespace-nowrap px-5 max-xl:px-3 uppercase"
                     >
                         @{{ category.name }}
                     </a>

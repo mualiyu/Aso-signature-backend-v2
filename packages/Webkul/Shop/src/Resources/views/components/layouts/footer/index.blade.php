@@ -115,7 +115,8 @@
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-xs text-zinc-500 font-medium">Visit Us (Nigeria)</span>
-                                <span class="text-sm font-medium text-navyBlue leading-relaxed">The Cans Park, Ibrahim Babangida Blvd,<br>Maitama, Abuja 904101</span>
+                                <span class="text-sm font-medium text-navyBlue leading-relaxed">Ahmadu Bello Way, Central Business District, Wuse 2, <br>Abuja 102215, Federal Capital Territory, Nigeria1</span>
+                                {{-- <span class="text-sm font-medium text-navyBlue leading-relaxed">The Cans Park, Ibrahim Babangida Blvd,<br>Maitama, Abuja 904101</span> --}}
                             </div>
                         </div>
                     </li>

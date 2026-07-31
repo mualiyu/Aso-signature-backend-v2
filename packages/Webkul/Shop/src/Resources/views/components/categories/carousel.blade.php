@@ -18,6 +18,9 @@
             class="container mt-14 max-lg:px-8 max-md:mt-7 max-md:!px-0 max-sm:mt-5"
             v-if="! isLoading && categories?.length"
         >
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 max-md:text-xl max-sm:text-lg max-sm:px-5">
+            Browse by Categories
+            </h2>
             <div class="relative">
                 <div
                     ref="swiperContainer"

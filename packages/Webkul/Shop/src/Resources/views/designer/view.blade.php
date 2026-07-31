@@ -39,31 +39,37 @@
         <div class="relative">
             @if ($designer->banner)
             <!-- Full-width Banner -->
-            <div class="relative overflow-hidden" style="height: 50vh;" >
-                <img class="w-full h-full object-cover"
+            <div id="designer-hero" class="relative flex flex-col justify-center overflow-hidden bg-black">
+                <!-- Blurred copy fills the letterbox around the contained banner -->
+                <img class="absolute inset-0 w-full h-full object-cover"
+                    style="filter: brightness(0.25) blur(30px); transform: scale(1.1);"
+                    src="{{ $designer->banner->src ? url('/storage').'/'.$designer->banner->src : bagisto_asset('images/small-product-placeholder.webp') }}"
+                    alt=""
+                    aria-hidden="true" />
+                <img class="absolute inset-0 w-full h-full object-contain"
                     style="filter: brightness(0.3);"
                     src="{{ $designer->banner->src ? url('/storage').'/'.$designer->banner->src : bagisto_asset('images/small-product-placeholder.webp') }}"
                     alt="{{ $designer->name }} Banner" />
                 <!-- Minimalist Logo Overlay -->
                 @if ($designer->logo && $designer->logo->src)
-                <div class="absolute inset-0 flex flex-col  items-center justify-center bottom-0">
+                <div class="relative flex flex-col items-center justify-center px-4 py-12 md:py-16">
                     <div class="text-center mt-4 md:mt-0">
                         <img src="{{ $designer->logo->src ? url("/storage")."/".$designer->logo->src : bagisto_asset('images/small-product-placeholder.webp') }}"
                             alt="{{ $designer->name }} Logo"
-                            class="w-32 h-32 md:w-48 md:h-48 object-contain mx-auto mb-8 filter drop-shadow-2xl rounded-full " />
-                        <h1 class="text-4xl md:text-6xl font-light text-white tracking-wider mb-4">
+                            class="h-24 md:h-32 w-auto max-w-[300px] md:max-w-[380px] object-contain bg-white rounded-2xl p-3 md:p-4 mx-auto mb-8 shadow-2xl" />
+                        <h1 class="text-4xl md:text-6xl font-light text-white tracking-wider mb-1">
                             {{ $designer->name }}
                         </h1>
-                        <div class="w-24 h-px bg-white mx-auto"></div>
+                        {{-- <div class="w-24 h-px bg-white mx-auto"></div> --}}
                     </div>
 
 
                     <!-- Minimalist Content Section -->
-                    <div class="bg-transparent py-20 md:py-32">
+                    <div class="bg-transparent py-6 md:py-10">
                         <div class="container mx-auto px-8 max-w-6xl">
                             <!-- About Section -->
                             <div class="text-center mb-10">
-                                <div class="w-24 h-px bg-white mx-auto mb-12"></div>
+                                {{-- <div class="w-24 h-px bg-white mx-auto mb-12"></div> --}}
                                 <div class="max-w-4xl mx-auto text-lg text-white leading-relaxed">
                                     @php
                                         $desc = strip_tags($designer->description);
@@ -83,12 +89,12 @@
                                     {{-- <h3 class="text-2xl font-light text-gray-900 mb-8 tracking-wide">Contact</h3> --}}
                                     <div class="space-y-6">
                                         @if ($designer->email)
-                                        <div class="group">
+                                        {{-- <div class="group">
                                             <a href="mailto:{{ $designer->email }}"
                                                class="text-lg text-white hover:text-gray-300 transition-colors duration-300 border-b border-transparent hover:border-gray-300 pb-1">
                                                 {{ $designer->email }}
                                             </a>
-                                        </div>
+                                        </div> --}}
                                         @endif
                                         {{-- @if ($designer->phone)
                                         <div class="group">
@@ -105,7 +111,7 @@
                                 <div class="text-center">
                                     {{-- <h3 class="text-2xl font-light text-gray-900 mb-1 tracking-wide">Follow</h3> --}}
                                     <div class="flex flex-wrap justify-center gap-6 mb-3 md:mb-0">
-                                        @if ($designer->website)
+                                        {{-- @if ($designer->website)
                                         <a href="{{ $designer->website }}" target="_blank"
                                            class="text-white hover:text-gray-300 transition-colors duration-300 group flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -167,7 +173,7 @@
                                             </svg>
                                             <span class="text-sm tracking-wider uppercase border-b border-transparent group-hover:border-gray-300 pb-1">Pinterest</span>
                                         </a>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 </div>
                             </div>
@@ -180,9 +186,13 @@
             </div>
 
             <style>
+                #designer-hero {
+                    min-height: 50vh;
+                }
+
                 @media (max-width: 768px) {
-                    .relative.overflow-hidden {
-                        height: 30vh !important;
+                    #designer-hero {
+                        min-height: 30vh;
                     }
                 }
             </style>
@@ -193,7 +203,7 @@
                     @if ($designer->logo && $designer->logo->src)
                     <img src="{{ $designer->logo->src ? url("/storage")."/".$designer->logo->src : bagisto_asset('images/small-product-placeholder.webp') }}"
                         alt="{{ $designer->name }} Logo"
-                        class="w-32 h-32 md:w-48 md:h-48 object-contain mx-auto mb-12 rounded-full mt-3" />
+                        class="h-32 md:h-44 w-auto max-w-[320px] md:max-w-[420px] object-contain mx-auto mb-12 mt-3" />
                     @endif
                     <h1 class="text-5xl md:text-7xl font-light text-gray-900 tracking-wider mb-8">
                         {{ $designer->name }}
@@ -217,7 +227,7 @@
                             <!-- Contact Information -->
                             <div class="text-center mt-3">
                                 {{-- <h3 class="text-2xl font-light text-gray-900 mb-8 tracking-wide">Contact</h3> --}}
-                                <div class="space-y-6">
+                                {{-- <div class="space-y-6">
                                     @if ($designer->email)
                                     <div class="group">
                                         <a href="mailto:{{ $designer->email }}"
@@ -234,12 +244,11 @@
                                         </a>
                                     </div>
                                     @endif
-                                </div>
+                                </div> --}}
                             </div>
 
                             <!-- Social Media -->
-                            <div class="text-center">
-                                {{-- <h3 class="text-2xl font-light text-gray-900 mb-1 tracking-wide">Follow</h3> --}}
+                            {{-- <div class="text-center">
                                 <div class="flex flex-wrap justify-center gap-6">
                                     @if ($designer->website)
                                     <a href="{{ $designer->website }}" target="_blank"
@@ -305,7 +314,7 @@
                                     </a>
                                     @endif
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

@@ -42,7 +42,7 @@
                         </div>
                     </div>
 
-                    <!-- Phone -->
+                    <!-- Call Us (USA) -->
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center">
                             <svg class="w-6 h-6 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,14 +50,29 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-zinc-500 mb-1">Phone</p>
-                            <a href="tel:+2347049013953" class="text-zinc-900 hover:text-zinc-600 transition-colors font-medium">
-                                +2347049013953
+                            <p class="text-sm text-zinc-500 mb-1">Call Us (USA)</p>
+                            <a href="tel:+12029923505" class="text-zinc-900 hover:text-zinc-600 transition-colors font-medium">
+                                +1 (202) 992-3505
                             </a>
                         </div>
                     </div>
 
-                    <!-- Address -->
+                    <!-- Call Us (Nigeria) -->
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-zinc-500 mb-1">Call Us (Nigeria)</p>
+                            <a href="tel:+2347049013953" class="text-zinc-900 hover:text-zinc-600 transition-colors font-medium">
+                                +234 704 901 3953
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Visit Us (USA) -->
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center">
                             <svg class="w-6 h-6 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,9 +81,25 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-zinc-500 mb-1">Address</p>
+                            <p class="text-sm text-zinc-500 mb-1">Visit Us (USA)</p>
                             <p class="text-zinc-900 font-medium">
-                                The Cans Park, Ibrahim Babangida Blvd, Maitama,<br>Abuja 904101, Federal Capital Territory.
+                                600 N Broad Street<br>Suite 5 #3304<br>Middletown, DE 19709
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Visit Us (Nigeria) -->
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-zinc-500 mb-1">Visit Us (Nigeria)</p>
+                            <p class="text-zinc-900 font-medium">
+                                Ahmadu Bello Way, Central Business District, Wuse 2,<br>Abuja 102215, Federal Capital Territory, Nigeria
                             </p>
                         </div>
                     </div>
