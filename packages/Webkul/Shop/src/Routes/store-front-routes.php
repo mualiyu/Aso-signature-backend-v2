@@ -25,6 +25,11 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
         ->name('shop.designer.view')
         ->middleware('cacheResponse');
 
+    // route for thank you page after order placed
+    Route::get('thank-you', [HomeController::class, 'thankYou'])
+        ->name('shop.thank-you')
+        ->middleware('cacheResponse');
+    
     /**
      * Fallback route.
      */

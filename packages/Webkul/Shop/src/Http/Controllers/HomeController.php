@@ -60,6 +60,14 @@ class HomeController extends Controller
         return view('shop::home.contact-us');
     }
 
+    // thankYou
+    public function thankYou()
+    {
+        // return view('shop::home.thank-you');
+        //re direct to home page if user try to access thank you page directly
+        return redirect()->route('shop.home.index');
+    }
+
     /**
      * Summary of store.
      *
