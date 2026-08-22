@@ -67,7 +67,7 @@ class HomeController extends Controller
      */
     public function howToMeasure()
     {
-        $measurements = collect(config('shop.how-to-measure', []))->map(function ($measurement) {
+        $measurements = collect($this->getMeasurementDefinitions())->map(function ($measurement) {
             $langKey = 'shop::app.home.how-to-measure.measurements.'.$measurement['id'];
 
             return [
@@ -83,6 +83,28 @@ class HomeController extends Controller
         })->values();
 
         return view('shop::home.how-to-measure', compact('measurements'));
+    }
+
+    /**
+     * The measurement definitions from `Config/how-to-measure.php`.
+     *
+     * Laravel skips `mergeConfigFrom()` while the config is cached, so a server whose
+     * `config:cache` predates this file would see an empty list. Fall back to the file
+     * directly so the page never renders empty.
+     *
+     * @return array
+     */
+    protected function getMeasurementDefinitions(): array
+    {
+        $measurements = config('shop.how-to-measure');
+
+        if (! empty($measurements)) {
+            return $measurements;
+        }
+
+        $path = dirname(__DIR__, 2).'/Config/how-to-measure.php';
+
+        return file_exists($path) ? require $path : [];
     }
 
     // thankYou
