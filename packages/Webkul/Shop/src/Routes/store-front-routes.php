@@ -51,6 +51,10 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
         ->name('shop.home.contact_us')
         ->middleware('cacheResponse');
 
+    Route::get('how-to-measure', [HomeController::class, 'howToMeasure'])
+        ->name('shop.home.how_to_measure')
+        ->middleware('cacheResponse');
+
     Route::post('contact-us/send-mail', [HomeController::class, 'sendContactUsMail'])
         ->name('shop.home.contact_us.send_mail')
         ->middleware('cacheResponse');

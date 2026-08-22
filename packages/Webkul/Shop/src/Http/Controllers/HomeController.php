@@ -60,6 +60,31 @@ class HomeController extends Controller
         return view('shop::home.contact-us');
     }
 
+    /**
+     * Loads the "How to Measure" guide page.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function howToMeasure()
+    {
+        $measurements = collect(config('shop.how-to-measure', []))->map(function ($measurement) {
+            $langKey = 'shop::app.home.how-to-measure.measurements.'.$measurement['id'];
+
+            return [
+                'id'       => $measurement['id'],
+                'letter'   => $measurement['letter'],
+                'keywords' => $measurement['keywords'],
+                'label'    => trans($langKey.'.label'),
+                'title'    => trans($langKey.'.title'),
+                'how'      => trans($langKey.'.how'),
+                'tip'      => trans($langKey.'.tip'),
+                'icon'     => view('shop::components.how-to-measure.icons.'.$measurement['id'])->render(),
+            ];
+        })->values();
+
+        return view('shop::home.how-to-measure', compact('measurements'));
+    }
+
     // thankYou
     public function thankYou()
     {

@@ -198,6 +198,41 @@
 
                     {!! view_render_event('bagisto.shop.customers.signup_form.newsletter_subscription.after') !!}
 
+                    <!-- Terms & Conditions Agreement -->
+                    <x-shop::form.control-group class="mt-5 !mb-0">
+                        <div class="flex select-none items-center gap-1.5">
+                            <x-shop::form.control-group.control
+                                type="checkbox"
+                                name="terms"
+                                id="agree-terms"
+                                for="agree-terms"
+                                value="1"
+                                rules="required"
+                                :label="trans('shop::app.customers.signup-form.terms-conditions')"
+                            />
+
+                            <label
+                                class="cursor-pointer select-none text-base text-zinc-500 max-sm:text-sm ltr:pl-0 rtl:pr-0"
+                                for="agree-terms"
+                            >
+                                @lang('shop::app.customers.signup-form.agree-to-terms')
+
+                                <a
+                                    href="{{ route('shop.cms.page', 'terms-conditions') }}"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="text-navyBlue underline"
+                                >
+                                    @lang('shop::app.customers.signup-form.terms-conditions')
+                                </a>
+                            </label>
+                        </div>
+
+                        <x-shop::form.control-group.error control-name="terms" />
+                    </x-shop::form.control-group>
+
+                    {!! view_render_event('bagisto.shop.customers.signup_form.terms.after') !!}
+
                     <div class="mt-8 flex flex-wrap items-center gap-9 max-sm:justify-center max-sm:gap-5">
                         <button
                             class="primary-button m-0 mx-auto block w-full max-w-[374px] rounded-2xl px-11 py-4 text-center text-base max-md:max-w-full max-md:rounded-lg max-md:py-3 max-sm:py-1.5 ltr:ml-0 rtl:mr-0"
