@@ -8,6 +8,7 @@ use Webkul\Shop\Http\Controllers\API\CompareController;
 use Webkul\Shop\Http\Controllers\API\CoreController;
 use Webkul\Shop\Http\Controllers\API\CustomerController;
 use Webkul\Shop\Http\Controllers\API\DesignerController;
+use Webkul\Shop\Http\Controllers\API\HowToMeasureController;
 use Webkul\Shop\Http\Controllers\API\MeasurementController;
 use Webkul\Shop\Http\Controllers\API\MeasurementProfileController;
 use Webkul\Shop\Http\Controllers\API\MeasurementServiceCallbackController;
@@ -31,6 +32,12 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
      */
     Route::post('measurement-service/callback', [MeasurementServiceCallbackController::class, 'handle'])
         ->name('shop.api.measurement_service.callback');
+
+    /**
+     * Content for the "How to Measure" modal (also rendered at /how-to-measure).
+     */
+    Route::get('how-to-measure', [HowToMeasureController::class, 'index'])
+        ->name('shop.api.how_to_measure.index');
 
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {
         Route::get('', 'index')->name('shop.api.categories.index');

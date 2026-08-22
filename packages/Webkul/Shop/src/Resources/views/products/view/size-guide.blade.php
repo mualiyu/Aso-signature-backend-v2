@@ -61,13 +61,26 @@
                      style="max-width: 98vw;">
                     <!-- Modal Header -->
                     <div class="mb-4 sm:mb-6 flex items-center justify-between border-b pb-2 sm:pb-4">
-                        <h2 class="text-lg sm:text-2xl font-semibold text-gray-800">Size Guide</h2>
+                        <div>
+                            <h2 class="text-lg sm:text-2xl font-semibold text-gray-800">Size Guide</h2>
+
+                            <!-- Link to the full step-by-step guide (/how-to-measure) -->
+                            <a
+                                href="{{ route('shop.home.how_to_measure') }}"
+                                target="_blank"
+                                rel="noopener"
+                                class="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-[#4b2462] underline underline-offset-2 hover:opacity-80 sm:text-sm"
+                            >
+                                @lang('shop::app.home.how-to-measure.link.full-guide')
+                                <span class="icon-arrow-right text-base" aria-hidden="true"></span>
+                            </a>
+                        </div>
 
                         <button
                             class="text-gray-500 hover:text-gray-700"
                             @click="closeSizeGuide()"
                         >
-                            <span class="icon-cross text-2xl"></span>
+                            <span class="icon-cancel text-2xl"></span>
                         </button>
                     </div>
 
@@ -263,7 +276,7 @@
                             class="text-white hover:text-gray-300"
                             @click="closeVideo()"
                         >
-                            <span class="icon-cross text-2xl"></span>
+                            <span class="icon-cancel text-2xl"></span>
                         </button>
                     </div>
 

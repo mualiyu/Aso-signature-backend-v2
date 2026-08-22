@@ -3,6 +3,7 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Support\Facades\Mail;
+use Webkul\Shop\Helpers\HowToMeasure;
 use Webkul\Shop\Http\Requests\ContactRequest;
 use Webkul\Shop\Mail\ContactUs;
 use Webkul\Theme\Repositories\ThemeCustomizationRepository;
@@ -65,46 +66,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function howToMeasure()
+    public function howToMeasure(HowToMeasure $howToMeasure)
     {
-        $measurements = collect($this->getMeasurementDefinitions())->map(function ($measurement) {
-            $langKey = 'shop::app.home.how-to-measure.measurements.'.$measurement['id'];
-
-            return [
-                'id'       => $measurement['id'],
-                'letter'   => $measurement['letter'],
-                'keywords' => $measurement['keywords'],
-                'label'    => trans($langKey.'.label'),
-                'title'    => trans($langKey.'.title'),
-                'how'      => trans($langKey.'.how'),
-                'tip'      => trans($langKey.'.tip'),
-                'icon'     => view('shop::components.how-to-measure.icons.'.$measurement['id'])->render(),
-            ];
-        })->values();
-
-        return view('shop::home.how-to-measure', compact('measurements'));
-    }
-
-    /**
-     * The measurement definitions from `Config/how-to-measure.php`.
-     *
-     * Laravel skips `mergeConfigFrom()` while the config is cached, so a server whose
-     * `config:cache` predates this file would see an empty list. Fall back to the file
-     * directly so the page never renders empty.
-     *
-     * @return array
-     */
-    protected function getMeasurementDefinitions(): array
-    {
-        $measurements = config('shop.how-to-measure');
-
-        if (! empty($measurements)) {
-            return $measurements;
-        }
-
-        $path = dirname(__DIR__, 2).'/Config/how-to-measure.php';
-
-        return file_exists($path) ? require $path : [];
+        return view('shop::home.how-to-measure', [
+            'measurements' => $howToMeasure->measurements(),
+            'videos'       => $howToMeasure->videos(),
+        ]);
     }
 
     // thankYou

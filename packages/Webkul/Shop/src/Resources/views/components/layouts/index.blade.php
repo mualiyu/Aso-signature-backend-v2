@@ -100,6 +100,9 @@
             <!-- Global Measurement Videos Component -->
             <x-shop::measurement-videos />
 
+            <!-- Global "How to Measure" Modal (open with $emitter.emit('open-how-to-measure')) -->
+            <x-shop::how-to-measure.modal />
+
             <!-- Global Advertisement Component -->
             <x-shop::advertisement />
 

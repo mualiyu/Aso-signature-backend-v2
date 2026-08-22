@@ -166,6 +166,17 @@
                             Watch guide
                         </button>
 
+                        <!-- Full step-by-step guide (/how-to-measure), opens in a new tab so the form is kept -->
+                        <a
+                            href="{{ route('shop.home.how_to_measure') }}"
+                            target="_blank"
+                            rel="noopener"
+                            class="secondary-button rounded-2xl text-sm"
+                            :class="compact ? 'px-3 py-1.5 text-xs' : 'px-4 py-2'"
+                        >
+                            @lang('shop::app.home.how-to-measure.link.eyebrow')
+                        </a>
+
                         <div class="inline-flex overflow-hidden rounded-full border border-zinc-200 bg-zinc-50 p-0.5">
                             <button
                                 type="button"

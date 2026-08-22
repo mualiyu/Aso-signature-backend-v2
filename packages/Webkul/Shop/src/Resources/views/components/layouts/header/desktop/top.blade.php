@@ -83,18 +83,19 @@
                     <span class="text-gray-300">|</span>
                 @endif
 
-                <!-- Measurement Guide Link -->
-                <button
-                    type="button"
-                    class="primary-button m-0 mx-auto block w-max rounded-full px-4 py-1.5 text-center text-sm max-md:rounded-sm ltr:ml-0 rtl:mr-0 flex items-center gap-1.5"
-                    @click="$emitter.emit('open-measurement-videos')"
-                    role="button"
+                <!-- Measurement Guide: opens the How to Measure modal (falls back to the page without JS) -->
+                <a
+                    href="{{ route('shop.home.how_to_measure') }}"
+                    class="primary-button m-0 mx-auto flex w-max items-center gap-1.5 rounded-full px-4 py-1.5 text-center text-sm max-md:rounded-sm ltr:ml-0 rtl:mr-0"
+                    aria-label="@lang('shop::app.home.how-to-measure.link.title')"
+                    @click.prevent="$emitter.emit('open-how-to-measure')"
                 >
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8h18v8H3z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8v3M11 8v4M15 8v3M19 8v4"/>
                     </svg>
-                    Measurement Guide
-                </button>
+                    @lang('shop::app.home.how-to-measure.link.title')
+                </a>
 
             </div>
 

@@ -68,7 +68,7 @@
                                 aria-label="Close"
                                 @click="closeMeasurements()"
                             >
-                                <span class="icon-cross text-xl"></span>
+                                <span class="icon-cancel text-xl"></span>
                             </button>
                         </div>
 

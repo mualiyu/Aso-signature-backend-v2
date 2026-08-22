@@ -27,5 +27,10 @@
         <x-shop::how-to-measure.guide :measurements="$measurements" />
 
         {!! view_render_event('bagisto.shop.home.how_to_measure.guide.after') !!}
+
+        <!-- Walkthrough videos (men / women) -->
+        <x-shop::how-to-measure.videos :videos="$videos" />
+
+        {!! view_render_event('bagisto.shop.home.how_to_measure.videos.after') !!}
     </div>
 </x-shop::layouts>

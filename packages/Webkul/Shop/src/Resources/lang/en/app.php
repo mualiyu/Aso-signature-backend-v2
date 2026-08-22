@@ -918,6 +918,40 @@ return [
                 'done'               => 'Done',
             ],
 
+            'videos' => [
+                'title'      => 'Watch it done',
+                'intro'      => 'Two short walkthroughs — pick the one that matches you and measure along.',
+                'play'       => 'Play video',
+                'unsupported' => 'Your browser does not support the video tag.',
+
+                'male' => [
+                    'label' => 'Men',
+                    'title' => 'Men\'s measurement guide',
+                    'desc'  => 'Neck, shoulder, chest, waist, sleeve and trouser lengths, taken step by step.',
+                ],
+
+                'female' => [
+                    'label' => 'Women',
+                    'title' => 'Women\'s measurement guide',
+                    'desc'  => 'Bust, waist, hip and length measurements for dresses, tops and skirts.',
+                ],
+            ],
+
+            'link' => [
+                'title'      => 'Measurement Guide',
+                'subtitle'   => 'Learn how to measure yourself',
+                'eyebrow'    => 'How to Measure',
+                'full-guide' => 'Read the full measurement guide',
+            ],
+
+            'modal' => [
+                'title'          => 'How to Measure',
+                'view-full-page' => 'View full page',
+                'close'          => 'Close',
+                'error'          => 'We couldn\'t load the guide right now.',
+                'error-link'     => 'Open the full page instead',
+            ],
+
             'measurements' => [
                 'neck' => [
                     'label' => 'Neck',
