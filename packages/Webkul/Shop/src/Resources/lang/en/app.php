@@ -631,6 +631,8 @@ return [
             'buy-now'                => 'Buy Now',
             'compare'                => 'Compare',
             'description'            => 'Description',
+            'production-timeline'    => 'Production Timeline',
+            'production-timeline-disclaimer' => 'Timeline varies by product.',
             'related-product-title'  => 'Related Products',
             'review'                 => 'Reviews',
             'tax-inclusive'          => 'Inclusive of all taxes',
@@ -881,6 +883,59 @@ return [
             'phone-number'  => 'Phone Number',
             'submit'        => 'Submit',
             'title'         => 'Contact Us',
+        ],
+
+        'how-it-works' => [
+            'title'   => 'How It Works',
+            'eyebrow' => 'How it works',
+            'heading' => 'From your measurements to your doorstep, made with care at every stage',
+            'intro'   => 'Seven steps between choosing a design and wearing it. Here is exactly what happens at each one.',
+            'scroll'  => 'See the steps',
+            'step'    => 'Step :number',
+
+            'steps' => [
+                'choose-design' => [
+                    'title' => 'Choose your design',
+                    'desc'  => 'Browse our catalogue and pick the piece you want made — from fabric to finish, the design starts with you.',
+                ],
+
+                'submit-measurements' => [
+                    'title' => 'Submit your measurements',
+                    'desc'  => 'Follow our step-by-step guide to take your own measurements at home, no tailor visit required.',
+                ],
+
+                'review' => [
+                    'title' => 'Aso reviews your measurements',
+                    'desc'  => 'Our team checks every figure against your design for fit and flags anything that looks off before cutting begins.',
+                ],
+
+                'production' => [
+                    'title' => 'Designer produces your outfit',
+                    'desc'  => 'Once measurements are confirmed, our designers cut and construct your piece by hand to those exact figures.',
+                ],
+
+                'quality-check' => [
+                    'title' => 'Aso quality-checks',
+                    'desc'  => 'Before anything ships, we inspect the stitching, finish, and fit against your original specification.',
+                ],
+
+                'delivery' => [
+                    'title' => 'We deliver to your door',
+                    'desc'  => 'Your finished piece is packaged and shipped wherever you are, tracked from our workshop to your doorstep.',
+                ],
+
+                'support' => [
+                    'title' => 'We support you if any fit issue arises',
+                    'desc'  => 'If something doesn\'t sit right, our team works with you to adjust or remake it until it does.',
+                ],
+            ],
+
+            'cta' => [
+                'title'     => 'Ready when you are',
+                'desc'      => 'Pick a design and we will take it from there.',
+                'primary'   => 'Start your design',
+                'secondary' => 'Read the measurement guide',
+            ],
         ],
 
         'how-to-measure' => [

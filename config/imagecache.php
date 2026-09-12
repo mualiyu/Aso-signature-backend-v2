@@ -54,6 +54,14 @@ return [
         'small'  => 'Webkul\Shop\CacheFilters\Small',
         'medium' => 'Webkul\Shop\CacheFilters\Medium',
         'large'  => 'Webkul\Shop\CacheFilters\Large',
+
+        /**
+         * The templates above crop to a fixed banner ratio. Hero slides keep their own
+         * aspect ratio and are only scaled down.
+         */
+        'hero-small'  => 'Webkul\Shop\CacheFilters\HeroSmall',
+        'hero-medium' => 'Webkul\Shop\CacheFilters\HeroMedium',
+        'hero-large'  => 'Webkul\Shop\CacheFilters\HeroLarge',
     ],
 
     /*

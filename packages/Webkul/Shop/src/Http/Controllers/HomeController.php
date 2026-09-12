@@ -74,6 +74,29 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * Loads the "How It Works" page: the seven steps from design to delivery.
+     *
+     * Each key maps to a translation block under `shop::app.home.how-it-works.steps`
+     * and to an illustration in `shop::components.how-it-works.illustrations`.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function howItWorks()
+    {
+        $steps = [
+            'choose-design',
+            'submit-measurements',
+            'review',
+            'production',
+            'quality-check',
+            'delivery',
+            'support',
+        ];
+
+        return view('shop::home.how-it-works', compact('steps'));
+    }
+
     // thankYou
     public function thankYou()
     {

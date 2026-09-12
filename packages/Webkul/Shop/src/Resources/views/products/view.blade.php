@@ -403,6 +403,20 @@
                                     </div>
                                 @endif
 
+                                <!-- Production Timeline (optional per-product value + disclaimer) -->
+                                {{-- Label and value stay on one line: this markup sits inside a Vue template, which drops newline-only whitespace between tags. --}}
+                                <div class="mt-4 text-sm text-zinc-600">
+                                    <p>
+                                        <span class="font-medium">@lang('shop::app.products.view.production-timeline'):</span> {{ $product->production_timeline ?: trans('shop::app.products.view.production-timeline-disclaimer') }}
+                                    </p>
+
+                                    @if ($product->production_timeline)
+                                        <p class="mt-1 text-xs text-zinc-500">
+                                            @lang('shop::app.products.view.production-timeline-disclaimer')
+                                        </p>
+                                    @endif
+                                </div>
+
                                 @include('shop::products.view.types.configurable')
 
                                 @include('shop::products.view.types.grouped')

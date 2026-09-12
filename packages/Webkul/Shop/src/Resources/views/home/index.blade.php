@@ -29,6 +29,11 @@
                 <x-shop::carousel :options="$data" aria-label="Image Carousel" />
 
                 @break
+            @case ($customization::HERO_CAROUSEL)
+                <!-- Hero Carousel -->
+                <x-shop::hero-carousel :options="$data" />
+
+                @break
             @case ($customization::STATIC_CONTENT)
                 <!-- push style -->
                 @if (! empty($data['css']))
