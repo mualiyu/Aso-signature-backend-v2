@@ -891,7 +891,8 @@ return [
             'title'   => 'How It Works',
             'eyebrow' => 'How it works',
             'heading' => 'From your measurements to your doorstep, made with care at every stage',
-            'intro'   => 'Seven steps between choosing a design and wearing it. Here is exactly what happens at each one.',
+            'intro'   => '',
+            // 'intro'   => 'Seven steps between choosing a design and wearing it. Here is exactly what happens at each one.',
             'scroll'  => 'See the steps',
             'step'    => 'Step :number',
 
@@ -907,7 +908,7 @@ return [
                 ],
 
                 'review' => [
-                    'title' => 'Aso reviews your measurements',
+                    'title' => 'Aso confirms your measurements',
                     'desc'  => 'Our team checks every figure against your design for fit and flags anything that looks off before cutting begins.',
                 ],
 
@@ -927,16 +928,16 @@ return [
                 ],
 
                 'support' => [
-                    'title' => 'We support you if any fit issue arises',
+                    'title' => 'We Support you',
                     'desc'  => 'If something doesn\'t sit right, our team works with you to adjust or remake it until it does.',
                 ],
             ],
 
             'cta' => [
                 'title'     => 'Ready when you are',
-                'desc'      => 'Pick a design and we will take it from there.',
+                'desc'      => '',
                 'primary'   => 'Start your design',
-                'secondary' => 'Read the measurement guide',
+                'secondary' => 'Measurement guide',
             ],
         ],
 

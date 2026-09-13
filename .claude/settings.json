@@ -21,7 +21,9 @@
       "Bash(vendor/bin/pint --test packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
       "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Product/DesignerTest.php packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
       "Bash(vendor/bin/pint --test packages/Webkul/Shop/tests/Feature/Product/DesignerTest.php packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
-      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Customers/AccountTest.php --filter=\"password\")"
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Customers/AccountTest.php --filter=\"password\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{redirect_url}\\\\n\" http://aso-signature-backend-v2.test/)",
+      "Bash(node ux-audit.mjs)"
     ],
     "defaultMode": "bypassPermissions"
   }
