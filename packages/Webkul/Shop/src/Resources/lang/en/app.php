@@ -25,6 +25,7 @@ return [
             'footer'           => '© Copyright :current_year, AsoSignature. All rights reserved.',
             'password'         => 'Password',
             'submit-btn-title' => 'Reset Password',
+            'success'          => 'Your password has been reset successfully. Please sign in with your new password.',
             'title'            => 'Reset Password',
         ],
 
@@ -631,6 +632,7 @@ return [
             'buy-now'                => 'Buy Now',
             'compare'                => 'Compare',
             'description'            => 'Description',
+            'designer'               => 'Designer',
             'production-timeline'    => 'Production Timeline',
             'production-timeline-disclaimer' => 'Timeline varies by product.',
             'related-product-title'  => 'Related Products',

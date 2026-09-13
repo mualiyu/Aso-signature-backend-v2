@@ -4,6 +4,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Webkul\Customer\Models\Customer;
 use Webkul\Customer\Models\CustomerAddress;
 use Webkul\Faker\Helpers\Product as ProductFaker;
@@ -477,4 +478,31 @@ it('should fails the validation errors certain inputs not provided', function ()
     // Arrange.
     postJson(route('shop.customers.forgot_password.store'))
         ->assertJsonValidationErrorFor('email');
+});
+
+it('should redirect to the login page after a successful password reset', function () {
+    // Arrange.
+    Mail::fake();
+
+    $customer = Customer::factory()->create();
+
+    $token = Password::broker('customers')->createToken($customer);
+
+    // Act and Assert.
+    postJson(route('shop.customers.reset_password.store'), [
+        'token'                 => $token,
+        'email'                 => $customer->email,
+        'password'              => $password = 'new-password',
+        'password_confirmation' => $password,
+    ])
+        ->assertRedirect(route('shop.customer.session.index'))
+        ->assertSessionHas('success', trans('shop::app.customers.reset-password.success'));
+
+    $this->assertTrue(Hash::check($password, $customer->refresh()->password));
+
+    $this->assertGuest('customer');
+
+    $this->assertDatabaseMissing('customer_password_resets', [
+        'email' => $customer->email,
+    ]);
 });

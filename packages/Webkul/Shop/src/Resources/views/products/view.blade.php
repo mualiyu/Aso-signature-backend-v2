@@ -320,6 +320,35 @@
 
                                 </div>
 
+                                <!-- Designer (name + logo, linked to the designer page) -->
+                                @if ($product->designer?->status)
+                                    <a
+                                        href="{{ route('shop.designer.view', $product->designer->slug) }}"
+                                        class="mt-3 inline-flex items-center gap-3 transition-all hover:opacity-[0.8] max-sm:mt-2"
+                                        aria-label="{{ $product->designer->name }}"
+                                    >
+                                        @if ($product->designer->logo)
+                                            <img
+                                                src="{{ Storage::url($product->designer->logo->src) }}"
+                                                alt="{{ $product->designer->name }}"
+                                                class="h-10 w-10 shrink-0 rounded-full border border-zinc-200 bg-zinc-100 object-cover"
+                                                width="40"
+                                                height="40"
+                                            />
+                                        @endif
+
+                                        <span class="flex flex-col leading-tight">
+                                            <span class="text-xs uppercase tracking-wide text-zinc-500">
+                                                @lang('shop::app.products.view.designer')
+                                            </span>
+
+                                            <span class="text-base font-semibold text-black">
+                                                {{ $product->designer->name }}
+                                            </span>
+                                        </span>
+                                    </a>
+                                @endif
+
                                 @isset($customAttributeValue)
                                     <div class="flex justify-between gap-4">
                                         {{-- @foreach ($customAttributeValue as $key => $item)

@@ -15,7 +15,13 @@
       "Bash(vendor/bin/pint --test database/migrations/2026_09_13_000000_add_production_timeline_attribute.php packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php packages/Webkul/Admin/tests/Feature/Catalog/Products/ProductionTimelineTest.php)",
       "Bash(node /private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/76c5fe63-79f9-400b-b7ba-e5130ce1530b/scratchpad/shot.mjs /private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/76c5fe63-79f9-400b-b7ba-e5130ce1530b/scratchpad/pdp-buybox.png)",
       "Bash(node /private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/76c5fe63-79f9-400b-b7ba-e5130ce1530b/scratchpad/shot.mjs /private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/76c5fe63-79f9-400b-b7ba-e5130ce1530b/scratchpad/pdp-buybox-3.png)",
-      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php packages/Webkul/Admin/tests/Feature/Catalog/Products/ProductionTimelineTest.php)"
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php packages/Webkul/Admin/tests/Feature/Catalog/Products/ProductionTimelineTest.php)",
+      "Bash(grep -n '$table->' packages/Webkul/Designer/src/Database/Migrations/2025_06_14_105341_create_designers_table.php packages/Webkul/Designer/src/Database/Migrations/2025_06_14_105534_create_designer_images_table.php)",
+      "Bash(node /private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/76c5fe63-79f9-400b-b7ba-e5130ce1530b/scratchpad/shot.mjs /private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/76c5fe63-79f9-400b-b7ba-e5130ce1530b/scratchpad/pdp-designer.png)",
+      "Bash(vendor/bin/pint --test packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Product/DesignerTest.php packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
+      "Bash(vendor/bin/pint --test packages/Webkul/Shop/tests/Feature/Product/DesignerTest.php packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Customers/AccountTest.php --filter=\"password\")"
     ],
     "defaultMode": "bypassPermissions"
   }
