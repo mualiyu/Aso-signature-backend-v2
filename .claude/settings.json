@@ -23,7 +23,24 @@
       "Bash(vendor/bin/pint --test packages/Webkul/Shop/tests/Feature/Product/DesignerTest.php packages/Webkul/Shop/tests/Feature/Product/ProductionTimelineTest.php)",
       "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Customers/AccountTest.php --filter=\"password\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{redirect_url}\\\\n\" http://aso-signature-backend-v2.test/)",
-      "Bash(node ux-audit.mjs)"
+      "Bash(node ux-audit.mjs)",
+      "Bash(node -e ' *)",
+      "Bash(xargs -I{} sh -c 'echo {}; grep -n \"function videos\" -A 30 {} | head -50')",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/Checkout/GuestCheckoutTest.php packages/Webkul/Shop/tests/Feature/LoginPageTest.php packages/Webkul/Shop/tests/Feature/RegistrationPageTest.php)",
+      "Bash(node \"/private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/9860479e-32e7-4f69-a5c9-4f6e7fe6483e/scratchpad/guest-checkout-shots.mjs\")",
+      "Bash(node \"/private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/9860479e-32e7-4f69-a5c9-4f6e7fe6483e/scratchpad/login-loop.mjs\")",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/ErrorPageTest.php)",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests packages/Webkul/Admin/tests/Feature/Customers packages/Webkul/Admin/tests/Feature/Settings)",
+      "Bash(grep -n -A8 'public function current\\\\|public function set\\(\\\\|public function setBagistoVite\\\\|protected $current\\\\|public $current' packages/Webkul/Theme/src/Themes.php)",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code}\\\\n\" http://aso-signature-backend-v2.test/this-page-does-not-exist)",
+      "Bash(curl -s http://aso-signature-backend-v2.test/this-page-does-not-exist)",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests --filter=\"should returns the home page of the store|should add a bundle product to the cart for guest user|should returns the create page of address\")",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests/Feature/ErrorPageTest.php packages/Webkul/Shop/tests/Feature/Checkout/GuestCheckoutTest.php packages/Webkul/Shop/tests/Feature/LoginPageTest.php)",
+      "Bash(node \"/private/tmp/claude-501/-Users-mukeey-projects-Aso-Signature-Aso-signature-backend-v2/9860479e-32e7-4f69-a5c9-4f6e7fe6483e/scratchpad/error-404.mjs\")",
+      "Bash(curl -s -X POST -o /dev/null -w \"POST unknown url status=%{http_code}\\\\n\" http://aso-signature-backend-v2.test/this-page-does-not-exist)",
+      "Bash(curl -s -H \"Accept: application/json\" http://aso-signature-backend-v2.test/api/this-does-not-exist)",
+      "Bash(curl -s -X POST http://aso-signature-backend-v2.test/this-page-does-not-exist)",
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests --filter=\"should add a downloadable product to the cart with a cart rule|should check customer group price for guest customer with fixed\")"
     ],
     "defaultMode": "bypassPermissions"
   }

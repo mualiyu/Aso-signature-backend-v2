@@ -1,6 +1,6 @@
 {
   "src/Resources/assets/css/app.css": {
-    "file": "assets/app-513d0635.css",
+    "file": "assets/app-da6545e7.css",
     "isEntry": true,
     "src": "src/Resources/assets/css/app.css"
   },
@@ -14,7 +14,7 @@
   },
   "src/Resources/assets/images/dark-logo.svg": {
     "file": "assets/logo-74cc5d6c.svg",
-    "src": "src/Resources/assets/images/logo.svg"
+    "src": "src/Resources/assets/images/dark-logo.svg"
   },
   "src/Resources/assets/images/default-language.svg": {
     "file": "assets/default-language-6ef0ef70.svg",
@@ -46,7 +46,7 @@
   },
   "src/Resources/assets/images/logo.svg": {
     "file": "assets/logo-74cc5d6c.svg",
-    "src": "src/Resources/assets/images/logo.svg"
+    "src": "src/Resources/assets/images/dark-logo.svg"
   },
   "src/Resources/assets/images/logo1.svg": {
     "file": "assets/logo1-942157c2.svg",

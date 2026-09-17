@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Exceptions\ThemedHandler;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\ParallelTesting;
@@ -39,6 +41,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        /**
+         * Bagisto's core provider binds its own exception handler while booting,
+         * and the REST API package re-binds that to its handler. Both boot after
+         * this provider, so ours is bound once every provider has booted. It renders
+         * the themed shop and admin error pages instead of Laravel's bare screens.
+         */
+        $this->app->booted(function () {
+            $this->app->bind(ExceptionHandler::class, ThemedHandler::class);
+        });
+
         // Only enable debug tools in non-production environments
         if (app()->environment('production')) {
             return;

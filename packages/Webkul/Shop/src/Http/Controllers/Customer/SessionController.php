@@ -20,7 +20,9 @@ class SessionController extends Controller
             return redirect()->route('shop.home.index');
         }
 
-        return view('shop::customers.sign-in');
+        return view('shop::customers.sign-in', [
+            'checkoutIntended' => $this->isCheckoutIntended(),
+        ]);
     }
 
     /**
@@ -61,11 +63,14 @@ class SessionController extends Controller
          */
         Event::dispatch('customer.after.login', auth()->guard()->user());
 
+        /**
+         * A guest who was sent here from checkout goes straight back to checkout.
+         */
         if (core()->getConfigData('customer.settings.login_options.redirected_to_page') == 'account') {
-            return redirect()->route('shop.customers.account.profile.index');
+            return redirect()->intended(route('shop.customers.account.profile.index'));
         }
 
-        return redirect()->route('shop.home.index');
+        return redirect()->intended(route('shop.home.index'));
     }
 
     /**

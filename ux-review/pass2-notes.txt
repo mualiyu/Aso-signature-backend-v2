@@ -1,0 +1,102 @@
+
+=== DESKTOP ===
+  images: {"total":15,"blank":0,"placeholders":0}
+  [desktop-home-loaded] /
+  images: {"total":12,"blank":0,"placeholders":0}
+  [desktop-category-menswear-loaded] /african-menswear
+  images: {"total":9,"blank":0,"placeholders":0}
+  [desktop-category-womenswear-loaded] /african-womenswear
+  images: {"total":6,"blank":0,"placeholders":0}
+  [desktop-search-results-loaded] /search?query=kaftan
+  images: {"total":8,"blank":0,"placeholders":0}
+  [desktop-designer-loaded] /designer/mirage
+  card imgs: [{"src":"6ATH6udi9JNTyFHymntZn0iCCIZxoAKc6i1VEdfr","w":128,"alt":"AsoSignature"},{"src":"D9xpIzaiNw7vGkwG6qTjxoBpkmJUEevwLUUETJM4","w":350,"alt":"Men’s three-piece Black agbada with  Asoke Details"},{"src":"WLCmgoykKrQAHacuRDTZNvNKO8uZbI4Ir0a4dfNe","w":350,"alt":"White Senator Set"},{"src":"PWFQgf68DUAW5mFuPbxSXhLATQOqVGnVe7AffXGB","w":350,"alt":"Agbada Senator Set"},{"src":"31XnK3jQrhXWKBfSvjdcqlobTN0kTE5SV4bR6c2i","w":350,"alt":"African Two-piece senator with a Stoned Mask face Detail"},{"src":"a5dirkiNBrr2MGPQfGWEAIElBQ26CQtzP52F9ybJ","w":350,"alt":"Classic Kaftan tailored from premium fabr
+  [desktop-card-hover] /african-menswear
+  [desktop-menu-designers-hover] /
+  [desktop-how-to-measure-modal] /
+  modal open; body overflow = hidden  url= /
+  after Escape, modal still visible: false
+  [desktop-how-to-measure-video] /how-to-measure
+  media after click: ["http://aso-signature-backend-v2.test/videos/ASO%20CLOTHING%20MALE.mp4","http://aso-signature-backend-v2.test/videos/ASO%20CLOTHING%20FEMALE.mp4"]
+  guide steps: Shoulder
+  [desktop-contact-validation] /contact-us
+  [desktop-newsletter-invalid] /
+  description style: {"opacity":"1","color":"rgb(0, 0, 0)","fontSize":"16px","visible":true}
+  tabs: 
+  [desktop-pdp-reviews-tab] /classic-kaftan-tailored-from-premium-fabric
+  guest wishlist click -> /customer/login
+  [desktop-currency-dropdown] /
+  [desktop-locale-dropdown] /
+  [desktop-hero-slide-2] /
+  hero indicators/dots: 5
+  logged in -> /
+  smart measurement href: http://aso-signature-backend-v2.test/customer/account/measurements/smart?redirect=http%3A%2F%2Faso-signature-backend-v2.test%2Fcustomer%2Faccount%2Fmeasurements
+  [desktop-measurement-help-popover] /customer/account/measurements
+  [desktop-measurement-save-empty] /customer/account/measurements
+  save-empty messages: []
+  [desktop-measurement-saved] /customer/account/measurements
+  [desktop-checkout-step-2] /checkout/onepage
+  step2 has measurement: true  shipping: false  payment: false
+  [desktop-checkout-step-3] /checkout/onepage
+  step3: shippingMethods=false paymentMethods=false placeOrder=false
+  [desktop-checkout-step-4] /checkout/onepage
+  step4: shippingMethods=false paymentMethods=false placeOrder=false
+  [desktop-checkout-step-5] /checkout/onepage
+  step5: shippingMethods=true paymentMethods=false placeOrder=false
+  [desktop-checkout-final] /checkout/onepage
+  [desktop-wishlist-with-item] /customer/account/wishlist
+  after logout -> /
+  [desktop-after-logout] /
+
+=== MOBILE ===
+  images: {"total":7,"blank":0,"placeholders":0}
+  [mobile-home-loaded] /
+  images: {"total":12,"blank":0,"placeholders":0}
+  [mobile-category-menswear-loaded] /african-menswear
+  images: {"total":9,"blank":0,"placeholders":0}
+  [mobile-category-womenswear-loaded] /african-womenswear
+  images: {"total":6,"blank":0,"placeholders":0}
+  [mobile-search-results-loaded] /search?query=kaftan
+  images: {"total":8,"blank":0,"placeholders":0}
+  [mobile-designer-loaded] /designer/mirage
+  card imgs: [{"src":"6ATH6udi9JNTyFHymntZn0iCCIZxoAKc6i1VEdfr","w":128,"alt":"AsoSignature"},{"src":"D9xpIzaiNw7vGkwG6qTjxoBpkmJUEevwLUUETJM4","w":350,"alt":"Men’s three-piece Black agbada with  Asoke Details"},{"src":"WLCmgoykKrQAHacuRDTZNvNKO8uZbI4Ir0a4dfNe","w":350,"alt":"White Senator Set"},{"src":"PWFQgf68DUAW5mFuPbxSXhLATQOqVGnVe7AffXGB","w":350,"alt":"Agbada Senator Set"},{"src":"31XnK3jQrhXWKBfSvjdcqlobTN0kTE5SV4bR6c2i","w":350,"alt":"African Two-piece senator with a Stoned Mask face Detail"},{"src":"a5dirkiNBrr2MGPQfGWEAIElBQ26CQtzP52F9ybJ","w":350,"alt":"Classic Kaftan tailored from premium fabr
+  mobile category has Sort text: true Filter text: true
+  fixed bars: ["fixed bottom-0 z-10 grid w-full max-w-full grid-cols-[1fr_auto_1fr] items-center","phpdebugbar phpdebugbar-minimized"]
+  [mobile-category-viewport] /african-menswear
+  [mobile-drawer-designers] /
+  [mobile-drawer-category-expanded] /
+  [mobile-how-to-measure-modal] /
+  modal open; body overflow = hidden  url= /
+  after Escape, modal still visible: false
+  [mobile-how-to-measure-video] /how-to-measure
+  media after click: ["http://aso-signature-backend-v2.test/videos/ASO%20CLOTHING%20MALE.mp4","http://aso-signature-backend-v2.test/videos/ASO%20CLOTHING%20FEMALE.mp4"]
+  guide steps: Shoulder
+  [mobile-contact-validation] /contact-us
+  [mobile-newsletter-invalid] /
+  description style: {"opacity":"1","color":"rgb(0, 0, 0)","fontSize":"16px","visible":true}
+  tabs: 
+  !! mobile-pdp-details failed: locator.scrollIntoViewIfNeeded: Timeout 29990.46000000002ms exceeded.
+  [mobile-product-added-viewport] /classic-kaftan-tailored-from-premium-fabric
+  [mobile-mini-cart] /classic-kaftan-tailored-from-premium-fabric
+  [mobile-cart-with-item] /checkout/cart
+  guest proceed -> /customer/login
+  [mobile-checkout-guest] /customer/login
+  logged in -> /
+  smart measurement href: http://aso-signature-backend-v2.test/customer/account/measurements/smart?redirect=http%3A%2F%2Faso-signature-backend-v2.test%2Fcustomer%2Faccount%2Fmeasurements
+  [mobile-measurement-help-popover] /customer/account/measurements
+  [mobile-measurement-save-empty] /customer/account/measurements
+  save-empty messages: []
+  [mobile-measurement-saved] /customer/account/measurements
+  address step shows existing addresses
+  [mobile-checkout-existing-address] /checkout/onepage
+  [mobile-checkout-step-2] /checkout/onepage
+  step2 has measurement: true  shipping: false  payment: false
+  [mobile-checkout-step-3] /checkout/onepage
+  step3: shippingMethods=false paymentMethods=false placeOrder=false
+  [mobile-checkout-step-4] /checkout/onepage
+  step4: shippingMethods=false paymentMethods=false placeOrder=false
+  [mobile-checkout-step-5] /checkout/onepage
+  step5: shippingMethods=false paymentMethods=false placeOrder=false
+  [mobile-checkout-final] /checkout/onepage
+  [mobile-wishlist-with-item] /customer/account/wishlist
+  [mobile-drawer-auth] /

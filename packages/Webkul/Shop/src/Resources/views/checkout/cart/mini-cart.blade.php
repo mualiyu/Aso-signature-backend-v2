@@ -319,6 +319,13 @@
                             @lang('shop::app.checkout.cart.mini-cart.continue-to-checkout')
                         </a>
 
+                            <!-- Guests are told up front that checkout asks them to sign in -->
+                            @guest('customer')
+                                <p class="text-center text-xs text-zinc-500">
+                                    @lang('shop::app.checkout.cart.mini-cart.account-required')
+                                </p>
+                            @endguest
+
                             {!! view_render_event('bagisto.shop.checkout.mini-cart.continue_to_checkout.after') !!}
 
                             <div class="block cursor-pointer text-center text-base font-medium max-md:py-1.5">

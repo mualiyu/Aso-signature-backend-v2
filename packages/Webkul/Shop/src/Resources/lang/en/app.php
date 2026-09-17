@@ -32,6 +32,19 @@ return [
         'login-form' => [
             'bagisto'             => 'Bagisto',
             'button-title'        => 'Sign In',
+            'checkout'            => [
+                'back-to-cart'       => 'Back to cart',
+                'cart-summary'       => '{1} :count item in your cart|[2,*] :count items in your cart',
+                'create-account'     => 'Create an account',
+                'description'        => 'Your cart is saved. Sign in and we will take you straight back to checkout.',
+                'new-customer-text'  => 'Creating an account takes about a minute, and your cart will be waiting for you.',
+                'new-customer-title' => 'New here?',
+                'reason-fit'         => 'Every piece is cut to the measurements saved on your profile.',
+                'reason-reorder'     => 'Reorder in your size without measuring again.',
+                'reason-track'       => 'Follow your order from cutting to delivery.',
+                'title'              => 'Sign in to complete your order',
+                'why-title'          => 'Why do I need an account?',
+            ],
             'create-your-account' => 'Create your account',
             'email'               => 'Email',
             'footer'              => '© Copyright :current_year, AsoSignature. All rights reserved.',
@@ -52,6 +65,10 @@ return [
             'agree-to-terms'              => 'I have read and agree to the',
             'bagisto'                     => 'Bagisto',
             'button-title'                => 'Register',
+            'checkout'                    => [
+                'description' => 'It only takes a minute. Your cart is saved, and once you sign in we will take you straight back to checkout.',
+                'title'       => 'Create an account to complete your order',
+            ],
             'confirm-pass'                => 'Confirm Password',
             'email'                       => 'Email',
             'first-name'                  => 'First Name',
@@ -754,6 +771,7 @@ return [
             ],
 
             'mini-cart' => [
+                'account-required'     => 'You will sign in or create an account at checkout.',
                 'continue-to-checkout' => 'Continue to Checkout',
                 'empty-cart'           => 'Your cart is empty',
                 'excl-tax'             => 'Excl. Tax:',
@@ -766,6 +784,7 @@ return [
             ],
 
             'summary' => [
+                'account-required'          => 'You will sign in or create an account at the next step. Each piece is made to the measurements saved on your profile.',
                 'cart-summary'              => 'Cart Summary',
                 'delivery-charges-excl-tax' => 'Delivery Charges (Excl. Tax)',
                 'delivery-charges-incl-tax' => 'Delivery Charges (Incl. Tax)',

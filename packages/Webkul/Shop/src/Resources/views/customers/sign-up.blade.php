@@ -1,3 +1,11 @@
+@php
+    /**
+     * True when the visitor was sent here from checkout. The page then explains
+     * why an account is needed and promises a return to checkout.
+     */
+    $checkoutIntended = $checkoutIntended ?? false;
+@endphp
+
 <!-- SEO Meta Content -->
 @push('meta')
     <meta
@@ -18,7 +26,11 @@
 >
     <!-- Page Title -->
     <x-slot:title>
-        @lang('shop::app.customers.signup-form.page-title')
+        @if ($checkoutIntended)
+            @lang('shop::app.customers.signup-form.checkout.title')
+        @else
+            @lang('shop::app.customers.signup-form.page-title')
+        @endif
     </x-slot>
 
 	<div class="container mt-20 max-1180:px-5 max-md:mt-12">
@@ -45,12 +57,25 @@
         <!-- Form Container -->
 		<div class="m-auto w-full max-w-[870px] rounded-xl border border-zinc-200 p-16 px-[90px] max-md:px-8 max-md:py-8 max-sm:border-none max-sm:p-0">
 			<h1 class="font-dmserif text-4xl max-md:text-3xl max-sm:text-xl">
-                @lang('shop::app.customers.signup-form.page-title')
+                @if ($checkoutIntended)
+                    @lang('shop::app.customers.signup-form.checkout.title')
+                @else
+                    @lang('shop::app.customers.signup-form.page-title')
+                @endif
             </h1>
 
 			<p class="mt-4 text-xl text-zinc-500 max-sm:mt-0 max-sm:text-sm">
-                @lang('shop::app.customers.signup-form.form-signup-text')
+                @if ($checkoutIntended)
+                    @lang('shop::app.customers.signup-form.checkout.description')
+                @else
+                    @lang('shop::app.customers.signup-form.form-signup-text')
+                @endif
             </p>
+
+            <!-- Why an account is needed, shown only when sent here from checkout -->
+            @if ($checkoutIntended)
+                @include('shop::customers.checkout-intent')
+            @endif
 
             <div class="mt-14 rounded max-sm:mt-8">
                 <x-shop::form :action="route('shop.customers.register.store')">

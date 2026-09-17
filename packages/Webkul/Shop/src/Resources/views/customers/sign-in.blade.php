@@ -1,3 +1,11 @@
+@php
+    /**
+     * True when the visitor was sent here from checkout. The page then explains
+     * why an account is needed and promises a return to checkout.
+     */
+    $checkoutIntended = $checkoutIntended ?? false;
+@endphp
+
 <!-- SEO Meta Content -->
 @push('meta')
     <meta name="description" content="@lang('shop::app.customers.login-form.page-title')"/>
@@ -12,7 +20,11 @@
 >
     <!-- Page Title -->
     <x-slot:title>
-        @lang('shop::app.customers.login-form.page-title')
+        @if ($checkoutIntended)
+            @lang('shop::app.customers.login-form.checkout.title')
+        @else
+            @lang('shop::app.customers.login-form.page-title')
+        @endif
     </x-slot>
 
     <div class="container mt-20 max-1180:px-5 max-md:mt-12">
@@ -39,12 +51,25 @@
         <!-- Form Container -->
         <div class="m-auto w-full max-w-[870px] rounded-xl border border-zinc-200 p-16 px-[90px] max-md:px-8 max-md:py-8 max-sm:border-none max-sm:p-0">
             <h1 class="font-dmserif text-4xl max-md:text-3xl max-sm:text-xl">
-                @lang('shop::app.customers.login-form.page-title')
+                @if ($checkoutIntended)
+                    @lang('shop::app.customers.login-form.checkout.title')
+                @else
+                    @lang('shop::app.customers.login-form.page-title')
+                @endif
             </h1>
 
             <p class="mt-4 text-xl text-zinc-500 max-sm:mt-0 max-sm:text-sm">
-                @lang('shop::app.customers.login-form.form-login-text')
+                @if ($checkoutIntended)
+                    @lang('shop::app.customers.login-form.checkout.description')
+                @else
+                    @lang('shop::app.customers.login-form.form-login-text')
+                @endif
             </p>
+
+            <!-- Why an account is needed, shown only when sent here from checkout -->
+            @if ($checkoutIntended)
+                @include('shop::customers.checkout-intent')
+            @endif
 
             {!! view_render_event('bagisto.shop.customers.login.before') !!}
 
@@ -153,16 +178,38 @@
 
             {!! view_render_event('bagisto.shop.customers.login.after') !!}
 
-            <p class="mt-5 font-medium text-zinc-500 max-sm:text-center max-sm:text-sm">
-                @lang('shop::app.customers.login-form.new-customer')
+            @if ($checkoutIntended)
+                <!-- New customer call to action, shown when sent here from checkout -->
+                <div class="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-sand px-6 py-5 max-sm:rounded-xl max-sm:px-4 max-sm:py-4">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-medium text-navyBlue max-sm:text-sm">
+                            @lang('shop::app.customers.login-form.checkout.new-customer-title')
+                        </p>
 
-                <a
-                    class="text-navyBlue"
-                    href="{{ route('shop.customers.register.index') }}"
-                >
-                    @lang('shop::app.customers.login-form.create-your-account')
-                </a>
-            </p>
+                        <p class="mt-1 text-sm text-zinc-500 max-sm:text-xs">
+                            @lang('shop::app.customers.login-form.checkout.new-customer-text')
+                        </p>
+                    </div>
+
+                    <a
+                        href="{{ route('shop.customers.register.index') }}"
+                        class="secondary-button rounded-2xl px-8 py-3 text-base max-md:rounded-lg max-sm:w-full max-sm:max-w-full max-sm:py-2 max-sm:text-sm"
+                    >
+                        @lang('shop::app.customers.login-form.checkout.create-account')
+                    </a>
+                </div>
+            @else
+                <p class="mt-5 font-medium text-zinc-500 max-sm:text-center max-sm:text-sm">
+                    @lang('shop::app.customers.login-form.new-customer')
+
+                    <a
+                        class="text-navyBlue"
+                        href="{{ route('shop.customers.register.index') }}"
+                    >
+                        @lang('shop::app.customers.login-form.create-your-account')
+                    </a>
+                </p>
+            @endif
         </div>
 
         <p class="mb-4 mt-8 text-center text-xs text-zinc-500">
