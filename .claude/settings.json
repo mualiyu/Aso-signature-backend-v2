@@ -40,7 +40,9 @@
       "Bash(curl -s -X POST -o /dev/null -w \"POST unknown url status=%{http_code}\\\\n\" http://aso-signature-backend-v2.test/this-page-does-not-exist)",
       "Bash(curl -s -H \"Accept: application/json\" http://aso-signature-backend-v2.test/api/this-does-not-exist)",
       "Bash(curl -s -X POST http://aso-signature-backend-v2.test/this-page-does-not-exist)",
-      "Bash(vendor/bin/pest packages/Webkul/Shop/tests --filter=\"should add a downloadable product to the cart with a cart rule|should check customer group price for guest customer with fixed\")"
+      "Bash(vendor/bin/pest packages/Webkul/Shop/tests --filter=\"should add a downloadable product to the cart with a cart rule|should check customer group price for guest customer with fixed\")",
+      "Bash(git check-ignore *)",
+      "Bash(curl -sS -m 40 http://aso-signature-backend-v2.test/)"
     ],
     "defaultMode": "bypassPermissions"
   }

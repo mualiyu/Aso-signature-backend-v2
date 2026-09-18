@@ -5,16 +5,20 @@
      * Build a srcset off the hero imagecache templates. The default small/medium/large
      * templates crop to a 2.74:1 banner, which would behead a 16:9 hero shot, so these
      * only scale the image down.
+     *
+     * A candidate that 404s leaves the hero blank, because browsers never fall back to
+     * `src` once a srcset candidate is chosen. A deploy can leave a stale config cache or
+     * classmap behind, so a variant is only offered once its template actually resolves;
+     * until then the full size image is served instead.
      */
-    $heroSrcset = function (string $path) {
-        $variant = fn ($template) => asset(Str::replaceFirst('storage/', 'cache/hero-'.$template.'/', $path));
+    $heroVariants = collect(['small' => 640, 'medium' => 1024, 'large' => 1600])
+        ->filter(fn ($width, $template) => class_exists((string) config('imagecache.templates.hero-'.$template)));
 
-        return implode(', ', [
-            $variant('small').' 640w',
-            $variant('medium').' 1024w',
-            $variant('large').' 1600w',
-            asset($path).' 2400w',
-        ]);
+    $heroSrcset = function (string $path) use ($heroVariants) {
+        return $heroVariants
+            ->map(fn ($width, $template) => asset(Str::replaceFirst('storage/', 'cache/hero-'.$template.'/', $path)).' '.$width.'w')
+            ->push(asset($path).' 2400w')
+            ->implode(', ');
     };
 
     $slides = collect($options['images'] ?? [])
