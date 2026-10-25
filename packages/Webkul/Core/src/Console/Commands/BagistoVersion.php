@@ -18,7 +18,7 @@ class BagistoVersion extends Command
      *
      * @var string
      */
-    protected $description = 'Displays current version of Bagisto installed';
+    protected $description = 'Displays the current application version';
 
     /**
      * Create a new command instance.

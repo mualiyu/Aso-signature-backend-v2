@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'Admin',
-                'bagisto'          => 'Bagisto',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'Confirm Password',
                 'email'            => 'Email',
                 'email-address'    => 'admin@example.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'Application Name',
                 'argentine-peso'              => 'Argentine Peso (ARS)',
                 'australian-dollar'           => 'Australian Dollar (AUD)',
-                'bagisto'                     => 'Bagisto',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'Bangladeshi Taka (BDT)',
                 'brazilian-real'              => 'Brazilian Real (BRL)',
                 'british-pound-sterling'      => 'British Pound Sterling (GBP)',
@@ -723,24 +723,24 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto'      => 'Installation Bagisto',
-                'bagisto-info' => 'Creating the database tables, this can take a few moments',
+                'bagisto'      => 'Aso Signature',
+                'bagisto-info' => '',
                 'title'        => 'Installation',
             ],
 
             'installation-completed' => [
                 'admin-panel'                => 'Admin Panel',
-                'bagisto-forums'             => 'Bagisto Forum',
+                'bagisto-forums'             => 'Aso Signature Forum',
                 'customer-panel'             => 'Customer Panel',
-                'explore-bagisto-extensions' => 'Explore Bagisto Extension',
+                'explore-bagisto-extensions' => 'Explore Aso Signature Extension',
                 'title'                      => 'Installation Completed',
-                'title-info'                 => 'Bagisto is Successfully installed on your system.',
+                'title-info'                 => 'Aso Signature is Successfully installed on your system.',
             ],
 
             'ready-for-installation' => [
                 'create-databsae-table'   => 'Create the database table',
                 'install'                 => 'Installation',
-                'install-info'            => 'Bagisto For Installation',
+                'install-info'            => 'Aso Signature For Installation',
                 'install-info-button'     => 'Click the button below to',
                 'populate-database-table' => 'Populate the database tables',
                 'start-installation'      => 'Start Installation',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'Locale',
                 'main'          => 'Start',
                 'select-locale' => 'Select Locale',
-                'title'         => 'Your Bagisto install',
-                'welcome-title' => 'Welcome to Bagisto',
+                'title'         => 'Your Aso Signature install',
+                'welcome-title' => 'Welcome to Aso Signature',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'arabic'                   => 'Arabic',
             'back'                     => 'Back',
-            'bagisto'                  => 'Bagisto',
-            'bagisto-info'             => 'a Community Project by',
-            'bagisto-logo'             => 'Bagisto Logo',
+            'bagisto'                  => 'Aso Signature',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
             'bengali'                  => 'Bengali',
             'chinese'                  => 'Chinese',
             'continue'                 => 'Continue',
@@ -792,7 +792,7 @@ return [
             'german'                   => 'German',
             'hebrew'                   => 'Hebrew',
             'hindi'                    => 'Hindi',
-            'installation-description' => 'Bagisto installation typically involves several steps. Here\'s a general outline of the installation process for Bagisto',
+            'installation-description' => 'Aso Signature installation typically involves several steps. Here\'s a general outline of the installation process for Aso Signature',
             'installation-info'        => 'We are happy to see you here!',
             'installation-title'       => 'Welcome to Installation',
             'italian'                  => 'Italian',
@@ -803,10 +803,10 @@ return [
             'russian'                  => 'Russian',
             'sinhala'                  => 'Sinhala',
             'spanish'                  => 'Spanish',
-            'title'                    => 'Bagisto Installer',
+            'title'                    => 'Aso Signature Installer',
             'turkish'                  => 'Turkish',
             'ukrainian'                => 'Ukrainian',
-            'webkul'                   => 'Webkul',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

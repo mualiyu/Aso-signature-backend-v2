@@ -1,62 +1,36 @@
-# Bagisto Contribution Guide
+# Contributing
 
-**BUGS:**
+Setup instructions are in the [README](README.md).
 
-To encourage active collaboration, Bagisto encourages pull requests, not just bug reports. "Bug reports" may also be sent in the form of a pull request containing a negative test.
+## Workflow
 
-However, when filing a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+1. Branch off `main`. Use `feature/<short-name>`, `fix/<short-name>` or `chore/<short-name>`.
+2. Keep each branch to one change. Small pull requests get reviewed faster.
+3. Before you push:
+   ```bash
+   vendor/bin/pint            # code style
+   php artisan test           # or the suite for the module you changed
+   ```
+4. If you changed storefront or admin CSS/JS, run `npm run build` in that package and commit the updated `public/themes/.../build` output.
+5. Open a pull request into `main` with:
+   - what changed and why
+   - how you tested it (screenshots for UI changes)
+   - any new `.env` variables, migrations, or admin configuration steps
+6. At least one other developer reviews before merge. Don't push straight to `main`.
 
-Remember, bug reports are created in the hope that others with the same problem will collaborate with you on solving it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
+## Guidelines
 
-**Projects that you can contribute in:**
+- **Put new features in their own module** (`packages/Webkul/<Module>`), the way `Alteration` and `Designer` are built. Keep edits to the core modules small.
+- **Add translation keys to `en` first** (`src/Resources/lang/en/app.php`). Don't hard-code user-facing text in views.
+- **Migrations are append-only.** Never edit a migration that has already run in production. Add a new one.
+- **No secrets in git.** New environment variables go in `.env.example` (empty or with a safe default) and the README's configuration table.
+- **Write tests** for new behaviour where practical. See `packages/Webkul/Alteration/tests` for examples.
 
-1. Bagisto
+## Commit messages
 
-2. Bagisto docs
+Use the imperative mood and say what the change does, for example:
 
-3. Laravel-aliexpress-dropship
-
-4. Laravel-aliexpress-dropship-chrome-extension
-
-5. Bagisto-custom-style-extension
-
-**Core development ideas or discussion:**
-
-If you propose a new feature, please implement at least some of the code needed to complete the quality.
-
-Informal discussion regarding bugs, new features, and implementation of existing features occurs in the comments of the issues filed using feature template.
-
-**Which branch you should target?**
-
-All bug fixes should be sent to the latest staging branch, i.e. development branch. Bug fixes should never be sent to the master branch unless they fix features that exist only in the upcoming release.
-
-Minor features fully backwards compatible with the current Laravel release may be sent to the latest stable branch.
-
-Major new features should always be sent to the master branch, which contains the upcoming Bagisto release.
-
-**Compiling assets:**
-
-If you are submitting a change that will affect a compiled file, such as most of the files in admin/resources/assets/sass or admin/resources/assets/js of the Bagisto repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Bagisto. To defensively prevent this, all compiled files will be generated and committed by Bagisto maintainers.
-
-**Code style:**
-
-Bagisto follows PSR-2 for coding standards and PSR-4 as of Laravel for autoloading standards.
-
-**PHPDoc:**
-
-Below is an example of a valid Bagisto doc block. Note that the @param attribute is followed by two spaces, the argument type, two more spaces, and finally, the variable name:
-  ``` php
-    /**
-    * Register a service with CoreServiceProvider.
-    *
-    * @param  string|array  $loader
-    * @param  \Closure|string|null  $concrete
-    * @param  bool  $shared
-    * @return void
-    * @throws \Exception
-    */
-    protected function registerFacades($loader, $concrete = null, $shared = false)
-    {
-        //
-    }
-  ```
+```text
+Add delivered_at to orders and set it from DHL tracking
+Fix PDP buy box spacing on mobile
+```

@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'מנהל',
-                'bagisto'          => 'Bagisto',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'אשר סיסמה',
                 'email'            => 'אימייל',
                 'email-address'    => 'admin@example.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'שם היישום',
                 'argentine-peso'              => 'פסו ארגנטינאי (ARS)',
                 'australian-dollar'           => 'דולר אוסטרלי (AUD)',
-                'bagisto'                     => 'Bagisto',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'טאקה בנגלדשי (BDT)',
                 'brazilian-real'              => 'ריאל ברזילאי (BRL)',
                 'british-pound-sterling'      => 'לירה שטרלינג בריטית (GBP)',
@@ -723,24 +723,24 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto'      => 'התקנת Bagisto',
-                'bagisto-info' => 'יצירת טבלאות מסד הנתונים, זה עשוי לקחת מספר רגעים',
+                'bagisto'      => 'Aso Signature',
+                'bagisto-info' => '',
                 'title'        => 'התקנה',
             ],
 
             'installation-completed' => [
                 'admin-panel'                => 'פנל מנהל המערכת',
-                'bagisto-forums'             => 'פורום Bagisto',
+                'bagisto-forums'             => 'פורום Aso Signature',
                 'customer-panel'             => 'פנל לקוח',
-                'explore-bagisto-extensions' => 'גלה הרחבות Bagisto',
+                'explore-bagisto-extensions' => 'גלה הרחבות Aso Signature',
                 'title'                      => 'התקנה הושלמה',
-                'title-info'                 => 'Bagisto הותקן בהצלחה במערכת שלך.',
+                'title-info'                 => 'Aso Signature הותקן בהצלחה במערכת שלך.',
             ],
 
             'ready-for-installation' => [
                 'create-database-table'   => 'יצירת טבלת מסד הנתונים',
                 'install'                 => 'התקנה',
-                'install-info'            => 'Bagisto להתקנה',
+                'install-info'            => 'Aso Signature להתקנה',
                 'install-info-button'     => 'לחץ על הכפתור למטה כדי',
                 'populate-database-table' => 'מילוי הטבלאות במסד הנתונים',
                 'start-installation'      => 'התחל התקנה',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'אזור',
                 'main'          => 'הַתְחָלָה',
                 'select-locale' => 'בחר אזור',
-                'title'         => 'התקנת Bagisto שלך',
-                'welcome-title' => 'ברוך הבא ל-Bagisto',
+                'title'         => 'התקנת Aso Signature שלך',
+                'welcome-title' => 'ברוך הבא ל-Aso Signature',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'arabic'                   => 'ערבית',
             'back'                     => 'חזרה',
-            'bagisto'                  => 'Bagisto',
-            'bagisto-info'             => 'פרויקט קהילתי על ידי',
-            'bagisto-logo'             => 'לוגו Bagisto',
+            'bagisto'                  => 'Aso Signature',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
             'bengali'                  => 'בנגלי',
             'chinese'                  => 'סיני',
             'continue'                 => 'המשך',
@@ -792,9 +792,9 @@ return [
             'german'                   => 'גרמני',
             'hebrew'                   => 'עברית',
             'hindi'                    => 'הינדי',
-            'installation-description' => 'התקנת Bagisto כוללת בדרך כלל מספר שלבים. הנה מתווה כללי של תהליך ההתקנה עבור Bagisto',
+            'installation-description' => 'התקנת Aso Signature כוללת בדרך כלל מספר שלבים. הנה מתווה כללי של תהליך ההתקנה עבור Aso Signature',
             'installation-info'        => 'אנו שמחים לראותך כאן!',
-            'installation-title'       => 'ברוך הבא להתקנת Bagisto',
+            'installation-title'       => 'ברוך הבא להתקנת Aso Signature',
             'italian'                  => 'איטלקי',
             'japanese'                 => 'יפני',
             'persian'                  => 'פרסי',
@@ -803,10 +803,10 @@ return [
             'russian'                  => 'רוסי',
             'sinhala'                  => 'סינהלה',
             'spanish'                  => 'ספרדית',
-            'title'                    => 'מתקין Bagisto',
+            'title'                    => 'מתקין Aso Signature',
             'turkish'                  => 'טורקי',
             'ukrainian'                => 'אוקראיני',
-            'webkul'                   => 'Webkul',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

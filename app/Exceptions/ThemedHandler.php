@@ -10,7 +10,7 @@ use Webkul\RestApi\Exceptions\Handler as RestApiHandler;
 /**
  * The exception handler the application actually uses.
  *
- * Bagisto's core handler extends App\Exceptions\Handler and the REST API
+ * The Core package handler extends App\Exceptions\Handler and the REST API
  * package's handler extends the core one, so this class sits at the end of
  * that chain. Both packages bind their own handler while registering, which
  * is why AppServiceProvider binds this one after every provider has registered.

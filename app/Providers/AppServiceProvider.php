@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         /**
-         * Bagisto's core provider binds its own exception handler while booting,
+         * The Core package provider binds its own exception handler while booting,
          * and the REST API package re-binds that to its handler. Both boot after
          * this provider, so ours is bound once every provider has booted. It renders
          * the themed shop and admin error pages instead of Laravel's bare screens.

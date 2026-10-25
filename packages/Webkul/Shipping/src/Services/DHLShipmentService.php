@@ -1007,7 +1007,7 @@ class DHLShipmentService
      * @return array{line1: string, line2: string, line3: string}
      */
     /**
-     * Bagisto renamed DB column `address1` → `address`; older code reading address1 sees empty street.
+     * The core schema renamed DB column `address1` → `address`; older code reading address1 sees empty street.
      */
     protected function resolveOrderStreetLine(object $shippingAddress): string
     {

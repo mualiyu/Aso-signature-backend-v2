@@ -181,7 +181,7 @@ class InstallerController extends Controller
 
         $filePath = storage_path('installed');
 
-        File::put($filePath, 'Your Bagisto App is Successfully Installed');
+        File::put($filePath, 'Aso Signature is successfully installed.');
 
         Event::dispatch('bagisto.installed');
 

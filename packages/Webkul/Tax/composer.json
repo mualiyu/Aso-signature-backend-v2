@@ -1,11 +1,11 @@
 {
-    "name": "bagisto/laravel-tax",
+    "name": "asosignature/tax",
     "license": "MIT",
     "description" : "Tax package for store front and customers",
     "authors": [
         {
-            "name": "Bagisto",
-            "email": "support@bagisto.com"
+            "name": "Aso Signature",
+            "email": "dev@asosignature.com"
         }
     ],
     "require": {},

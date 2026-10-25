@@ -5,10 +5,10 @@ return [
         'forgot-password' => [
             'already-sent'         => 'Ya se envió el correo de restablecimiento de contraseña.',
             'back'                 => 'Volver a iniciar sesión',
-            'bagisto'              => 'Bagisto',
+            'bagisto'              => 'Aso Signature',
             'email'                => 'Correo electrónico',
             'email-not-exist'      => 'No podemos encontrar un usuario con esa dirección de correo electrónico.',
-            'footer'               => '© Derechos de autor 2010 - :current_year, Webkul Software (Registrado en India). Todos los derechos reservados.',
+            'footer'               => '© Derechos de autor :current_year, Aso Signature. Todos los derechos reservados.',
             'forgot-password-text' => 'Si olvidó su contraseña, recupérela ingresando su dirección de correo electrónico.',
             'page-title'           => '¿Olvidó su contraseña?',
             'reset-link-sent'      => 'Hemos enviado por correo electrónico el enlace para restablecer su contraseña.',
@@ -19,21 +19,21 @@ return [
 
         'reset-password' => [
             'back-link-title'  => 'Volver a Iniciar Sesión',
-            'bagisto'          => 'Bagisto',
+            'bagisto'          => 'Aso Signature',
             'confirm-password' => 'Confirmar Contraseña',
             'email'            => 'Correo Electrónico Registrado',
-            'footer'           => '© Derechos de autor 2010 - :current_year, Webkul Software (Registrada en India). Todos los derechos reservados.',
+            'footer'           => '© Derechos de autor :current_year, Aso Signature. Todos los derechos reservados.',
             'password'         => 'Contraseña',
             'submit-btn-title' => 'Restablecer Contraseña',
             'title'            => 'Restablecer Contraseña',
         ],
 
         'login-form' => [
-            'bagisto'             => 'Bagisto',
+            'bagisto'             => 'Aso Signature',
             'button-title'        => 'Iniciar Sesión',
             'create-your-account' => 'Crea tu cuenta',
             'email'               => 'Correo Electrónico',
-            'footer'              => '© Derechos de autor 2010 - :current_year, Webkul Software (Registrada en India). Todos los derechos reservados.',
+            'footer'              => '© Derechos de autor :current_year, Aso Signature. Todos los derechos reservados.',
             'forgot-pass'         => '¿Olvidaste tu Contraseña?',
             'form-login-text'     => 'Si tienes una cuenta, inicia sesión con tu dirección de correo electrónico.',
             'invalid-credentials' => 'Por favor, verifica tus credenciales e inténtalo de nuevo.',
@@ -48,12 +48,12 @@ return [
 
         'signup-form' => [
             'account-exists'              => '¿Ya tienes una cuenta?',
-            'bagisto'                     => 'Bagisto',
+            'bagisto'                     => 'Aso Signature',
             'button-title'                => 'Registrarse',
             'confirm-pass'                => 'Confirmar Contraseña',
             'email'                       => 'Correo Electrónico',
             'first-name'                  => 'Nombre',
-            'footer'                      => '© Derechos de autor 2010 - :current_year, Webkul Software (Registrada en India). Todos los derechos reservados.',
+            'footer'                      => '© Derechos de autor :current_year, Aso Signature. Todos los derechos reservados.',
             'form-signup-text'            => 'Si eres nuevo en nuestra tienda, estamos encantados de tenerte como miembro.',
             'last-name'                   => 'Apellido',
             'page-title'                  => 'Convertirse en Usuario',
@@ -396,7 +396,7 @@ return [
         'layouts' => [
             'header' => [
                 'account'           => 'Cuenta',
-                'bagisto'           => 'Bagisto',
+                'bagisto'           => 'Aso Signature',
                 'cart'              => 'Carrito de compras',
                 'compare'           => 'Comparar',
                 'dropdown-text'     => 'Administrar carrito de compras, pedidos y lista de deseos',
@@ -434,7 +434,7 @@ return [
                 'customer-service'       => 'Servicio al cliente',
                 'email'                  => 'Correo Electrónico',
                 'footer-content'         => 'Contenido del pie de página',
-                'footer-text'            => '© Derechos de autor 2010 - :current_year, Webkul Software (registrada en India). Todos los derechos reservados.',
+                'footer-text'            => '© Derechos de autor :current_year, Aso Signature. Todos los derechos reservados.',
                 'locale'                 => 'Idioma',
                 'newsletter-text'        => '¡Prepárate para nuestro divertido boletín!',
                 'order-return'           => 'Pedido y devolución',
@@ -710,7 +710,7 @@ return [
             'suspended-account-message' => 'Tu cuenta ha sido suspendida.',
 
             'index' => [
-                'bagisto'                  => 'Bagisto',
+                'bagisto'                  => 'Aso Signature',
                 'cart'                     => 'Carrito',
                 'continue-shopping'        => 'Continuar Comprando',
                 'empty-product'            => 'No tienes productos en tu carrito.',

@@ -6,7 +6,7 @@ return [
             'email'                  => 'Адреса електронної пошти',
             'forget-password-link'   => 'Забули пароль?',
             'password'               => 'Пароль',
-            'powered-by-description' => 'Працює на платформі :bagisto, спільний проект :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Увійти',
             'title'                  => 'Увійти',
         ],
@@ -16,7 +16,7 @@ return [
                 'email'                  => 'Зареєстрована електронна пошта',
                 'email-not-exist'        => 'Електронна пошта не існує',
                 'page-title'             => 'Забули пароль',
-                'powered-by-description' => 'Працює на платформі :bagisto, спільний проект :webkul.',
+                'powered-by-description' => '© Aso Signature',
                 'reset-link-sent'        => 'Посилання на скидання пароля відправлено',
                 'sign-in-link'           => 'Повернутися до увійти?',
                 'submit-btn'             => 'Скинути',
@@ -29,7 +29,7 @@ return [
             'confirm-password'       => 'Підтвердити пароль',
             'email'                  => 'Зареєстрована електронна пошта',
             'password'               => 'Пароль',
-            'powered-by-description' => 'Працює на платформі :bagisto, спільний проект :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Скинути пароль',
             'title'                  => 'Скинути пароль',
         ],
@@ -4125,7 +4125,7 @@ return [
             ],
 
             'powered-by' => [
-                'description' => 'Працює на платформі :bagisto, спільний проект :webkul.',
+                'description' => '© Aso Signature',
             ],
         ],
 
@@ -4413,7 +4413,7 @@ return [
     ],
 
     'footer' => [
-        'copy-right' => 'Працює на платформі <a href="https://bagisto.com/" target="_blank">Bagisto</a>, Спільний проект <a href="https://webkul.com/" target="_blank">Webkul</a>',
+        'copy-right' => '© Aso Signature',
     ],
 
     'emails' => [

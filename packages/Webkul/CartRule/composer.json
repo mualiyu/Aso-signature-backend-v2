@@ -1,5 +1,5 @@
 {
-    "name": "bagisto/laravel-cart-rule",
+    "name": "asosignature/cart-rule",
     "license": "MIT",
     "authors": [
         {
@@ -8,8 +8,8 @@
         }
     ],
     "require": {
-        "bagisto/laravel-core": "dev-master",
-        "bagisto/laravel-rule": "dev-master"
+        "asosignature/core": "dev-master",
+        "asosignature/rule": "dev-master"
     },
     "autoload": {
         "psr-4": {

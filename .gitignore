@@ -18,14 +18,14 @@ Homestead.yaml
 /node_modules
 npm-debug.log
 package-lock.json
-/playwright-reportgi
+/playwright-report
 /public/videos
 public/videos
 /public/videos/*.mp4
 public/videos/*.mp4
 # /public/css
 # /public/js
-# /public/hot
+/public/hot
 # /public/storage
 # /public/vendor
 /lang/vendor
@@ -37,3 +37,7 @@ yarn.lock
 yarn-error.log
 /storage/app/public/
 /storage/app/private/
+
+# OS / tooling artefacts
+.DS_Store
+.rnd

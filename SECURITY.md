@@ -1,7 +1,9 @@
-# Reporting Security Issues
+# Security
 
-Bagisto values the contributions of the security research community, and we look forward to working with you to minimize risk to Bagisto merchants.
+If you find a security issue, **don't open a public issue or pull request**. Email <hello@asosignature.com> with:
 
-## Where should I report security issues?
+- a description of the issue and its impact
+- steps to reproduce it
+- any suggested fix
 
-If you think that you have found a security issue in Bagisto, please do not use the issue tracker and do not post it publicly. Instead, all security issues must be sent to mailto:support@bagisto.com.
+Never put real credentials, customer data or production database dumps in issues, pull requests, commits or chat logs.

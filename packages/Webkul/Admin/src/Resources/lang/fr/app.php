@@ -6,7 +6,7 @@ return [
             'email'                  => 'Adresse e-mail',
             'forget-password-link'   => 'Mot de passe oublié ?',
             'password'               => 'Mot de passe',
-            'powered-by-description' => 'Propulsé par :bagisto, un projet open-source par :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Se connecter',
             'title'                  => 'Se connecter',
         ],
@@ -16,7 +16,7 @@ return [
                 'email'                  => 'Adresse e-mail enregistrée',
                 'email-not-exist'        => 'L\'adresse e-mail n\'existe pas',
                 'page-title'             => 'Mot de passe oublié',
-                'powered-by-description' => 'Propulsé par :bagisto, un projet open-source par :webkul.',
+                'powered-by-description' => '© Aso Signature',
                 'reset-link-sent'        => 'Lien de réinitialisation du mot de passe envoyé',
                 'sign-in-link'           => 'Retour à la connexion ?',
                 'submit-btn'             => 'Réinitialiser',
@@ -29,7 +29,7 @@ return [
             'confirm-password'       => 'Confirmer le mot de passe',
             'email'                  => 'Adresse e-mail enregistrée',
             'password'               => 'Mot de passe',
-            'powered-by-description' => 'Propulsé par :bagisto, un projet open-source par :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Réinitialiser le mot de passe',
             'title'                  => 'Réinitialiser le mot de passe',
         ],
@@ -4125,7 +4125,7 @@ return [
             ],
 
             'powered-by' => [
-                'description' => 'Propulsé par :bagisto, un projet open-source par :webkul.',
+                'description' => '© Aso Signature',
             ],
         ],
 
@@ -4413,7 +4413,7 @@ return [
     ],
 
     'footer' => [
-        'copy-right' => 'Propulsé par <a href="https://bagisto.com/" target="_blank">Bagisto</a>, un projet communautaire par <a href="https://webkul.com/" target="_blank">Webkul</a>',
+        'copy-right' => '© Aso Signature',
     ],
 
     'emails' => [

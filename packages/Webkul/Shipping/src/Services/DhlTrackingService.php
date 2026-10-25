@@ -2,6 +2,7 @@
 
 namespace Webkul\Shipping\Services;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Webkul\Sales\Models\Order;
@@ -105,7 +106,7 @@ class DhlTrackingService
             'dhl_tracking_fetched_at'         => now(),
         ]);
 
-        $this->syncOrderStatusFromTracking($shipment, $code);
+        $this->syncOrderStatusFromTracking($shipment, $code, $latest['timestamp'] ?? null);
 
         return [
             'success'  => true,
@@ -118,7 +119,7 @@ class DhlTrackingService
      * on the current status being "shipped" so we never override a canceled / closed / refunded
      * order and re-refreshing an already delivered order stays a no-op.
      */
-    protected function syncOrderStatusFromTracking(Shipment $shipment, ?string $code): void
+    protected function syncOrderStatusFromTracking(Shipment $shipment, ?string $code, ?string $deliveredAt = null): void
     {
         if (! DhlCheckpointCodes::isDelivered($code)) {
             return;
@@ -128,6 +129,18 @@ class DhlTrackingService
 
         if (! $order || $order->status !== Order::STATUS_SHIPPED) {
             return;
+        }
+
+        /**
+         * Record when DHL actually delivered, not when we happened to poll. The alteration claim
+         * reporting window counts from this moment.
+         */
+        if ($deliveredAt) {
+            try {
+                $order->delivered_at = Carbon::parse($deliveredAt);
+            } catch (\Throwable) {
+                // Unparseable checkpoint time: updateOrderStatus() falls back to now().
+            }
         }
 
         $this->orderRepository->updateOrderStatus($order, Order::STATUS_COMPLETED);

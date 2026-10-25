@@ -25,6 +25,11 @@
         <testsuite name="Shop Feature Test">
             <directory suffix="Test.php">./packages/Webkul/Shop/tests/Feature</directory>
         </testsuite>
+
+        <!-- Alteration package testsuites. -->
+        <testsuite name="Alteration Feature Test">
+            <directory suffix="Test.php">./packages/Webkul/Alteration/tests/Feature</directory>
+        </testsuite>
     </testsuites>
 
     <source>

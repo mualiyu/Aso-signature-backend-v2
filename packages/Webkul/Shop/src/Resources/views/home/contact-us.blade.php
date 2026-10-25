@@ -103,6 +103,19 @@
                             </p>
                         </div>
                     </div>
+
+                    <!-- Alteration partners -->
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-zinc-500 mb-1">@lang('alteration::app.shop.locator.support-label')</p>
+                            <a href="{{ route('shop.alterations.partners.index') }}" class="text-zinc-900 font-medium underline">@lang('alteration::app.shop.locator.title')</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -1,7 +1,7 @@
 {
-    "name": "bagisto/bagisto",
+    "name": "asosignature/backend",
     "type": "project",
-    "description": "Bagisto Laravel E-Commerce",
+    "description": "Aso Signature e-commerce backend",
     "keywords": [
         "framework",
         "laravel"
@@ -69,6 +69,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Webkul\\Admin\\": "packages/Webkul/Admin/src",
+            "Webkul\\Alteration\\": "packages/Webkul/Alteration/src",
             "Webkul\\Attribute\\": "packages/Webkul/Attribute/src",
             "Webkul\\CartRule\\": "packages/Webkul/CartRule/src",
             "Webkul\\CatalogRule\\": "packages/Webkul/CatalogRule/src",
@@ -147,11 +148,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "support": {
-        "issues": "https://github.com/bagisto/bagisto/issues",
-        "forum": "https://forums.bagisto.com",
-        "source": "https://github.com/bagisto/bagisto",
-        "docs": "https://devdocs.bagisto.com"
-    }
+    "prefer-stable": true
 }

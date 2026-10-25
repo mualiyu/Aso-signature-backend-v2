@@ -88,6 +88,15 @@ class Order extends Model implements OrderContract
         'updated_at',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'delivered_at' => 'datetime',
+    ];
+
     protected $statusLabel = [
         self::STATUS_PENDING             => 'Pending',
         self::STATUS_PENDING_PAYMENT     => 'Pending Payment',

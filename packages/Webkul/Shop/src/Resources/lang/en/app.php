@@ -5,7 +5,7 @@ return [
         'forgot-password' => [
             'already-sent'         => 'Already Password Reset Mail Sent.',
             'back'                 => 'Back to sign In ?',
-            'bagisto'              => 'Bagisto',
+            'bagisto'              => 'Aso Signature',
             'email'                => 'Email',
             'email-not-exist'      => 'We cannot find a user with that email address.',
             'footer'               => '© Copyright :current_year, AsoSignature. All rights reserved.',
@@ -19,7 +19,7 @@ return [
 
         'reset-password' => [
             'back-link-title'  => 'Back to Sign In',
-            'bagisto'          => 'Bagisto',
+            'bagisto'          => 'Aso Signature',
             'confirm-password' => 'Confirm Password',
             'email'            => 'Registered Email',
             'footer'           => '© Copyright :current_year, AsoSignature. All rights reserved.',
@@ -30,7 +30,7 @@ return [
         ],
 
         'login-form' => [
-            'bagisto'             => 'Bagisto',
+            'bagisto'             => 'Aso Signature',
             'button-title'        => 'Sign In',
             'checkout'            => [
                 'back-to-cart'       => 'Back to cart',
@@ -63,7 +63,7 @@ return [
         'signup-form' => [
             'account-exists'              => 'Already have an account ?',
             'agree-to-terms'              => 'I have read and agree to the',
-            'bagisto'                     => 'Bagisto',
+            'bagisto'                     => 'Aso Signature',
             'button-title'                => 'Register',
             'checkout'                    => [
                 'description' => 'It only takes a minute. Your cart is saved, and once you sign in we will take you straight back to checkout.',
@@ -425,7 +425,7 @@ return [
         'layouts' => [
             'header' => [
                 'account'           => 'Account',
-                'bagisto'           => 'Bagisto',
+                'bagisto'           => 'Aso Signature',
                 'cart'              => 'Cart',
                 'compare'           => 'Compare',
                 'dropdown-text'     => 'Manage Cart, Orders & Wishlist',
@@ -742,7 +742,7 @@ return [
             'suspended-account-message' => 'Your account has been suspended.',
 
             'index' => [
-                'bagisto'                  => 'Bagisto',
+                'bagisto'                  => 'Aso Signature',
                 'cart'                     => 'Cart',
                 'continue-shopping'        => 'Continue Shopping',
                 'empty-product'            => 'You don’t have a product in your cart.',

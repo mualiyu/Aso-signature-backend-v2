@@ -327,6 +327,18 @@ class OrderRepository extends Repository
 
         $order->status = $status;
 
+        /**
+         * Stamp the delivery date the first time the order reaches Delivered / Completed. It anchors
+         * the alteration claim reporting window. DHL automation pre-fills the real checkpoint time.
+         */
+        if (
+            $status === Order::STATUS_COMPLETED
+            && $previousStatus !== Order::STATUS_COMPLETED
+            && empty($order->delivered_at)
+        ) {
+            $order->delivered_at = now();
+        }
+
         $order->save();
 
         Event::dispatch('sales.order.update-status.after', $order);

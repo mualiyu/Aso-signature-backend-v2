@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'مدیر',
-                'bagisto'          => 'Bagisto',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'تأیید رمز عبور',
                 'email'            => 'ایمیل',
                 'email-address'    => 'admin@example.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'نام برنامه',
                 'argentine-peso'              => 'پزوی آرژانتین (ARS)',
                 'australian-dollar'           => 'دلار استرالیا (AUD)',
-                'bagisto'                     => 'Bagisto',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'تاکای بنگلادش (BDT)',
                 'brazilian-real'              => 'رئال برزیل (BRL)',
                 'british-pound-sterling'      => 'پوند استرلینگ بریتانیا (GBP)',
@@ -723,24 +723,24 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto'      => 'نصب Bagisto',
-                'bagisto-info' => 'ایجاد جداول پایگاه داده، این ممکن است چند لحظه طول بکشد',
+                'bagisto'      => 'Aso Signature',
+                'bagisto-info' => '',
                 'title'        => 'نصب',
             ],
 
             'installation-completed' => [
                 'admin-panel'                => 'پنل مدیریت',
-                'bagisto-forums'             => 'انجمن Bagisto',
+                'bagisto-forums'             => 'انجمن Aso Signature',
                 'customer-panel'             => 'پنل مشتریان',
-                'explore-bagisto-extensions' => 'کاوش در افزونه‌های Bagisto',
+                'explore-bagisto-extensions' => 'کاوش در افزونه‌های Aso Signature',
                 'title'                      => 'نصب با موفقیت انجام شد',
-                'title-info'                 => 'Bagisto با موفقیت بر روی سیستم شما نصب شده است.',
+                'title-info'                 => 'Aso Signature با موفقیت بر روی سیستم شما نصب شده است.',
             ],
 
             'ready-for-installation' => [
                 'create-database-table'   => 'ایجاد جدول پایگاه‌داده',
                 'install'                 => 'نصب',
-                'install-info'            => 'Bagisto برای نصب',
+                'install-info'            => 'Aso Signature برای نصب',
                 'install-info-button'     => 'برای شروع کلیک کنید',
                 'populate-database-table' => 'پر کردن جدول‌های پایگاه‌داده',
                 'start-installation'      => 'شروع نصب',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'محلی',
                 'main'          => 'شروع',
                 'select-locale' => 'انتخاب محلی',
-                'title'         => 'نصب Bagisto شما',
-                'welcome-title' => 'خوش آمدید به Bagisto',
+                'title'         => 'نصب Aso Signature شما',
+                'welcome-title' => 'خوش آمدید به Aso Signature',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'arabic'                   => 'عربی',
             'back'                     => 'بازگشت',
-            'bagisto'                  => 'Bagisto',
-            'bagisto-info'             => 'یک پروژه جامعه‌ای توسط',
-            'bagisto-logo'             => 'لوگوی Bagisto',
+            'bagisto'                  => 'Aso Signature',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
             'bengali'                  => 'بنگالی',
             'chinese'                  => 'چینی',
             'continue'                 => 'ادامه',
@@ -792,9 +792,9 @@ return [
             'german'                   => 'آلمانی',
             'hebrew'                   => 'عبری',
             'hindi'                    => 'هندی',
-            'installation-description' => 'نصب Bagisto معمولاً شامل چندین مرحله است. در اینجا یک نمای کلی از فرآیند نصب برای Bagisto آورده شده است',
+            'installation-description' => 'نصب Aso Signature معمولاً شامل چندین مرحله است. در اینجا یک نمای کلی از فرآیند نصب برای Aso Signature آورده شده است',
             'installation-info'        => 'خوشحالیم که شما را اینجا می‌بینیم!',
-            'installation-title'       => 'به نصب Bagisto خوش آمدید',
+            'installation-title'       => 'به نصب Aso Signature خوش آمدید',
             'italian'                  => 'ایتالیایی',
             'japanese'                 => 'ژاپنی',
             'persian'                  => 'فارسی',
@@ -803,10 +803,10 @@ return [
             'russian'                  => 'روسی',
             'sinhala'                  => 'سینهالا',
             'spanish'                  => 'اسپانیایی',
-            'title'                    => 'نصب‌کننده Bagisto',
+            'title'                    => 'نصب‌کننده Aso Signature',
             'turkish'                  => 'ترکی',
             'ukrainian'                => 'اوکراینی',
-            'webkul'                   => 'Webkul',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

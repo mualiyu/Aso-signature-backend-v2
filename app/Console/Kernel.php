@@ -30,6 +30,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('product:price-rule:index')->dailyAt('00:01');
 
         $schedule->command('currency:update')->twiceDaily(6, 18);
+
+        $schedule->command('dhl:sync-tracking')->everyFourHours()->withoutOverlapping();
     }
 
     /**

@@ -1,14 +1,9 @@
 
- ____              _     _
-| __ )  __ _  __ _(_)___| |_ ___
-|  _ \ / _` |/ _` | / __| __/ _ \
-| |_) | (_| | (_| | \__ \ || (_) |
-|____/ \__,_|\__, |_|___/\__\___/
-             |___/
+    _                 ____  _                   _
+   / \   ___  ___    / ___|(_) __ _ _ __   __ _| |_ _   _ _ __ ___
+  / _ \ / __|/ _ \   \___ \| |/ _` | '_ \ / _` | __| | | | '__/ _ \
+ / ___ \\__ \ (_) |   ___) | | (_| | | | | (_| | |_| |_| | | |  __/
+/_/   \_\___/\___/   |____/|_|\__, |_| |_|\__,_|\__|\__,_|_|  \___|
+                              |___/
 
-</>
-
-Welcome to the <info>Bagisto</info> project! Bagisto Community is an <comment>open-source e-commerce ecosystem </comment>
-which is built on top of Laravel and Vue.js.
-
-Made with 💖  by the Bagisto Team. Happy helping :)
+Welcome to <info>Aso Signature</info>, connecting Nigerian fashion to the world.

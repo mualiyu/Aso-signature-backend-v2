@@ -53,6 +53,7 @@ return array(
     'Webkul\\CartRule\\' => array($baseDir . '/packages/Webkul/CartRule/src'),
     'Webkul\\CMS\\' => array($baseDir . '/packages/Webkul/CMS/src'),
     'Webkul\\Attribute\\' => array($baseDir . '/packages/Webkul/Attribute/src'),
+    'Webkul\\Alteration\\' => array($baseDir . '/packages/Webkul/Alteration/src'),
     'Webkul\\Admin\\Tests\\' => array($baseDir . '/packages/Webkul/Admin/tests'),
     'Webkul\\Admin\\' => array($baseDir . '/packages/Webkul/Admin/src'),
     'UAParser\\' => array($vendorDir . '/ua-parser/uap-php/src'),

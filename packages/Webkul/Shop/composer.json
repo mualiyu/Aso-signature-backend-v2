@@ -1,11 +1,11 @@
 {
-    "name": "bagisto/laravel-shop",
+    "name": "asosignature/shop",
     "license": "MIT",
     "description" : "Shop package for store front and customers",
     "authors": [
         {
-            "name": "Bagisto",
-            "email": "support@bagisto.com"
+            "name": "Aso Signature",
+            "email": "dev@asosignature.com"
         }
     ],
     "require": {},

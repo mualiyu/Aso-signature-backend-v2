@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'Yönetici',
-                'bagisto'          => 'Bagisto',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'Şifreyi Onayla',
                 'email'            => 'E-posta',
                 'email-address'    => 'admin@ornek.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'Uygulama Adı',
                 'argentine-peso'              => 'Arjantin Pezosu (ARS)',
                 'australian-dollar'           => 'Avustralya Doları (AUD)',
-                'bagisto'                     => 'Bagisto',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'Bangladeş Takası (BDT)',
                 'brazilian-real'              => 'Brezilya Reali (BRL)',
                 'british-pound-sterling'      => 'İngiliz Sterlini (GBP)',
@@ -723,24 +723,24 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto'      => 'Bagisto Kurulumu',
-                'bagisto-info' => 'Veritabanı tabloları oluşturuluyor, bu birkaç dakika sürebilir',
+                'bagisto'      => 'Aso Signature',
+                'bagisto-info' => '',
                 'title'        => 'Kurulum',
             ],
 
             'installation-completed' => [
                 'admin-panel'                => 'Yönetici Paneli',
-                'bagisto-forums'             => 'Bagisto Forumu',
+                'bagisto-forums'             => 'Aso Signature Forumu',
                 'customer-panel'             => 'Müşteri Paneli',
-                'explore-bagisto-extensions' => 'Bagisto Uzantılarını Keşfedin',
+                'explore-bagisto-extensions' => 'Aso Signature Uzantılarını Keşfedin',
                 'title'                      => 'Kurulum Tamamlandı',
-                'title-info'                 => 'Bagisto sisteminize başarıyla kuruldu.',
+                'title-info'                 => 'Aso Signature sisteminize başarıyla kuruldu.',
             ],
 
             'ready-for-installation' => [
                 'create-databsae-table'   => 'Veritabanı tablosu oluştur',
                 'install'                 => 'Yükleme',
-                'install-info'            => 'Kurulum için Bagisto',
+                'install-info'            => 'Kurulum için Aso Signature',
                 'install-info-button'     => 'Aşağıdaki düğmeye tıklayın',
                 'populate-database-table' => 'Veritabanı tablolarını doldur',
                 'start-installation'      => 'Kurulumu Başlat',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'Yerel',
                 'main'          => 'Başlangıç',
                 'select-locale' => 'Yerel Seçin',
-                'title'         => 'Bagisto kurulumunuz',
-                'welcome-title' => 'Bagisto\'ya hoş geldiniz',
+                'title'         => 'Aso Signature kurulumunuz',
+                'welcome-title' => 'Aso Signature\'ya hoş geldiniz',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'arabic'                   => 'Arapça',
             'back'                     => 'Geri',
-            'bagisto'                  => 'Bagisto',
-            'bagisto-info'             => 'Webkul tarafından geliştirilen bir Topluluk Projesi',
-            'bagisto-logo'             => 'Bagisto Logosu',
+            'bagisto'                  => 'Aso Signature',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
             'bengali'                  => 'Bengalce',
             'chinese'                  => 'Çince',
             'continue'                 => 'Devam Et',
@@ -792,7 +792,7 @@ return [
             'german'                   => 'Almanca',
             'hebrew'                   => 'İbranice',
             'hindi'                    => 'Hintçe',
-            'installation-description' => 'Bagisto kurulumu genellikle birkaç adım içerir. İşte Bagisto\'nun kurulum sürecine genel bir bakış',
+            'installation-description' => 'Aso Signature kurulumu genellikle birkaç adım içerir. İşte Aso Signature\'nun kurulum sürecine genel bir bakış',
             'installation-info'        => 'Sizi burada görmekten mutluluk duyuyoruz!',
             'installation-title'       => 'Kurulum\'a Hoş Geldiniz',
             'italian'                  => 'İtalyanca',
@@ -803,10 +803,10 @@ return [
             'russian'                  => 'Rusça',
             'sinhala'                  => 'Sinhala',
             'spanish'                  => 'İspanyolca',
-            'title'                    => 'Bagisto Kurulum Sihirbazı',
+            'title'                    => 'Aso Signature Kurulum Sihirbazı',
             'turkish'                  => 'Türkçe',
             'ukrainian'                => 'Ukraynaca',
-            'webkul'                   => 'Webkul',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

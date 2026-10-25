@@ -1,11 +1,11 @@
 {
-    "name": "bagisto/laravel-admin",
+    "name": "asosignature/admin",
     "license": "MIT",
     "description" : "Admin package",
     "authors": [
         {
-            "name": "Bagisto",
-            "email": "support@bagisto.com"
+            "name": "Aso Signature",
+            "email": "dev@asosignature.com"
         }
     ],
     "require": {},

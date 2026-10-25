@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Bagisto'),
+    'name' => env('APP_NAME', 'Aso Signature'),
 
     /*
     |--------------------------------------------------------------------------
@@ -238,6 +238,7 @@ return [
         Webkul\Theme\Providers\ThemeServiceProvider::class,
         Webkul\User\Providers\UserServiceProvider::class,
         Webkul\Designer\Providers\DesignerServiceProvider::class,
+        Webkul\Alteration\Providers\AlterationServiceProvider::class,
         Webkul\Stripe\Providers\StripeServiceProvider::class,
         Webkul\Flutterwave\Providers\FlutterwaveServiceProvider::class,
     ])->toArray(),
