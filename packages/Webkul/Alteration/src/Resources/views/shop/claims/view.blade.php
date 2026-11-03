@@ -70,10 +70,12 @@
             <div class="mb-8">
                 <p class="mb-4 text-base text-zinc-500">@lang('alteration::app.shop.claims.customer-fault-info')</p>
 
-                @include('alteration::shop.locator.component', [
-                    'defaultCountry' => $claim->order->shipping_address?->country,
-                    'defaultCity'    => $claim->order->shipping_address?->city,
-                ])
+                @if (\Webkul\Alteration\AlterationFeature::enabled())
+                    @include('alteration::shop.locator.component', [
+                        'defaultCountry' => $claim->order->shipping_address?->country,
+                        'defaultCity'    => $claim->order->shipping_address?->city,
+                    ])
+                @endif
             </div>
         @endif
 

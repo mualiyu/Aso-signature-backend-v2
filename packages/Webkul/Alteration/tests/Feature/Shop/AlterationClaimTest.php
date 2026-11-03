@@ -3,11 +3,13 @@
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Webkul\Alteration\AlterationFeature;
 use Webkul\Alteration\Mail\AdminNewClaimNotification;
 use Webkul\Alteration\Mail\CustomerClaimNotification;
 use Webkul\Alteration\Models\AlterationClaim;
 use Webkul\Alteration\Models\AlterationPartner;
 use Webkul\Alteration\Services\ClaimEligibility;
+use Webkul\Core\Models\CoreConfig;
 use Webkul\Customer\Models\Customer;
 use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderMeasurement;
@@ -16,6 +18,13 @@ use Webkul\Sales\Models\OrderPayment;
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\post;
+
+function setAlterationSwitch(bool $on): void
+{
+    CoreConfig::updateOrCreate(['code' => AlterationFeature::CONFIG_KEY], ['value' => $on ? '1' : '0']);
+}
+
+beforeEach(fn () => setAlterationSwitch(true));
 
 /**
  * A delivered order owned by the customer, with a confirmed-measurement snapshot.
@@ -263,4 +272,53 @@ it('renders the public tailor locator page', function () {
     get(route('shop.alterations.partners.index'))
         ->assertOk()
         ->assertSeeText(trans('alteration::app.shop.locator.title'));
+});
+
+it('hides every storefront entry point while the programme is switched off', function () {
+    setAlterationSwitch(false);
+
+    $customer = $this->loginAsCustomer();
+
+    $order = deliveredOrder($customer);
+
+    get(route('shop.customers.account.orders.view', $order->id))
+        ->assertOk()
+        ->assertDontSeeText(trans('alteration::app.shop.order.report-btn'))
+        ->assertDontSeeText(trans('alteration::app.shop.menu.alterations'));
+
+    get(route('shop.customers.account.alterations.create', $order->id))->assertNotFound();
+    get(route('shop.customers.account.alterations.index'))->assertNotFound();
+    get(route('shop.alterations.partners.index'))->assertNotFound();
+    getJson(route('shop.api.alterations.partners.search', ['country' => 'GB']))->assertNotFound();
+
+    get(route('shop.home.contact_us'))->assertOk()->assertDontSee('/alteration-partners');
+    get(route('shop.home.index'))->assertOk()->assertDontSee('href="/alteration-partners"', false);
+});
+
+it('shows the entry points once the programme is switched on', function () {
+    $customer = $this->loginAsCustomer();
+
+    $order = deliveredOrder($customer);
+
+    get(route('shop.customers.account.orders.view', $order->id))
+        ->assertOk()
+        ->assertSeeText(trans('alteration::app.shop.order.report-btn'))
+        ->assertSeeText(trans('alteration::app.shop.menu.alterations'));
+
+    get(route('shop.home.contact_us'))->assertOk()->assertSee('/alteration-partners');
+});
+
+it('keeps an existing request viewable after the programme is switched off', function () {
+    $customer = $this->loginAsCustomer();
+
+    $claim = AlterationClaim::create([
+        'order_id'    => deliveredOrder($customer)->id,
+        'customer_id' => $customer->id,
+        'reason'      => 'measurement_mismatch',
+        'status'      => AlterationClaim::STATUS_UNDER_REVIEW,
+    ]);
+
+    setAlterationSwitch(false);
+
+    get(route('shop.customers.account.alterations.view', $claim->id))->assertOk();
 });

@@ -17,5 +17,7 @@
         @endif
     </div>
 
+    @include('alteration::admin.storefront-off')
+
     <x-admin::datagrid :src="route('admin.alterations.partners.index')" />
 </x-admin::layouts>

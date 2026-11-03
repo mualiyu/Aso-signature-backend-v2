@@ -105,6 +105,7 @@
                     </div>
 
                     <!-- Alteration partners -->
+                    @if (\Webkul\Alteration\AlterationFeature::enabled())
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center">
                             <svg class="w-6 h-6 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,6 +117,7 @@
                             <a href="{{ route('shop.alterations.partners.index') }}" class="text-zinc-900 font-medium underline">@lang('alteration::app.shop.locator.title')</a>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 

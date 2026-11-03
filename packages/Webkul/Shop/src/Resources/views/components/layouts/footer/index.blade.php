@@ -19,6 +19,13 @@
         'theme_code' => $channel->theme,
         'channel_id' => $channel->id,
     ]);
+
+    // Hide the alteration partners link while the programme is switched off (not saved).
+    if ($customization?->options && ! \Webkul\Alteration\AlterationFeature::enabled()) {
+        $customization->options = collect($customization->options)
+            ->map(fn ($links) => array_values(array_filter($links, fn ($link) => ($link['url'] ?? '') !== '/alteration-partners')))
+            ->all();
+    }
 @endphp
 
 <footer class="mt-9 bg-lightOrange max-sm:mt-10">

@@ -2,6 +2,20 @@
 
 return [
     'admin' => [
+        'configuration' => [
+            'title'    => 'Alterations',
+            'info'     => 'Switch the alteration programme on or off for customers.',
+
+            'settings' => [
+                'title'        => 'Alteration Programme',
+                'info'         => 'While switched off, customers cannot see or use alterations: no "Report a fit issue" button, no tailor locator, and no footer, contact or account links. The admin side stays available so partners and caps can be set up first.',
+                'enabled'      => 'Enable on storefront',
+                'enabled-info' => 'Turn on once partners are vetted and caps are set.',
+            ],
+        ],
+
+        'storefront-off' => 'The alteration programme is switched off, so customers cannot see it. Turn it on under Configure → Sales → Alterations.',
+
         'menu' => [
             'alterations' => 'Alterations',
             'claims'      => 'Claims',

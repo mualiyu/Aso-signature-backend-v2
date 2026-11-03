@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Mail;
+use Webkul\Alteration\AlterationFeature;
 use Webkul\Alteration\Mail\CustomerClaimNotification;
 use Webkul\Alteration\Models\AlterationClaim;
 use Webkul\Alteration\Models\AlterationFixType;
@@ -340,4 +341,26 @@ it('stamps delivered_at the first time an order is completed', function () {
     app(OrderRepository::class)->updateOrderStatus($order, Order::STATUS_COMPLETED);
 
     expect($order->refresh()->delivered_at->equalTo($deliveredAt))->toBeTrue();
+});
+
+it('offers the storefront switch under Configure, off by default', function () {
+    $this->loginAsAdmin();
+
+    expect(AlterationFeature::enabled())->toBeFalse();
+
+    get(route('admin.alterations.claims.index'))->assertOk()->assertSeeText(trans('alteration::app.admin.storefront-off'));
+
+    get(route('admin.configuration.index', ['slug' => 'sales', 'slug2' => 'alteration']))
+        ->assertOk()
+        ->assertSee(trans('alteration::app.admin.configuration.settings.enabled'));
+
+    post(route('admin.configuration.store', ['slug' => 'sales', 'slug2' => 'alteration']), [
+        'channel' => core()->getDefaultChannelCode(),
+        'locale'  => app()->getLocale(),
+        'sales'   => ['alteration' => ['settings' => ['enabled' => '1']]],
+    ])->assertRedirect();
+
+    expect(AlterationFeature::enabled())->toBeTrue();
+
+    get(route('admin.alterations.claims.index'))->assertOk()->assertDontSeeText(trans('alteration::app.admin.storefront-off'));
 });

@@ -9,5 +9,7 @@
         </p>
     </div>
 
+    @include('alteration::admin.storefront-off')
+
     <x-admin::datagrid :src="route('admin.alterations.claims.index')" />
 </x-admin::layouts>
