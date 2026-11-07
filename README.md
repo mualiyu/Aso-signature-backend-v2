@@ -44,7 +44,7 @@ This repository holds the whole application:
 | Payments   | Flutterwave, Stripe, PayPal                            |
 | Shipping   | DHL Express (MyDHL API): rates, labels, tracking       |
 | Monitoring | Laravel Pulse, Laravel Nightwatch (optional)           |
-| Hosting    | Hostinger (production)                                 |
+| Hosting    | Namecheap shared hosting (production)                  |
 
 ---
 
@@ -302,7 +302,7 @@ vendor/bin/pint --test     # check only
 
 ## Deployment
 
-Production runs on Hostinger at `https://asosignature.com`. Use `.env.production.example` as the template for the server's `.env`. It has `APP_DEBUG=false`, live payment keys, and the production URLs.
+Production runs on Namecheap shared hosting (cPanel, LiteSpeed) at `https://asosignature.com`. Use `.env.production.example` as the template for the server's `.env`. It has `APP_DEBUG=false`, live payment keys, and the production URLs.
 
 A typical release:
 
@@ -318,6 +318,20 @@ Front-end assets are already built and committed, so the server doesn't run npm.
 
 ---
 
+## Product media uploads
+
+Product images and videos are **not** sent inside the "Save Product" request. The admin product page uploads each file in the background the moment it is picked:
+
+- The browser downscales images to at most 2048px on the longest edge and re-encodes them (WebP, or JPEG/PNG where the browser cannot write WebP) before sending. A typical phone photo shrinks from a few MB to a few hundred KB.
+- Every file is sent in 512 KB chunks to `POST admin/catalog/products/{id}/media/{images|videos}` (`MediaController`). Failed chunks are retried with backoff; the tile shows progress, **Retry** and **Cancel**.
+- When the last chunk arrives the server reassembles the file (`storage/app/chunks/`, cleaned automatically), validates it, converts images to WebP exactly like a form upload, attaches it to the product and returns its id. The form then only carries media ids, so saving is quick and cannot hit an upload timeout.
+- The Save button is disabled while uploads are running and leaving the page mid-upload asks for confirmation.
+- A file uploaded in the current session is deleted immediately when its tile is removed; media that existed before the page was opened is removed on save, as before.
+
+Size limits come from **Configure → Catalog → Products → Attribute** (image and file upload size, in KB). When they are empty the defaults are 10 MB for images and 50 MB for videos.
+
+The shared `x-admin::media.images` / `x-admin::media.videos` components keep their classic behaviour (file travels inside the form) unless they are given an `upload-url`, so other admin pages are unaffected. The browser side lives in `components/media/uploader.blade.php`.
+
 ## Troubleshooting
 
 | Symptom | Fix |
@@ -326,6 +340,7 @@ Front-end assets are already built and committed, so the server doesn't run npm.
 | Unstyled pages, or assets loading from `localhost:5173` | A stale `public/*-vite.hot` file. Delete it. |
 | A new Tailwind class has no effect | Rebuild the theme (`npm run build` in the package) and commit the output. |
 | Product images missing | Run `php artisan storage:link` and check that `storage/app/public` has the images. |
+| Product image/video upload hangs or fails | Check the browser console for the `media/images` or `media/videos` request. A `419` means the admin session expired; a `422` carries the validation message (type or size). Partial uploads are left in `storage/app/chunks/` and purged after 24 h. |
 | Changes don't show up | `php artisan optimize:clear`, and `php artisan responsecache:clear` if `RESPONSE_CACHE_ENABLED=true`. |
 | `route:list` crashes on boot | Known issue in a GDPR route definition. It doesn't affect the running app. |
 
