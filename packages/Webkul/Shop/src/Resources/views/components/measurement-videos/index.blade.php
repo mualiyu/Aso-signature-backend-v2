@@ -24,7 +24,7 @@
                             @click="closeVideo()"
                             aria-label="Close video"
                         >
-                            <span class="icon-cross text-2xl"></span>
+                            <span class="icon-cancel text-2xl"></span>
                         </button>
                     </div>
 

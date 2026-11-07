@@ -34,7 +34,14 @@ class Installer extends Command
      *
      * @var string
      */
-    protected $description = 'Bagisto installer.';
+    protected $description = 'Aso Signature installer.';
+
+    /**
+     * The console command name aliases.
+     *
+     * @var array
+     */
+    protected $aliases = ['aso:install'];
 
     /**
      * Environment details.
@@ -164,7 +171,7 @@ class Installer extends Command
     ];
 
     /**
-     * Install and configure bagisto.
+     * Install and configure the application.
      */
     public function handle(): void
     {
@@ -200,7 +207,7 @@ class Installer extends Command
         $this->warn('Step: Migrating all tables...');
         $this->call('migrate:fresh');
 
-        $this->warn('Step: Seeding basic data for Bagisto kickstart...');
+        $this->warn('Step: Seeding basic data...');
         app(BagistoDatabaseSeeder::class)->run($this->getSeederConfiguration());
         $this->components->info('Basic data seeded successfully.');
 
@@ -241,7 +248,7 @@ class Installer extends Command
         $this->updateTextTypeEnv(
             'APP_NAME',
             'Please enter the application name',
-            $this->getEnvVariable('APP_NAME', 'Bagisto')
+            $this->getEnvVariable('APP_NAME', 'Aso Signature')
         );
 
         $this->updateTextTypeEnv(
@@ -412,11 +419,11 @@ class Installer extends Command
 
             $filePath = storage_path('installed');
 
-            File::put($filePath, 'Bagisto is successfully installed.');
+            File::put($filePath, 'Aso Signature is successfully installed.');
 
             $this->info('-----------------------------');
             $this->info('Congratulations!');
-            $this->info('The installation has been finished and you can now use Bagisto.');
+            $this->info('The installation has been finished and you can now use Aso Signature.');
             $this->info('Go to '.$this->getEnvVariable('APP_URL').'/'.$this->getEnvVariable('APP_ADMIN_URL', 'admin').' and authenticate with:');
             $this->info('Email: '.$adminEmail);
             $this->info('Password: '.$adminPassword);

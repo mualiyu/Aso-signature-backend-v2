@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto Theme',
+    'name'    => 'Aso Signature Theme',
     'version' => core()->version(),
 ];

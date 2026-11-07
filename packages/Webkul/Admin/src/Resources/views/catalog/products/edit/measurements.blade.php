@@ -1,19 +1,14 @@
 @php
-    // Use null coalescing and type check to avoid deprecation warning
-    $measurementsRaw = $product->required_measurement ?? null;
-    $measurements = is_string($measurementsRaw) && trim($measurementsRaw) !== ''
-        ? json_decode($measurementsRaw, true)
-        : null;
-    $measurements = $measurements ?? [
-        'Neck', 'Chest', 'Shoulder', 'Off shoulder', 'Upper bust', 'Bust', 'Bust Point', 'Round under bust',
-        'Shoulder to under bust', 'Waist', 'Half Length', 'Back Half Length', 'Sleeve length', 'Round sleeve', 'Top length',
-        'Hip', 'Waist to knee', 'Waist to below knee(Mid length)', 'Waist to Ankle (maxi Length)', 'Full length', 'Mid length',
-        'Knee length', 'Short length', 'Waist', 'Crotch', 'Round knee', 'In seam', 'Out seam', 'Thighs/laps', 'Palazzo thigh',
-        'Full Trouser length'
-    ];
-    $selectedMeasurements = (isset($product->required_measurements) && is_array($product->required_measurements))
-        ? array_map('strval', $product->required_measurements)
-        : [];
+    use Webkul\Customer\Data\MeasurementFields;
+
+    $measurements = MeasurementFields::allLabels();
+    $selectedMeasurements = old('required_measurements', $product->required_measurement ?? []);
+
+    if (! is_array($selectedMeasurements)) {
+        $selectedMeasurements = json_decode((string) $selectedMeasurements, true) ?? [];
+    }
+
+    $selectedMeasurements = array_map('strval', $selectedMeasurements);
 @endphp
 
 <div class="form-group">

@@ -3,7 +3,8 @@
     'allowMultiple'  => false,
     'uploadedVideos' => [],
     'width'          => '210px',
-    'height'         => '120px'
+    'height'         => '120px',
+    'uploadUrl'      => ''
 ])
 
 <v-media-videos
@@ -12,10 +13,13 @@
     :uploaded-videos='{{ json_encode($uploadedVideos) }}'
     width="{{ $width }}"
     height="{{ $height }}"
+    upload-url="{{ $uploadUrl }}"
     :errors="errors"
     {{ $attributes->get('class') }}
 >
 </v-media-videos>
+
+@include('admin::components.media.uploader')
 
 @pushOnce('scripts')
     <script
@@ -71,7 +75,10 @@
                             :video="element"
                             :width="width"
                             :height="height"
+                            :upload-mode="uploadMode"
                             @onRemove="remove($event)"
+                            @onRetry="retryUpload($event)"
+                            @onReplace="replaceUpload($event)"
                         >
                         </v-media-video-item>
                     </template>
@@ -90,9 +97,62 @@
                 class="h-[120px] w-[210px] object-cover"
                 ref="videoPreview"
                 v-if="video.url.length > 0"
+                :key="video.url"
             >
                 <source :src="video.url" type="video/mp4">
             </video>
+
+            <!-- Background upload state (only when the component uploads on its own) -->
+            <div
+                class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1.5 bg-white/90 p-2 text-center dark:bg-gray-900/90"
+                v-if="video.upload && video.upload.status != 'done'"
+            >
+                <template v-if="video.upload.status == 'error'">
+                    <p class="text-xs font-semibold text-red-600">
+                        @lang('admin::app.components.media.videos.upload-failed')
+                    </p>
+
+                    <div class="flex gap-2">
+                        <button
+                            type="button"
+                            class="text-xs font-semibold text-blue-600"
+                            @click="$emit('onRetry', video)"
+                        >
+                            @lang('admin::app.components.media.videos.upload-retry')
+                        </button>
+
+                        <button
+                            type="button"
+                            class="text-xs font-semibold text-gray-600 dark:text-gray-300"
+                            @click="remove"
+                        >
+                            @lang('admin::app.components.media.videos.upload-cancel')
+                        </button>
+                    </div>
+                </template>
+
+                <template v-else>
+                    <p class="text-xs font-semibold text-gray-800 dark:text-white">
+                        <template v-if="video.upload.status == 'uploading'">@{{ video.upload.progress }}%</template>
+                        <template v-else>@lang('admin::app.components.media.videos.upload-uploading')</template>
+                    </p>
+
+                    <div class="h-1.5 w-full overflow-hidden rounded bg-gray-200 dark:bg-gray-800">
+                        <div
+                            class="h-full rounded bg-blue-600 transition-all"
+                            :style="{ width: video.upload.progress + '%' }"
+                        ></div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="text-xs font-semibold text-gray-600 dark:text-gray-300"
+                        @click="remove"
+                    >
+                        @lang('admin::app.components.media.videos.upload-cancel')
+                    </button>
+                </template>
+            </div>
 
             <div class="invisible absolute bottom-0 top-0 flex w-full flex-col justify-between bg-white p-3 opacity-80 transition-all group-hover:visible dark:bg-gray-900">
                 <!-- Video Name -->
@@ -121,7 +181,7 @@
 
                     <input
                         type="hidden"
-                        :name="name + '[' + video.id + ']'"
+                        :name="name + '[' + (video.media_id ?? video.id) + ']'"
                         v-if="! video.is_new"
                     />
 
@@ -142,6 +202,18 @@
     <script type="module">
         app.component('v-media-videos', {
             template: '#v-media-videos-template',
+
+            mixins: [
+                window.asoMediaUploadMixin({
+                    collection: 'videos',
+                    prefix: 'video',
+                    compress: false,
+                    messages: {
+                        failed: "@lang('admin::app.components.media.videos.upload-failed')",
+                        sessionExpired: "@lang('admin::app.components.media.videos.upload-session-expired')",
+                    },
+                }),
+            ],
 
             props: {
                 name: {
@@ -204,16 +276,30 @@
                         return;
                     }
 
-                    videoInput.files.forEach((file, index) => {
+                    Array.from(videoInput.files).forEach((file) => {
+                        if (this.uploadMode) {
+                            this.queueUpload(file);
+
+                            return;
+                        }
+
                         this.videos.push({
                             id: 'video_' + this.videos.length,
                             url: '',
                             file: file
                         });
                     });
+
+                    if (this.uploadMode) {
+                        videoInput.value = '';
+                    }
                 },
 
                 remove(video) {
+                    if (this.uploadMode) {
+                        this.discardUpload(video);
+                    }
+
                     let index = this.videos.indexOf(video);
 
                     this.videos.splice(index, 1);
@@ -224,7 +310,7 @@
         app.component('v-media-video-item', {
             template: '#v-media-video-item-template',
 
-            props: ['index', 'video', 'name', 'width', 'height'],
+            props: ['index', 'video', 'name', 'width', 'height', 'uploadMode'],
 
             data() {
                 return {
@@ -233,7 +319,7 @@
             },
 
             mounted() {
-                if (this.video.file instanceof File) {
+                if (! this.uploadMode && this.video.file instanceof File) {
                     this.setFile(this.video.file);
 
                     this.readFile(this.video.file);
@@ -255,6 +341,14 @@
                             type: 'warning',
                             message: "@lang('admin::app.components.media.videos.not-allowed-error')"
                         });
+
+                        return;
+                    }
+
+                    if (this.uploadMode) {
+                        this.$emit('onReplace', { item: this.video, file: videoInput.files[0] });
+
+                        videoInput.value = '';
 
                         return;
                     }

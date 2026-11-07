@@ -490,28 +490,66 @@
 
                 <!-- Customer Measurements -->
                 @if($invoice->order->measurements && $invoice->order->measurements->count() > 0)
+                    @php
+                        $pdfFitPreferenceLabels = \Webkul\Customer\Data\MeasurementFields::fitPreferenceOptions();
+                        $pdfFitNoteLabels = \Webkul\Customer\Data\MeasurementFields::fitNoteOptions();
+                        $pdfOrderItemsById = $invoice->order->items->keyBy('id');
+                    @endphp
+
                     <div class="summary" style="margin-top: 30px;">
                         <h3 style="margin-bottom: 15px; font-size: 14px;"><b>Customer Measurements</b></h3>
 
-                        @foreach($invoice->order->measurements->groupBy('measurement_type') as $type => $measurements)
+                        @foreach($invoice->order->measurements->groupBy('order_item_id') as $orderItemId => $itemMeasurements)
+                            @php
+                                $pdfOrderItem = $orderItemId ? $pdfOrderItemsById->get($orderItemId) : null;
+                                $pdfFirst = $itemMeasurements->first();
+                                $pdfFitNotes = collect($pdfFirst->fit_notes ?: [])
+                                    ->map(fn ($note) => $pdfFitNoteLabels[$note] ?? $note)
+                                    ->implode(', ');
+                            @endphp
+
                             <table class="{{ core()->getCurrentLocale()->direction }}" style="margin-bottom: 20px;">
                                 <thead>
                                     <tr>
-                                        <th colspan="2" style="background-color: #f5f5f5; text-align: left; padding: 8px;">
-                                            <b style="text-transform: capitalize;">{{ $type }}</b>
+                                        <th colspan="2" style="background-color: #eeeeee; text-align: left; padding: 8px;">
+                                            <b>
+                                                {{ $pdfOrderItem ? $pdfOrderItem->name : 'Whole Order' }}
+                                                @if($pdfFirst->profile_name)
+                                                    &mdash; Profile: {{ $pdfFirst->profile_name }}
+                                                @endif
+                                            </b>
                                         </th>
                                     </tr>
+                                    @if($pdfFirst->fit_preference || $pdfFitNotes)
+                                        <tr>
+                                            <th colspan="2" style="text-align: left; padding: 8px; font-weight: normal; font-size: 11px;">
+                                                @if($pdfFirst->fit_preference)
+                                                    Fit: {{ $pdfFitPreferenceLabels[$pdfFirst->fit_preference] ?? $pdfFirst->fit_preference }}.
+                                                @endif
+                                                @if($pdfFitNotes)
+                                                    Notes: {{ $pdfFitNotes }}
+                                                @endif
+                                            </th>
+                                        </tr>
+                                    @endif
                                 </thead>
                                 <tbody>
-                                    @foreach($measurements as $measurement)
+                                    @foreach($itemMeasurements->groupBy('measurement_type') as $type => $measurements)
                                         <tr>
-                                            <td style="width: 60%; text-transform: capitalize;">
-                                                {{ str_replace('_', ' ', $measurement->name) }}
-                                            </td>
-                                            <td style="width: 40%;">
-                                                <b>{{ $measurement->value }} {{ $measurement->unit }}</b>
+                                            <td colspan="2" style="background-color: #f5f5f5; padding: 8px;">
+                                                <b style="text-transform: capitalize;">{{ $type }}</b>
                                             </td>
                                         </tr>
+                                        @foreach($measurements as $measurement)
+                                            <tr>
+                                                <td style="width: 60%; text-transform: capitalize;">
+                                                    {{ str_replace('_', ' ', $measurement->name) }}
+                                                </td>
+                                                <td style="width: 40%;">
+                                                    <b>{{ $measurement->value }} {{ $measurement->unit }}</b>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>

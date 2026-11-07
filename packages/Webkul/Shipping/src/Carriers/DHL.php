@@ -6,6 +6,7 @@ use Webkul\Checkout\Facades\Cart;
 use Webkul\Checkout\Models\CartShippingRate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Webkul\Shipping\Services\DhlPlannedShippingDate;
 
 class DHL extends AbstractShipping
 {
@@ -181,22 +182,30 @@ class DHL extends AbstractShipping
                 ? 'https://express.api.dhl.com/mydhlapi/test'
                 : 'https://express.api.dhl.com/mydhlapi';
 
-            // Log credentials being used (without exposing secrets)
-            Log::info('DHL API Credentials Check', [
-                'api_key' => substr($apiKey, 0, 10) . '...',
-                'api_secret' => substr($apiSecret, 0, 10) . '...',
-                'account_number' => $accountNumber,
-                'sandbox_mode' => $sandboxMode,
-                'endpoint' => $baseUrl,
+            Log::info('DHL API config', [
+                'api_credentials_configured' => true,
+                'sandbox_mode'                 => (bool) $sandboxMode,
+                'endpoint'                     => $baseUrl,
+                'account_number_suffix'        => strlen($accountNumber) > 4 ? substr($accountNumber, -4) : null,
             ]);
 
             // Get origin address
             $originAddress = $this->getOriginAddress();
 
             // Prepare DHL API request for rates estimation
-            // Fix: Remove invalid fields and fix data types per DHL API requirements
-            $receiverAddressLine1 = $address->address1 ?? ($address->address2 ?? 'N/A');
-            $receiverAddressLine2 = $address->address2 ?? 'N/A'; // Can't be empty string
+            $shipperLines = $this->buildRatesAddressLines(
+                $originAddress['address1'] ?? '',
+                $originAddress['address2'] ?? '',
+                $originAddress['city'] ?? '',
+                $originAddress['postcode'] ?? ''
+            );
+
+            $receiverLines = $this->buildRatesAddressLines(
+                trim((string) ($address->address ?? $address->address1 ?? '')),
+                trim((string) ($address->address2 ?? '')),
+                $address->city ?? '',
+                $address->postcode ?? ''
+            );
 
             // Detect if shipping is international (different countries)
             $isInternational = strtoupper($originAddress['country']) !== strtoupper($address->country);
@@ -218,16 +227,18 @@ class DHL extends AbstractShipping
             $requestBody = [
                 'customerDetails' => [
                     'shipperDetails' => [
-                        'postalCode' => $originAddress['postcode'],
-                        'cityName' => $originAddress['city'],
-                        'countryCode' => $originAddress['country'],
+                        'postalCode'    => $originAddress['postcode'],
+                        'cityName'      => $this->normalizeDhlCityNameForRates($originAddress['country'], $originAddress['postcode'] ?? '', $originAddress['city'] ?? ''),
+                        'countryCode'   => $originAddress['country'],
+                        'addressLine1'  => $shipperLines['line1'],
+                        'addressLine2'  => $shipperLines['line2'],
                     ],
                     'receiverDetails' => [
-                        'postalCode' => $address->postcode,
-                        'cityName' => $address->city,
-                        'countryCode' => $address->country,
-                        'addressLine1' => $receiverAddressLine1,
-                        'addressLine2' => $receiverAddressLine2, // Must have minLength: 1
+                        'postalCode'    => $address->postcode,
+                        'cityName'      => $this->normalizeDhlCityNameForRates($address->country, $address->postcode ?? '', $address->city ?? ''),
+                        'countryCode'   => $address->country,
+                        'addressLine1'  => $receiverLines['line1'],
+                        'addressLine2'  => $receiverLines['line2'],
                     ],
                 ],
                 'accounts' => [
@@ -239,8 +250,7 @@ class DHL extends AbstractShipping
                 // Removed productCode - DHL will return all available products for the route
                 // No productCode specified = DHL returns all available products
                 'unitOfMeasurement' => 'metric',
-                // Use next business day for pickup date (DHL requires future date)
-                'plannedShippingDateAndTime' => $this->getNextBusinessDay()->format('Y-m-d\TH:i:s\Z'),
+                'plannedShippingDateAndTime' => DhlPlannedShippingDate::formatForApi(),
                 'packages' => [
                     [
                         'weight' => max(0.1, round($weight, 2)), // Minimum 0.1 kg
@@ -288,16 +298,16 @@ class DHL extends AbstractShipping
                 // Improve error logging for API response
                 $errorBody = json_decode($response->body(), true);
 
-                // Extract error message from different possible response formats
+                // Prefer API `detail` (validation paths); then reasons; then generic message
                 $errorMessage = 'Unknown error';
-                if (isset($errorBody['reasons']) && is_array($errorBody['reasons']) && !empty($errorBody['reasons'])) {
+                if (! empty($errorBody['detail'])) {
+                    $errorMessage = $errorBody['detail'];
+                } elseif (isset($errorBody['reasons']) && is_array($errorBody['reasons']) && ! empty($errorBody['reasons'])) {
                     $errorMessage = $errorBody['reasons'][0]['msg'] ?? $errorBody['reasons'][0]['message'] ?? 'Unknown error';
                 } elseif (isset($errorBody['message'])) {
                     $errorMessage = $errorBody['message'];
                 } elseif (isset($errorBody['error'])) {
                     $errorMessage = $errorBody['error'];
-                } elseif (isset($errorBody['detail'])) {
-                    $errorMessage = $errorBody['detail'];
                 }
 
                 Log::error('DHL API Error', [
@@ -363,39 +373,39 @@ class DHL extends AbstractShipping
             $cartShippingRate->method = $this->getCode() . '_' . ($product['productCode'] ?? 'express');
             $cartShippingRate->method_title = $product['productName'] ?? 'DHL Express';
 
-            // Get estimated delivery date if available
-            $estimatedDeliveryDate = $product['estimatedDeliveryDateAndTime']['estimatedDeliveryDate'] ?? '';
+            $deliveryCaps = $product['deliveryCapabilities'] ?? [];
+            $estimatedDeliveryDate = $deliveryCaps['estimatedDeliveryDateAndTime']
+                ?? ($product['estimatedDeliveryDateAndTime']['estimatedDeliveryDate'] ?? '');
             $deliveryTime = $product['deliveryCommitment']['deliveryTime'] ?? '';
 
             $cartShippingRate->method_description = 'Delivery: ' . ($estimatedDeliveryDate ?: $deliveryTime ?: 'Standard delivery');
 
-            // Extract NGN price from totalPrice array
-            $ngnPrice = 0;
+            // Prefer BILLC (billing) from totalPrice; else first row
+            $billPrice = 0;
+            $billCurrency = null;
             if (isset($product['totalPrice']) && is_array($product['totalPrice'])) {
                 foreach ($product['totalPrice'] as $priceEntry) {
-                    if (isset($priceEntry['priceCurrency']) && strtoupper($priceEntry['priceCurrency']) === 'NGN') {
-                        $ngnPrice = $priceEntry['price'] ?? 0;
-                        break; // Use first NGN price found
+                    if (($priceEntry['currencyType'] ?? '') === 'BILLC' && isset($priceEntry['price'])) {
+                        $billPrice = (float) $priceEntry['price'];
+                        $billCurrency = $priceEntry['priceCurrency'] ?? null;
+                        break;
                     }
+                }
+                if ($billPrice <= 0 && isset($product['totalPrice'][0]['price'])) {
+                    $billPrice = (float) $product['totalPrice'][0]['price'];
+                    $billCurrency = $product['totalPrice'][0]['priceCurrency'] ?? null;
                 }
             }
 
-            // If no NGN price found, fallback to first price
-            if ($ngnPrice <= 0 && isset($product['totalPrice'][0]['price'])) {
-                $ngnPrice = $product['totalPrice'][0]['price'];
-            }
-
-            // Get user's selected currency and base currency
             $userCurrencyCode = core()->getCurrentCurrencyCode();
             $baseCurrencyCode = core()->getBaseCurrencyCode();
 
-            // Convert NGN price to base currency first
-            // base_price should be in base currency
-            if (strtoupper($baseCurrencyCode) === 'NGN') {
-                $basePrice = $ngnPrice;
+            if ($billCurrency && strtoupper($baseCurrencyCode) === strtoupper($billCurrency)) {
+                $basePrice = $billPrice;
+            } elseif ($billCurrency) {
+                $basePrice = core()->convertToBasePrice($billPrice, $billCurrency);
             } else {
-                // Convert NGN to base currency (e.g., USD)
-                $basePrice = core()->convertToBasePrice($ngnPrice, 'NGN');
+                $basePrice = $billPrice;
             }
 
             // Convert base price to user's selected currency
@@ -413,11 +423,12 @@ class DHL extends AbstractShipping
             $rates[] = $cartShippingRate;
 
             Log::info('DHL Rate Conversion', [
-                'product' => $product['productName'] ?? 'Unknown',
-                'ngn_price' => $ngnPrice,
-                'base_currency' => $baseCurrencyCode,
-                'base_price' => $basePrice,
-                'user_currency' => $userCurrencyCode,
+                'product'         => $product['productName'] ?? 'Unknown',
+                'bill_price'      => $billPrice,
+                'bill_currency'   => $billCurrency,
+                'base_currency'   => $baseCurrencyCode,
+                'base_price'      => $basePrice,
+                'user_currency'   => $userCurrencyCode,
                 'converted_price' => $convertedPrice,
             ]);
         }
@@ -500,35 +511,94 @@ class DHL extends AbstractShipping
     protected function getOriginAddress()
     {
         return [
-            'postcode' => $this->getConfigData('origin_postcode') ?? '12345',
-            'city' => $this->getConfigData('origin_city') ?? 'Your City',
-            'country' => $this->getConfigData('origin_country') ?? 'US',
-            'address1' => $this->getConfigData('origin_address') ?? '',
+            'postcode'  => $this->getConfigData('origin_postcode') ?? '12345',
+            'city'      => $this->getConfigData('origin_city') ?? 'Your City',
+            'country'   => $this->getConfigData('origin_country') ?? 'US',
+            'address1'  => $this->getConfigData('origin_address') ?? '',
+            'address2'  => $this->getConfigData('origin_address_line_2') ?? '',
         ];
     }
 
     /**
-     * Get next business day for DHL pickup date.
-     * DHL requires a future date for pickup.
+     * DHL location validation expects a gazetteer city name. In Nigeria, checkout often stores
+     * an area council (e.g. AMAC) while postcodes 900xxx belong to Abuja FCT — DHL returns 420505 otherwise.
      *
-     * @return \Carbon\Carbon
+     * @see https://www.dhl.com/ng-en/home/local-information/postal-codes.html (FCT uses 900xxx)
      */
-    protected function getNextBusinessDay()
+    protected function normalizeDhlCityNameForRates(string $countryCode, string $postcode, string $city): string
     {
-        $date = now();
-
-        // If it's after 3 PM, use next day
-        if ($date->hour >= 15) {
-            $date = $date->addDay();
+        if (strtoupper(trim($countryCode)) !== 'NG') {
+            return $city;
         }
 
-        // Skip weekends (Saturday = 6, Sunday = 0)
-        while ($date->dayOfWeek === 0 || $date->dayOfWeek === 6) {
-            $date = $date->addDay();
+        $digits = preg_replace('/\D/', '', (string) $postcode);
+        if (strlen($digits) !== 6) {
+            return $city;
         }
 
-        // Set to 10 AM for pickup time
-        return $date->setTime(10, 0, 0);
+        // Federal Capital Territory — DHL expects "Abuja" as city, not district names (AMAC, Bwari, etc.)
+        if (preg_match('/^90\d{4}$/', $digits)) {
+            return 'Abuja';
+        }
+
+        return $city;
     }
+
+    /**
+     * Build address lines for DHL /rates (non-empty lines required; avoid placeholder "N/A").
+     *
+     * @return array{line1: string, line2: string}
+     */
+    protected function buildRatesAddressLines(string $line1, string $line2, string $city, string $postcode): array
+    {
+        $line1 = trim($line1);
+        $line2 = trim($line2);
+
+        if ($line1 === '') {
+            $line1 = $city !== '' ? $city : ($postcode !== '' ? $postcode : 'Address');
+        }
+
+        if ($line2 === '') {
+            if ($city !== '' && strcasecmp($line1, $city) !== 0) {
+                $line2 = $city;
+            } elseif ($postcode !== '') {
+                $line2 = $postcode;
+            } else {
+                $line2 = $city !== '' ? $city : $line1;
+            }
+        }
+
+        return [
+            'line1' => $this->truncateDhlAddressLine($this->sanitizeAddressLine($line1)),
+            'line2' => $this->truncateDhlAddressLine($this->sanitizeAddressLine($line2)),
+        ];
+    }
+
+    /**
+     * MyDHL API: postalAddress addressLine1/2 maxLength 45 (per Express API schema).
+     */
+    protected function truncateDhlAddressLine(string $addressLine, int $maxLength = 45): string
+    {
+        if (function_exists('mb_strlen') && mb_strlen($addressLine, 'UTF-8') > $maxLength) {
+            return mb_substr($addressLine, 0, $maxLength, 'UTF-8');
+        }
+
+        return strlen($addressLine) > $maxLength ? substr($addressLine, 0, $maxLength) : $addressLine;
+    }
+
+    /**
+     * Ensure at least one non-whitespace character (DHL pattern).
+     */
+    protected function sanitizeAddressLine(string $addressLine): string
+    {
+        $addressLine = trim($addressLine);
+
+        if ($addressLine === '' || ! preg_match('/\S/', $addressLine)) {
+            return 'Address';
+        }
+
+        return $addressLine;
+    }
+
 }
 

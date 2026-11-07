@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'stripe'  => [
+    'stripe' => [
         'code'        => 'stripe',
         'title'       => 'Stripe',
-        'description' => 'Stripe',
+        'description' => 'Pay securely with your credit or debit card via Stripe.',
         'class'       => 'Webkul\Stripe\Payment\Stripe',
         'active'      => true,
-        'sort'        => 1,
+        'sort'        => 6,
     ],
 ];

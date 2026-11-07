@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Webkul\Shop\Http\Controllers\Customer\Account\AddressController;
 use Webkul\Shop\Http\Controllers\Customer\Account\MeasurementController;
+use Webkul\Shop\Http\Controllers\Customer\Account\MeasurementWizardController;
 use Webkul\Shop\Http\Controllers\Customer\Account\DownloadableProductController;
 use Webkul\Shop\Http\Controllers\Customer\Account\OrderController;
 use Webkul\Shop\Http\Controllers\Customer\Account\WishlistController;
@@ -133,14 +134,11 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
 
                     Route::post('create', 'store')->name('shop.customers.account.measurements.store');
 
-                    Route::get('edit/{id}', 'edit')->name('shop.customers.account.measurements.edit');
-
-                    Route::put('edit/{id}', 'update')->name('shop.customers.account.measurements.update');
-
-                    Route::patch('edit/{id}', 'makeDefault')->name('shop.customers.account.measurements.update.default');
-
                     Route::delete('delete/{id}', 'destroy')->name('shop.customers.account.measurements.delete');
                 });
+
+                Route::get('measurements/smart', [MeasurementWizardController::class, 'launch'])
+                    ->name('shop.customers.account.measurements.smart');
 
                 /**
                  * Orders.
@@ -155,6 +153,8 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
                     Route::post('cancel/{id}', 'cancel')->name('shop.customers.account.orders.cancel');
 
                     Route::get('print/Invoice/{id}', 'printInvoice')->name('shop.customers.account.orders.print-invoice');
+
+                    Route::get('dhl-documents/{shipmentId}', 'downloadDhlDocuments')->name('shop.customers.account.orders.dhl-documents');
                 });
 
                 /**

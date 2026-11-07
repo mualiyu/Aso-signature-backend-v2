@@ -19,6 +19,13 @@
         'theme_code' => $channel->theme,
         'channel_id' => $channel->id,
     ]);
+
+    // Hide the alteration partners link while the programme is switched off (not saved).
+    if ($customization?->options && ! \Webkul\Alteration\AlterationFeature::enabled()) {
+        $customization->options = collect($customization->options)
+            ->map(fn ($links) => array_values(array_filter($links, fn ($link) => ($link['url'] ?? '') !== '/alteration-partners')))
+            ->all();
+    }
 @endphp
 
 <footer class="mt-9 bg-lightOrange max-sm:mt-10">
@@ -66,6 +73,19 @@
                         </a>
                     </li>
                     <li>
+                        <a href="tel:+12029923505" class="group flex items-center gap-3 transition-all duration-300 hover:translate-x-1">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#F1EADF] flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300">
+                                <svg class="w-5 h-5 text-navyBlue group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-zinc-500 font-medium">Call Us (USA)</span>
+                                <span class="text-sm font-medium text-navyBlue">+1 (202) 992-3505</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
                         <a href="tel:+2347049013953" class="group flex items-center gap-3 transition-all duration-300 hover:translate-x-1">
                             <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#F1EADF] flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300">
                                 <svg class="w-5 h-5 text-navyBlue group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +93,7 @@
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-zinc-500 font-medium">Call Us</span>
+                                <span class="text-xs text-zinc-500 font-medium">Call Us (Nigeria)</span>
                                 <span class="text-sm font-medium text-navyBlue">+234 704 901 3953</span>
                             </div>
                         </a>
@@ -87,21 +107,36 @@
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-zinc-500 font-medium">Visit Us</span>
-                                <span class="text-sm font-medium text-navyBlue leading-relaxed">The Cans Park, Ibrahim Babangida Blvd,<br>Maitama, Abuja 904101</span>
+                                <span class="text-xs text-zinc-500 font-medium">Visit Us (USA)</span>
+                                <span class="text-sm font-medium text-navyBlue leading-relaxed">600 N Broad Street<br>Suite 5 #3304<br>Middletown, DE 19709</span>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <a href="#" @click.prevent="$emitter.emit('open-measurement-videos')" class="group flex items-center gap-3 transition-all duration-300 hover:translate-x-1">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#F1EADF] flex items-center justify-center">
+                                <svg class="w-5 h-5 text-navyBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs text-zinc-500 font-medium">Visit Us (Nigeria)</span>
+                                <span class="text-sm font-medium text-navyBlue leading-relaxed">Ahmadu Bello Way, Central Business District, Wuse 2, <br>Abuja 102215, Federal Capital Territory, Nigeria1</span>
+                                {{-- <span class="text-sm font-medium text-navyBlue leading-relaxed">The Cans Park, Ibrahim Babangida Blvd,<br>Maitama, Abuja 904101</span> --}}
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{{ route('shop.home.how_to_measure') }}" @click.prevent="$emitter.emit('open-how-to-measure')" class="group flex items-center gap-3 transition-all duration-300 hover:translate-x-1">
                             <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#F1EADF] flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300">
                                 <svg class="w-5 h-5 text-navyBlue group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-zinc-500 font-medium">Watch Videos</span>
-                                <span class="text-sm font-medium text-navyBlue">Measurement Guide</span>
+                                <span class="text-xs text-zinc-500 font-medium">@lang('shop::app.home.how-to-measure.link.eyebrow')</span>
+                                <span class="text-sm font-medium text-navyBlue">@lang('shop::app.home.how-to-measure.link.title')</span>
                             </div>
                         </a>
                     </li>
@@ -162,6 +197,19 @@
                             </a>
                         </li>
                         <li>
+                            <a href="tel:+12029923505" class="group flex items-center gap-2.5 transition-all duration-300">
+                                <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-lightOrange flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300 max-sm:w-8 max-sm:h-8">
+                                    <svg class="w-4 h-4 text-navyBlue group-hover:text-white transition-colors duration-300 max-sm:w-3.5 max-sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Call Us (USA)</span>
+                                    <span class="text-xs font-medium text-navyBlue max-sm:text-[11px]">+1 (202) 992-3505</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
                             <a href="tel:+2347049013953" class="group flex items-center gap-2.5 transition-all duration-300">
                                 <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-lightOrange flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300 max-sm:w-8 max-sm:h-8">
                                     <svg class="w-4 h-4 text-navyBlue group-hover:text-white transition-colors duration-300 max-sm:w-3.5 max-sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,7 +217,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Call Us</span>
+                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Call Us (Nigeria)</span>
                                     <span class="text-xs font-medium text-navyBlue max-sm:text-[11px]">+234 704 901 3953</span>
                                 </div>
                             </a>
@@ -183,21 +231,35 @@
                                     </svg>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Visit Us</span>
+                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Visit Us (USA)</span>
+                                    <span class="text-xs font-medium text-navyBlue leading-relaxed max-sm:text-[11px]">600 N Broad Street, Suite 5 #3304, Middletown, DE 19709</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-start gap-2.5">
+                                <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-lightOrange flex items-center justify-center max-sm:w-8 max-sm:h-8">
+                                    <svg class="w-4 h-4 text-navyBlue max-sm:w-3.5 max-sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Visit Us (Nigeria)</span>
                                     <span class="text-xs font-medium text-navyBlue leading-relaxed max-sm:text-[11px]">The Cans Park, Ibrahim Babangida Blvd, Maitama, Abuja 904101</span>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <a href="#" @click.prevent="$emitter.emit('open-measurement-videos')" class="group flex items-center gap-2.5 transition-all duration-300">
+                            <a href="{{ route('shop.home.how_to_measure') }}" @click.prevent="$emitter.emit('open-how-to-measure')" class="group flex items-center gap-2.5 transition-all duration-300">
                                 <div class="flex-shrink-0 w-9 h-9 rounded-lg bg-lightOrange flex items-center justify-center group-hover:bg-navyBlue transition-colors duration-300 max-sm:w-8 max-sm:h-8">
                                     <svg class="w-4 h-4 text-navyBlue group-hover:text-white transition-colors duration-300 max-sm:w-3.5 max-sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                     </svg>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">Watch Videos</span>
-                                    <span class="text-xs font-medium text-navyBlue max-sm:text-[11px]">Measurement Guide</span>
+                                    <span class="text-xs text-zinc-500 font-medium max-sm:text-[10px]">@lang('shop::app.home.how-to-measure.link.eyebrow')</span>
+                                    <span class="text-xs font-medium text-navyBlue max-sm:text-[11px]">@lang('shop::app.home.how-to-measure.link.title')</span>
                                 </div>
                             </a>
                         </li>

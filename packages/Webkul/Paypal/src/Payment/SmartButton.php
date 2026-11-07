@@ -2,6 +2,7 @@
 
 namespace Webkul\Paypal\Payment;
 
+use Illuminate\Support\Facades\Log;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
@@ -73,7 +74,30 @@ class SmartButton extends Paypal
         $request->prefer('return=representation');
         $request->body = $body;
 
-        return $this->client()->execute($request);
+        Log::info('PayPal SmartButton: Creating order', [
+            'body_intent' => $body['intent'] ?? null,
+            'currency'    => $body['purchase_units'][0]['amount']['currency_code'] ?? null,
+            'amount'      => $body['purchase_units'][0]['amount']['value'] ?? null,
+        ]);
+
+        try {
+            $response = $this->client()->execute($request);
+
+            Log::info('PayPal SmartButton: Order created successfully', [
+                'paypal_order_id' => $response->result->id ?? null,
+                'status'          => $response->result->status ?? null,
+                'status_code'     => $response->statusCode ?? null,
+            ]);
+
+            return $response;
+        } catch (\Exception $e) {
+            Log::error('PayPal SmartButton: Order creation failed', [
+                'error' => $e->getMessage(),
+                'code'  => $e->getCode(),
+            ]);
+
+            throw $e;
+        }
     }
 
     /**
@@ -89,7 +113,28 @@ class SmartButton extends Paypal
         $request->headers['PayPal-Partner-Attribution-Id'] = $this->paypalPartnerAttributionId;
         $request->prefer('return=representation');
 
-        $this->client()->execute($request);
+        Log::info('PayPal SmartButton: Capturing order', ['order_id' => $orderId]);
+
+        try {
+            $response = $this->client()->execute($request);
+
+            Log::info('PayPal SmartButton: Order captured successfully', [
+                'order_id'    => $orderId,
+                'status'      => $response->result->status ?? null,
+                'status_code' => $response->statusCode ?? null,
+                'capture_id'  => $response->result->purchase_units[0]->payments->captures[0]->id ?? null,
+            ]);
+
+            return $response;
+        } catch (\Exception $e) {
+            Log::error('PayPal SmartButton: Order capture failed', [
+                'order_id' => $orderId,
+                'error'    => $e->getMessage(),
+                'code'     => $e->getCode(),
+            ]);
+
+            throw $e;
+        }
     }
 
     /**
@@ -100,7 +145,27 @@ class SmartButton extends Paypal
      */
     public function getOrder($orderId)
     {
-        return $this->client()->execute(new OrdersGetRequest($orderId));
+        Log::info('PayPal SmartButton: Getting order details', ['order_id' => $orderId]);
+
+        try {
+            $response = $this->client()->execute(new OrdersGetRequest($orderId));
+
+            Log::info('PayPal SmartButton: Got order details', [
+                'order_id'    => $orderId,
+                'status'      => $response->result->status ?? null,
+                'status_code' => $response->statusCode ?? null,
+            ]);
+
+            return $response;
+        } catch (\Exception $e) {
+            Log::error('PayPal SmartButton: Get order failed', [
+                'order_id' => $orderId,
+                'error'    => $e->getMessage(),
+                'code'     => $e->getCode(),
+            ]);
+
+            throw $e;
+        }
     }
 
     /**
@@ -128,7 +193,29 @@ class SmartButton extends Paypal
         $request->headers['PayPal-Partner-Attribution-Id'] = $this->paypalPartnerAttributionId;
         $request->body = $body;
 
-        return $this->client()->execute($request);
+        Log::info('PayPal SmartButton: Refunding order', [
+            'capture_id' => $captureId,
+            'body'       => $body,
+        ]);
+
+        try {
+            $response = $this->client()->execute($request);
+
+            Log::info('PayPal SmartButton: Refund successful', [
+                'capture_id'  => $captureId,
+                'status_code' => $response->statusCode ?? null,
+            ]);
+
+            return $response;
+        } catch (\Exception $e) {
+            Log::error('PayPal SmartButton: Refund failed', [
+                'capture_id' => $captureId,
+                'error'      => $e->getMessage(),
+                'code'       => $e->getCode(),
+            ]);
+
+            throw $e;
+        }
     }
 
     /**
@@ -147,6 +234,13 @@ class SmartButton extends Paypal
     protected function environment()
     {
         $isSandbox = $this->getConfigData('sandbox') ?: false;
+
+        Log::info('PayPal SmartButton: Initializing environment', [
+            'sandbox'          => $isSandbox,
+            'client_id_set'    => ! empty($this->clientId),
+            'client_id_prefix' => substr($this->clientId, 0, 8) . '...',
+            'secret_set'       => ! empty($this->clientSecret),
+        ]);
 
         if ($isSandbox) {
             return new SandboxEnvironment($this->clientId, $this->clientSecret);

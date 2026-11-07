@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto Catalog Rule',
+    'name'    => 'Aso Signature Catalog Rule',
     'version' => core()->version(),
 ];

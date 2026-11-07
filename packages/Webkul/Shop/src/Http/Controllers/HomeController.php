@@ -3,6 +3,7 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Support\Facades\Mail;
+use Webkul\Shop\Helpers\HowToMeasure;
 use Webkul\Shop\Http\Requests\ContactRequest;
 use Webkul\Shop\Mail\ContactUs;
 use Webkul\Theme\Repositories\ThemeCustomizationRepository;
@@ -58,6 +59,50 @@ class HomeController extends Controller
     public function contactUs()
     {
         return view('shop::home.contact-us');
+    }
+
+    /**
+     * Loads the "How to Measure" guide page.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function howToMeasure(HowToMeasure $howToMeasure)
+    {
+        return view('shop::home.how-to-measure', [
+            'measurements' => $howToMeasure->measurements(),
+            'videos'       => $howToMeasure->videos(),
+        ]);
+    }
+
+    /**
+     * Loads the "How It Works" page: the seven steps from design to delivery.
+     *
+     * Each key maps to a translation block under `shop::app.home.how-it-works.steps`
+     * and to an illustration in `shop::components.how-it-works.illustrations`.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function howItWorks()
+    {
+        $steps = [
+            'choose-design',
+            'submit-measurements',
+            'review',
+            'production',
+            'quality-check',
+            'delivery',
+            'support',
+        ];
+
+        return view('shop::home.how-it-works', compact('steps'));
+    }
+
+    // thankYou
+    public function thankYou()
+    {
+        // return view('shop::home.thank-you');
+        //re direct to home page if user try to access thank you page directly
+        return redirect()->route('shop.home.index');
     }
 
     /**

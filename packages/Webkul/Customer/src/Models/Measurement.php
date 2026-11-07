@@ -20,12 +20,14 @@ class Measurement extends Model implements MeasurementContract
      * @var array<string>
      */
     protected $fillable = [
-        'customer_id',   // ID of the customer this measurement belongs to
-        'name',          // Name of the measurement (e.g., 'chest', 'waist')
-        'value',         // Numeric value of the measurement
-        'unit',          // Unit of measurement (e.g., 'cm', 'inches')
-        'notes',         // Additional notes about the measurement
-        'measurement_type' // Type of measurement category
+        'customer_id',
+        'profile_id',
+        'name',
+        'value',
+        'unit',
+        'notes',
+        'measurement_type',
+        'gender',
     ];
 
     /**
@@ -41,5 +43,13 @@ class Measurement extends Model implements MeasurementContract
     public function customer()
     {
         return $this->belongsTo(CustomerProxy::modelClass());
+    }
+
+    /**
+     * Get the profile that owns the measurement.
+     */
+    public function profile()
+    {
+        return $this->belongsTo(MeasurementProfile::class, 'profile_id');
     }
 }

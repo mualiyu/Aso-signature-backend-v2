@@ -1,110 +1,95 @@
 <!-- Checkout Measurements Vue JS Component -->
-<v-checkout-measurements>
-    {{-- <div class="flex items-center">
-        <span class="cursor-pointer text-base font-medium text-blue-700">
-            My Measurements
-        </span>
+<x-shop::measurements.form scripts-only />
 
-    </div> --}}
-</v-checkout-measurements>
+<v-checkout-measurements></v-checkout-measurements>
+
+@pushOnce('styles')
+    <style>
+        .measurements-modal-overlay {
+            background: rgba(24, 24, 27, 0.6);
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+        }
+
+        .measurements-modal-enter-active,
+        .measurements-modal-leave-active {
+            transition: opacity 0.25s ease;
+        }
+
+        .measurements-modal-enter-active .measurements-modal-panel,
+        .measurements-modal-leave-active .measurements-modal-panel {
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .measurements-modal-enter-from,
+        .measurements-modal-leave-to {
+            opacity: 0;
+        }
+
+        .measurements-modal-enter-from .measurements-modal-panel,
+        .measurements-modal-leave-to .measurements-modal-panel {
+            transform: translateY(28px) scale(0.98);
+            opacity: 0;
+        }
+    </style>
+@endPushOnce
 
 @pushOnce('scripts')
-    <script
-        type="text/x-template"
-        id="v-checkout-measurements-template"
-    >
-        <div>
-            <!-- Measurements Modal -->
-            <div
-                class="flex cursor-pointer items-center gap-2.5 max-sm:gap-1.5 max-sm:text-base hover:text-blue-600 hover:underline"
-                role="button"
-                tabindex="0"
-                @click="openMeasurements()"
-            >
-                <span class="icon-ruler text-2xl" role="presentation"></span>
-                <!-- My Measurements -->
-            </div>
+    <script type="text/x-template" id="v-checkout-measurements-template">
+        <teleport to="body">
+            <transition name="measurements-modal">
+                <div
+                    v-if="isMeasurementsOpen"
+                    class="measurements-modal-overlay fixed inset-0 z-[9999] flex items-end justify-center sm:items-center sm:p-6"
+                    @click.self="closeMeasurements()"
+                >
+                    <div class="measurements-modal-panel relative flex h-[94dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:h-auto sm:max-h-[88vh] sm:min-h-[60vh] sm:max-w-4xl sm:rounded-3xl">
+                        <!-- Header -->
+                        <div class="flex shrink-0 items-center justify-between gap-4 border-b border-zinc-100 px-5 py-4 sm:px-7 sm:py-5">
+                            <div class="flex items-center gap-3">
+                                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navyBlue text-white max-sm:hidden">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9h18v6H3z"/>
+                                        <path d="M6 9v2.5M9 9v4M12 9v2.5M15 9v4M18 9v2.5"/>
+                                    </svg>
+                                </span>
 
-            <div
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-                v-show="isMeasurementsOpen"
-                @click.self="closeMeasurements()"
-            >
-                <div class="relative max-h-[90vh] w-full max-w-[1800px] rounded-lg bg-white p-2 sm:p-6 shadow-lg flex flex-col"
-                     style="max-width: 98vw;">
-                    <div class="mb-4 sm:mb-6 flex items-center justify-between border-b pb-2 sm:pb-4 sticky top-0 bg-white z-10">
-                        <h2 class="text-lg sm:text-2xl font-semibold text-gray-800 p-3 pl-10">My Measurements</h2>
-
-                        <button
-                            class="text-gray-500 hover:text-gray-700"
-                            @click="closeMeasurements()"
-                        >
-                            <span class="icon-cross text-2xl"></span>
-                        </button>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto pr-1">
-                        <div v-if="isLoading" class="flex justify-center py-8">
-                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                        </div>
-
-                        <div v-else-if="measurements.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-3" style="max-height: 50vh; overflow-y: auto;">
-                            <div
-                                v-for="measurement in measurements"
-                                :key="measurement.id"
-                                class="flex flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
-                            >
-                                <div class="flex flex-col items-start">
-                                    <h3 class="font-medium text-gray-900 capitalize mb-1">
-                                        @{{ measurement.name.replace(/_/g, ' ') }}
-                                    </h3>
-                                    <p class="text-sm text-gray-600">
-                                        @{{ measurement.value }} @{{ measurement.unit }}
-                                    </p>
-                                    <p class="text-xs text-gray-500 mt-1 capitalize">
-                                        Type: @{{ measurement.measurement_type }}
-                                    </p>
-                                    <p v-if="measurement.notes" class="text-xs text-gray-500 mt-1">
-                                        Notes: @{{ measurement.notes }}
+                                <div>
+                                    <h2 class="text-xl font-semibold text-gray-800 max-sm:text-lg">Measurement Profiles</h2>
+                                    <p class="mt-0.5 text-sm text-gray-500">
+                                        <span v-if="completeness">@{{ completeness.filled }} of @{{ completeness.total }} complete &middot; </span>Create profiles for everyone you shop for.
                                     </p>
                                 </div>
                             </div>
-                        </div>
 
-                        <div v-else class="text-center py-8">
-                            <div class="text-gray-500 mb-4">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </div>
-                            <p class="text-gray-500">No measurements have been added yet</p>
-                            <a
-                                href="{{ route('shop.customers.account.measurements.create') }}"
-                                class="mt-4 inline-block text-blue-600 hover:text-blue-800"
+                            <button
+                                type="button"
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-gray-500 transition hover:bg-zinc-200 hover:text-gray-700"
+                                aria-label="Close"
+                                @click="closeMeasurements()"
                             >
-                                Add your first measurement
-                            </a>
+                                <span class="icon-cancel text-xl"></span>
+                            </button>
                         </div>
-                    </div>
 
-                    <div class="mt-5 flex flex-wrap items-center gap-4 sticky bottom-0 bg-white pt-4 border-t">
-                        <a
-                            href="{{ route('shop.customers.account.measurements.create') }}"
-                            class="secondary-button max-w-none flex-auto rounded-2xl px-11 py-3 max-md:rounded-lg max-md:py-1.5"
-                        >
-                            Add New Measurement
-                        </a>
-                        <button
-                            type="button"
-                            @click="closeMeasurements()"
-                            class="primary-button max-w-none flex-auto rounded-2xl px-11 py-3 max-md:rounded-lg max-md:py-1.5"
-                        >
-                            Close
-                        </button>
+                        <!-- Body -->
+                        <div class="min-h-0 flex-1 overflow-y-auto bg-zinc-50/70 px-5 py-5 sm:px-7">
+                            <div v-if="isLoading" class="flex justify-center py-16">
+                                <div class="h-9 w-9 animate-spin rounded-full border-[3px] border-zinc-200 border-t-navyBlue"></div>
+                            </div>
+
+                            <v-measurements-form
+                                v-else-if="payload"
+                                :initial-payload="payload"
+                                submit-url="{{ route('shop.api.customers.account.measurements.store') }}"
+                                :compact="true"
+                                :use-api="true"
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </transition>
+        </teleport>
     </script>
 
     <script type="module">
@@ -113,27 +98,29 @@
 
             data() {
                 return {
-                    measurements: [],
+                    payload: null,
+                    completeness: null,
                     isLoading: false,
                     isMeasurementsOpen: false,
-                }
+                };
             },
 
             mounted() {
                 this.fetchMeasurements();
-
-                // Open from external trigger
                 this.$emitter.on('open-measurements', this.openMeasurements);
+                this.$emitter.on('measurements-updated', this.handleMeasurementsUpdated);
             },
 
             beforeUnmount() {
                 this.$emitter?.off('open-measurements', this.openMeasurements);
+                this.$emitter?.off('measurements-updated', this.handleMeasurementsUpdated);
             },
 
             methods: {
                 openMeasurements() {
                     this.isMeasurementsOpen = true;
                     document.body.style.overflow = 'hidden';
+                    this.fetchMeasurements();
                 },
 
                 closeMeasurements() {
@@ -141,12 +128,20 @@
                     document.body.style.overflow = 'auto';
                 },
 
+                handleMeasurementsUpdated(data) {
+                    this.completeness = data?.completeness || null;
+                    this.$emitter.emit('checkout-measurements-status', this.completeness);
+                },
+
                 fetchMeasurements() {
                     this.isLoading = true;
 
-                    this.$axios.get("/api/customer/measurements")
+                    this.$axios.get('/api/customer/measurements')
                         .then((response) => {
-                            this.measurements = response.data.data || [];
+                            const data = response.data.data || {};
+                            this.payload = data.payload || null;
+                            this.completeness = data.completeness || data.payload?.completeness || null;
+                            this.$emitter.emit('checkout-measurements-status', this.completeness);
                             this.isLoading = false;
                         })
                         .catch((error) => {
@@ -156,17 +151,17 @@
                             if (error.response?.status === 401) {
                                 this.$emitter.emit('add-flash', {
                                     type: 'error',
-                                    message: 'Please login to view your measurements'
+                                    message: 'Please login to view your measurements',
                                 });
                             } else {
                                 this.$emitter.emit('add-flash', {
                                     type: 'error',
-                                    message: 'Failed to load measurements'
+                                    message: 'Failed to load measurements',
                                 });
                             }
                         });
                 },
-            }
-        })
+            },
+        });
     </script>
 @endPushOnce

@@ -149,7 +149,7 @@
                     <div class="m-auto grid h-[100vh] max-w-[362px] items-end">
                         <div class="grid gap-4">
                             <img
-                                src="{{ bagisto_asset('images/installer/bagisto-logo.svg', 'installer') }}"
+                                src="{{ asset('themes/aso.svg') }}"
                                 alt="@lang('installer::app.installer.index.bagisto-logo')"
                             >
 
@@ -290,18 +290,9 @@
                         <p class="mb-6 w-full place-self-end text-left">
                             <a
                                 class="bg-white text-blue-600 underline"
-                                href="https://bagisto.com/en/"
+                                href="https://asosignature.com"
                             >
                                 @lang('installer::app.installer.index.bagisto')
-                            </a>
-
-                            <span>@lang('installer::app.installer.index.bagisto-info')</span>
-
-                            <a
-                                class="bg-white text-blue-600 underline"
-                                href="https://webkul.com/"
-                            >
-                                @lang('installer::app.installer.index.webkul')
                             </a>
                         </p>
                     </div>
@@ -760,7 +751,7 @@
                                     <x-installer::form.control-group.control
                                         type="text"
                                         name="app_name"
-                                        ::value="envData.app_name ?? 'Bagisto'"
+                                        ::value="envData.app_name ?? 'Aso Signature'"
                                         rules="required"
                                         :label="trans('installer::app.installer.index.environment-configuration.application-name')"
                                         :placeholder="trans('installer::app.installer.index.environment-configuration.bagisto')"
@@ -1202,22 +1193,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="flex items-center justify-between px-4 py-2.5">
-                        <a
-                            href="https://forums.bagisto.com"
-                            class="cursor-pointer text-xs font-semibold text-blue-600"
-                        >
-                            @lang('installer::app.installer.index.installation-completed.bagisto-forums')
-                        </a>
-
-                        <a
-                            href="https://bagisto.com/en/extensions"
-                            class="cursor-pointer rounded-md border border-blue-700 bg-white px-3 py-1.5 font-semibold text-blue-600 hover:opacity-90"
-                        >
-                            @lang('installer::app.installer.index.installation-completed.explore-bagisto-extensions')
-                        </a>
-                    </div>
                 </div>
             </script>
 
@@ -1291,7 +1266,7 @@
 
                                         this.envData = { ...this.envData, ...params };
                                     } else {
-                                        setErrors({ 'db_connection': ["Bagisto currently supports MySQL only."] });
+                                        setErrors({ 'db_connection': ["Aso Signature currently supports MySQL only."] });
                                     }
                                 },
 

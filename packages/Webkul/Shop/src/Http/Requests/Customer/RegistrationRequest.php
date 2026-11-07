@@ -17,6 +17,7 @@ class RegistrationRequest extends FormRequest
         'last_name'  => 'string|required',
         'email'      => 'email|required|unique:customers,email',
         'password'   => 'confirmed|min:6|required',
+        'terms'      => 'accepted',
     ];
 
     /**
@@ -46,6 +47,8 @@ class RegistrationRequest extends FormRequest
      */
     public function messages()
     {
-        return Captcha::getValidationMessages();
+        return Captcha::getValidationMessages([
+            'terms.accepted' => trans('shop::app.customers.signup-form.terms-required'),
+        ]);
     }
 }

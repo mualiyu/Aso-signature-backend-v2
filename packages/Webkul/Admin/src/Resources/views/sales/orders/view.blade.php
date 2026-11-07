@@ -106,6 +106,39 @@
                 </div>
             @endif
 
+            <!-- Change Order Status (fulfilment workflow) -->
+            @if (
+                count($order->getAllowedTransitions())
+                && bouncer()->hasPermission('sales.orders.update-status')
+            )
+                <form
+                    method="POST"
+                    action="{{ route('admin.sales.orders.update-status', $order->id) }}"
+                    class="flex items-center gap-1.5"
+                >
+                    @csrf
+
+                    <select
+                        name="status"
+                        required
+                        class="w-max cursor-pointer rounded-md border border-gray-300 px-2.5 py-2 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
+                    >
+                        @foreach ($order->getAllowedTransitions() as $status)
+                            <option value="{{ $status }}">
+                                @lang("admin::app.sales.orders.view.$status")
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="primary-button px-2.5 py-1.5"
+                    >
+                        @lang('admin::app.sales.orders.view.update-status')
+                    </button>
+                </form>
+            @endif
+
             {!! view_render_event('bagisto.admin.sales.order.page_action.after', ['order' => $order]) !!}
 
             <!-- Download Designer Order PDF -->
@@ -464,30 +497,81 @@
 
                 <!-- Customer Measurements -->
                 @if($order->measurements && $order->measurements->count() > 0)
+                    @php
+                        $measurementGroupLabels = \Webkul\Customer\Data\MeasurementFields::groupLabels();
+                        $measurementLabelMap = \Webkul\Customer\Data\MeasurementFields::labelMap();
+                        $fitPreferenceLabels = \Webkul\Customer\Data\MeasurementFields::fitPreferenceOptions();
+                        $fitNoteLabels = \Webkul\Customer\Data\MeasurementFields::fitNoteOptions();
+                        $measurementsByItem = $order->measurements->groupBy('order_item_id');
+                        $orderItemsById = $order->items->keyBy('id');
+                    @endphp
+
                     <x-admin::accordion>
                         <x-slot:header>
                             <p class="p-2.5 text-base font-semibold text-gray-600 dark:text-gray-300">
-                                Customer Measurements ({{ $order->measurements->count() }})
+                                Customer Measurements
                             </p>
                         </x-slot:header>
 
                         <x-slot:content>
                             <div class="grid gap-4">
-                                @foreach($order->measurements->groupBy('measurement_type') as $type => $measurements)
-                                    <div>
-                                        <p class="font-semibold text-gray-800 dark:text-white capitalize mb-2">
-                                            {{ ucfirst($type) }}
-                                        </p>
+                                @foreach($measurementsByItem as $orderItemId => $itemMeasurements)
+                                    @php
+                                        $orderItem = $orderItemId ? $orderItemsById->get($orderItemId) : null;
+                                        $first = $itemMeasurements->first();
+                                        $fitNotes = $first->fit_notes ?: [];
+                                    @endphp
 
-                                        <div class="grid grid-cols-3 gap-2 text-sm">
-                                            @foreach($measurements as $measurement)
-                                                <div class="flex justify-left">
-                                                    <span class="text-gray-600 dark:text-gray-300 capitalize">
-                                                        {{ ucfirst(str_replace('_', ' ', $measurement->name)) }}:
+                                    <div class="rounded border border-gray-200 p-3 dark:border-gray-800">
+                                        <div class="mb-3 flex flex-wrap items-center gap-2">
+                                            <p class="font-semibold text-gray-800 dark:text-white">
+                                                {{ $orderItem ? $orderItem->name : 'Whole Order' }}
+                                            </p>
+
+                                            @if($first->profile_name)
+                                                <span class="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                                    Profile: {{ $first->profile_name }}
+                                                </span>
+                                            @endif
+
+                                            @if($first->fit_preference)
+                                                <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+                                                    {{ $fitPreferenceLabels[$first->fit_preference] ?? ucwords(str_replace('_', ' ', $first->fit_preference)) }}
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        @if(count($fitNotes))
+                                            <div class="mb-3 flex flex-wrap items-center gap-1.5">
+                                                <span class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">Fit notes:</span>
+
+                                                @foreach($fitNotes as $note)
+                                                    <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                                        {{ $fitNoteLabels[$note] ?? $note }}
                                                     </span>
-                                                    <span class="font-semibold text-gray-800 dark:text-white">
-                                                        &nbsp;{{ $measurement->value }} {{ $measurement->unit }}
-                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+
+                                        <div class="grid gap-4">
+                                            @foreach($itemMeasurements->groupBy('measurement_type') as $type => $measurements)
+                                                <div>
+                                                    <p class="font-semibold text-gray-800 dark:text-white capitalize mb-2">
+                                                        {{ $measurementGroupLabels[$type] ?? ucwords(str_replace('_', ' ', $type)) }}
+                                                    </p>
+
+                                                    <div class="grid grid-cols-3 gap-2 text-sm">
+                                                        @foreach($measurements as $measurement)
+                                                            <div class="flex justify-left">
+                                                                <span class="text-gray-600 dark:text-gray-300">
+                                                                    {{ $measurement->measurement_type === 'custom' ? ($measurement->notes ?: ucwords(str_replace('_', ' ', $measurement->name))) : ($measurementLabelMap[$measurement->name] ?? ucwords(str_replace('_', ' ', $measurement->name))) }}:
+                                                                </span>
+                                                                <span class="font-semibold text-gray-800 dark:text-white">
+                                                                    &nbsp;{{ $measurement->value }} {{ $measurement->unit }}
+                                                                </span>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -869,13 +953,40 @@
                                     </p>
                                 </div>
 
-                                <div class="flex gap-2.5">
+                                <div class="flex flex-wrap gap-x-4 gap-y-1">
                                     <a
                                         href="{{ route('admin.sales.shipments.view', $shipment->id) }}"
                                         class="text-sm text-blue-600 transition-all hover:underline"
                                     >
                                         @lang('admin::app.sales.orders.view.view')
                                     </a>
+
+                                    @if ($shipment->track_number)
+                                        <span class="text-sm text-gray-600 dark:text-gray-300">
+                                            {{ $shipment->track_number }}
+                                        </span>
+                                    @endif
+
+                                    @if ($shipment->dhl_documents_path)
+                                        <a
+                                            href="{{ route('admin.sales.shipments.dhl-documents', $shipment->id) }}"
+                                            class="text-sm text-blue-600 transition-all hover:underline"
+                                        >
+                                            @lang('admin::app.sales.shipments.view.dhl-download')
+                                        </a>
+                                    @endif
+
+                                    @php
+                                        $isDhlShipment = $shipment->carrier_code === 'dhl'
+                                            || $shipment->carrier_title === 'DHL Express'
+                                            || str_starts_with(strtolower((string) ($shipment->carrier_code ?? '')), 'dhl');
+                                    @endphp
+
+                                    @if ($isDhlShipment && $shipment->dhl_last_checkpoint_description)
+                                        <span class="text-sm text-gray-600 dark:text-gray-300">
+                                            {{ $shipment->dhl_last_checkpoint_description }}
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
                         @empty

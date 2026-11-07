@@ -42,7 +42,7 @@
 
                                 <div
                                     class="relative max-w-[218px] select-none max-md:max-w-full max-md:flex-auto"
-                                    v-for="rate in method.rates"
+                                    v-for="rate in method.rates.filter(r => parseFloat(r.base_price) > 0)"
                                 >
                                     <input 
                                         type="radio"

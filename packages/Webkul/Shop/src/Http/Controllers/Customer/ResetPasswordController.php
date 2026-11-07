@@ -63,7 +63,9 @@ class ResetPasswordController extends Controller
 
                 Event::dispatch('customer.password.update.after', $customer);
 
-                return redirect()->route('shop.customers.account.profile.index');
+                session()->flash('success', trans('shop::app.customers.reset-password.success'));
+
+                return redirect()->route('shop.customer.session.index');
             }
 
             return back()

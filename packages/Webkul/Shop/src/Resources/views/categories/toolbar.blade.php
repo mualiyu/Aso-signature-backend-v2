@@ -144,11 +144,11 @@
                         },
 
                         applied: {
-                            sort: '{{ $toolbar->getOrder($params ?? [])['value'] }}',
+                            sort: '{{ $toolbar->getOrder($params ?? request()->query())['value'] }}',
 
-                            limit: '{{ $toolbar->getLimit($params ?? []) }}',
+                            limit: '{{ $toolbar->getLimit($params ?? request()->query()) }}',
 
-                            mode: '{{ $toolbar->getMode($params ?? []) }}',
+                            mode: '{{ $toolbar->getMode($params ?? request()->query()) }}',
                         }
                     }
                 };
@@ -183,8 +183,6 @@
                     for (let key in this.filters.applied) {
                         if (this.filters.applied[key] != this.filters.default[key]) {
                             filters[key] = this.filters.applied[key];
-                        } else {
-                            filters= this.filters.default;
                         }
                     }
 

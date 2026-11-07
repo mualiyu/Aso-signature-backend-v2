@@ -1,7 +1,7 @@
 {
-    "name": "bagisto/bagisto",
+    "name": "asosignature/backend",
     "type": "project",
-    "description": "Bagisto Laravel E-Commerce",
+    "description": "Aso Signature e-commerce backend",
     "keywords": [
         "framework",
         "laravel"
@@ -48,7 +48,8 @@
         "pusher/pusher-php-server": "^7.0",
         "shetabit/visitor": "^4.1",
         "spatie/laravel-responsecache": "^7.4",
-        "spatie/laravel-sitemap": "^7.3"
+        "spatie/laravel-sitemap": "^7.3",
+        "stripe/stripe-php": "^20.1"
     },
     "require-dev": {
         "bagisto/laravel-datafaker": "^2.2.0",
@@ -68,6 +69,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Webkul\\Admin\\": "packages/Webkul/Admin/src",
+            "Webkul\\Alteration\\": "packages/Webkul/Alteration/src",
             "Webkul\\Attribute\\": "packages/Webkul/Attribute/src",
             "Webkul\\CartRule\\": "packages/Webkul/CartRule/src",
             "Webkul\\CatalogRule\\": "packages/Webkul/CatalogRule/src",
@@ -99,7 +101,8 @@
             "Webkul\\Theme\\": "packages/Webkul/Theme/src",
             "Webkul\\User\\": "packages/Webkul/User/src",
             "Webkul\\Designer\\": "packages/Webkul/Designer/src",
-            "Webkul\\Flutterwave\\": "packages/Webkul/Flutterwave/src"
+            "Webkul\\Flutterwave\\": "packages/Webkul/Flutterwave/src",
+            "Webkul\\Stripe\\": "packages/Webkul/Stripe/src"
         }
     },
     "autoload-dev": {
@@ -145,11 +148,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "support": {
-        "issues": "https://github.com/bagisto/bagisto/issues",
-        "forum": "https://forums.bagisto.com",
-        "source": "https://github.com/bagisto/bagisto",
-        "docs": "https://devdocs.bagisto.com"
-    }
+    "prefer-stable": true
 }

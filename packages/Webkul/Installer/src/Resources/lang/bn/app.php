@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'অ্যাডমিন',
-                'bagisto'          => 'বাগিস্তো',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'পাসওয়ার্ড নিশ্চিত করুন',
                 'email'            => 'ইমেইল',
                 'email-address'    => 'admin@example.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'অ্যাপ্লিকেশন নাম',
                 'argentine-peso'              => 'আর্জেন্টিনা পেসো (ARS)',
                 'australian-dollar'           => 'অস্ট্রেলিয়ান ডলার (AUD)',
-                'bagisto'                     => 'বাগিস্তো',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'বাংলাদেশী টাকা (BDT)',
                 'brazilian-real'              => 'ব্রাজিলিয়ান রিয়েল (BRL)',
                 'british-pound-sterling'      => 'ব্রিটিশ পাউন্ড স্টার্লিং (GBP)',
@@ -723,8 +723,8 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto-info' => 'ডাটাবেস টেবিল তৈরি করা হচ্ছে, এটি কিছুটা সময় নিতে পারে',
-                'bagisto'      => 'ইনস্টলেশন বাগিস্তো',
+                'bagisto-info' => '',
+                'bagisto'      => 'Aso Signature',
                 'title'        => 'ইনস্টলেশন',
             ],
 
@@ -740,7 +740,7 @@ return [
             'ready-for-installation' => [
                 'create-databsae-table'   => 'ডাটাবেস টেবিল তৈরি করুন',
                 'install-info-button'     => 'নীচের বাটনে ক্লিক করুন',
-                'install-info'            => 'ইনস্টলেশনের জন্য Bagisto',
+                'install-info'            => 'ইনস্টলেশনের জন্য Aso Signature',
                 'install'                 => 'ইনস্টলেশন',
                 'populate-database-table' => 'ডাটাবেস টেবিল পূর্ণ করুন',
                 'start-installation'      => 'ইনস্টলেশন শুরু করুন',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'লোকেল',
                 'main'          => 'শুরু',
                 'select-locale' => 'লোকেল নির্বাচন করুন',
-                'title'         => 'আপনার Bagisto ইনস্টলেশন',
-                'welcome-title' => 'Bagisto এ আপনাকে স্বাগতম',
+                'title'         => 'আপনার Aso Signature ইনস্টলেশন',
+                'welcome-title' => 'Aso Signature এ আপনাকে স্বাগতম',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'arabic'                   => 'আরবি',
             'back'                     => 'পিছনে',
-            'bagisto-info'             => 'একটি সম্প্রদায়িক প্রকল্প দ্বারা',
-            'bagisto-logo'             => 'বাগিস্তো লোগো',
-            'bagisto'                  => 'বাগিস্তো',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
+            'bagisto'                  => 'Aso Signature',
             'bengali'                  => 'বাংলা',
             'chinese'                  => 'চীনা',
             'continue'                 => 'চালিয়ে যান',
@@ -806,7 +806,7 @@ return [
             'title'                    => 'বাগিস্তো ইনস্টলার',
             'turkish'                  => 'তুর্কি',
             'ukrainian'                => 'ইউক্রেনীয়',
-            'webkul'                   => 'ওয়েবকুল',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

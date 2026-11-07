@@ -25,6 +25,11 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
         ->name('shop.designer.view')
         ->middleware('cacheResponse');
 
+    // route for thank you page after order placed
+    Route::get('thank-you', [HomeController::class, 'thankYou'])
+        ->name('shop.thank-you')
+        ->middleware('cacheResponse');
+    
     /**
      * Fallback route.
      */
@@ -44,6 +49,14 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
 
     Route::get('contact-us', [HomeController::class, 'contactUs'])
         ->name('shop.home.contact_us')
+        ->middleware('cacheResponse');
+
+    Route::get('how-to-measure', [HomeController::class, 'howToMeasure'])
+        ->name('shop.home.how_to_measure')
+        ->middleware('cacheResponse');
+
+    Route::get('how-it-works', [HomeController::class, 'howItWorks'])
+        ->name('shop.home.how_it_works')
         ->middleware('cacheResponse');
 
     Route::post('contact-us/send-mail', [HomeController::class, 'sendContactUsMail'])

@@ -6,7 +6,7 @@ return [
             'email'                  => 'ईमेल पता',
             'forget-password-link'   => 'पासवर्ड भूल गए?',
             'password'               => 'पासवर्ड',
-            'powered-by-description' => ':bagisto द्वारा संचालित, :webkul द्वारा एक ओपन-सोर्स परियोजना।',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'साइन इन करें',
             'title'                  => 'साइन इन करें',
         ],
@@ -16,7 +16,7 @@ return [
                 'email'                  => 'रजिस्टर्ड ईमेल',
                 'email-not-exist'        => 'ईमेल मौजूद नहीं है',
                 'page-title'             => 'पासवर्ड भूल गए',
-                'powered-by-description' => ':bagisto द्वारा संचालित, :webkul द्वारा एक ओपन-सोर्स परियोजना।',
+                'powered-by-description' => '© Aso Signature',
                 'reset-link-sent'        => 'पासवर्ड लिंक भेज दिया गया',
                 'sign-in-link'           => 'साइन इन पर वापस जाएं?',
                 'submit-btn'             => 'रीसेट करें',
@@ -29,7 +29,7 @@ return [
             'confirm-password'       => 'पासवर्ड की पुष्टि करें',
             'email'                  => 'रजिस्टर्ड ईमेल',
             'password'               => 'पासवर्ड',
-            'powered-by-description' => ':bagisto द्वारा संचालित, :webkul द्वारा एक ओपन-सोर्स परियोजना।',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'पासवर्ड रीसेट करें',
             'title'                  => 'पासवर्ड रीसेट करें',
         ],
@@ -4125,7 +4125,7 @@ return [
             ],
 
             'powered-by' => [
-                'description' => ':bagisto द्वारा संचालित, :webkul द्वारा एक ओपन-सोर्स परियोजना।',
+                'description' => '© Aso Signature',
             ],
         ],
 
@@ -4413,7 +4413,7 @@ return [
     ],
 
     'footer' => [
-        'copy-right' => 'प्रद्वार <a href="https://bagisto.com/" target="_blank">Bagisto</a>, एक समुदाय परियोजना <a href="https://webkul.com/" target="_blank">Webkul</a> द्वारा',
+        'copy-right' => '© Aso Signature',
     ],
 
     'emails' => [

@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'व्यवस्थापक',
-                'bagisto'          => 'बैगिस्टो',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'पासवर्ड की पुष्टि करें',
                 'email'            => 'ईमेल',
                 'email-address'    => 'admin@example.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'एप्लिकेशन का नाम',
                 'argentine-peso'              => 'अर्जेंटीनी पेसो (ARS)',
                 'australian-dollar'           => 'ऑस्ट्रेलियाई डॉलर (AUD)',
-                'bagisto'                     => 'बैगिस्टो',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'बांगलादेशी टाका (BDT)',
                 'brazilian-real'              => 'ब्राज़ीली रियाल (BRL)',
                 'british-pound-sterling'      => 'ब्रिटिश पाउंड स्टर्लिंग (GBP)',
@@ -723,16 +723,16 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto'          => 'बैगिस्टो स्थापना',
-                'bagisto-info'     => 'डेटाबेस तालिकाएँ बनाने का प्रक्रियाण, इसमें कुछ क्षण लग सकते हैं',
+                'bagisto'          => 'Aso Signature',
+                'bagisto-info'     => '',
                 'title'            => 'स्थापना',
             ],
 
             'installation-completed' => [
                 'admin-panel'                => 'व्यवस्थापक पैनल',
-                'bagisto-forums'             => 'Bagisto फ़ोरम',
+                'bagisto-forums'             => 'Aso Signature फ़ोरम',
                 'customer-panel'             => 'ग्राहक पैनल',
-                'explore-bagisto-extensions' => 'Bagisto एक्सटेंशन अन्वेषण करें',
+                'explore-bagisto-extensions' => 'Aso Signature एक्सटेंशन अन्वेषण करें',
                 'title'                      => 'स्थापना पूर्ण',
                 'title-info'                 => 'बैगिस्टो को आपके सिस्टम पर सफलतापूर्वक स्थापित किया गया है।',
             ],
@@ -740,7 +740,7 @@ return [
             'ready-for-installation' => [
                 'create-database-table'   => 'डेटाबेस तालिका बनाएं',
                 'install'                 => 'स्थापना',
-                'install-info'            => 'स्थापना के लिए Bagisto',
+                'install-info'            => 'स्थापना के लिए Aso Signature',
                 'install-info-button'     => 'नीचे दिए गए बटन पर क्लिक करें',
                 'populate-database-table' => 'डेटाबेस तालिकाओं को पॉप्युलेट करें',
                 'start-installation'      => 'स्थापना शुरू करें',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'स्थान',
                 'main'          => 'शुरू',
                 'select-locale' => 'स्थान चुनें',
-                'title'         => 'आपका Bagisto स्थापित करें',
-                'welcome-title' => 'Bagisto में आपका स्वागत है।',
+                'title'         => 'आपका Aso Signature स्थापित करें',
+                'welcome-title' => 'Aso Signature में आपका स्वागत है।',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'back'                     => 'वापस',
             'arabic'                   => 'अरबी',
-            'bagisto'                  => 'बैगिस्टो',
-            'bagisto-info'             => 'एक सामुदायिक परियोजना द्वारा',
-            'bagisto-logo'             => 'बैगिस्टो लोगो',
+            'bagisto'                  => 'Aso Signature',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
             'bengali'                  => 'बंगाली',
             'chinese'                  => 'चीनी',
             'continue'                 => 'जारी रखें',
@@ -806,7 +806,7 @@ return [
             'title'                    => 'बैगिस्टो स्थापक',
             'turkish'                  => 'तुर्की',
             'ukrainian'                => 'यूक्रेनी',
-            'webkul'                   => 'वेबकुल',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

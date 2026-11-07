@@ -130,7 +130,7 @@ class FlutterwaveController extends Controller
             ($data['data']['tx_ref'] ?? '') === session('flutterwave_tx_ref')
         ) {
             //  return session('flutterwave_tx_ref');
-            // Place the order using Bagisto's logic
+            // Place the order using the core checkout logic
             $cart = Cart::getCart();
 
             // return $cart;

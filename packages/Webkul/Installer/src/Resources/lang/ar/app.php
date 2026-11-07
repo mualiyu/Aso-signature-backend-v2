@@ -617,7 +617,7 @@ return [
         'index' => [
             'create-administrator' => [
                 'admin'            => 'مدير',
-                'bagisto'          => 'Bagisto',
+                'bagisto'          => 'Aso Signature',
                 'confirm-password' => 'تأكيد كلمة المرور',
                 'email'            => 'البريد الإلكتروني',
                 'email-address'    => 'admin@example.com',
@@ -632,7 +632,7 @@ return [
                 'application-name'            => 'اسم التطبيق',
                 'argentine-peso'              => 'البيزو الأرجنتيني (ARS)',
                 'australian-dollar'           => 'الدولار الأسترالي (AUD)',
-                'bagisto'                     => 'Bagisto',
+                'bagisto'                     => 'Aso Signature',
                 'bangladeshi-taka'            => 'التاكا البنغلاديشي (BDT)',
                 'brazilian-real'              => 'الريال البرازيلي (BRL)',
                 'british-pound-sterling'      => 'الجنيه الإسترليني البريطاني (GBP)',
@@ -723,24 +723,24 @@ return [
             ],
 
             'installation-processing' => [
-                'bagisto'      => 'تثبيت Bagisto',
-                'bagisto-info' => 'إنشاء جداول قاعدة البيانات، وقد يستغرق ذلك بضع دقائق',
+                'bagisto'      => 'Aso Signature',
+                'bagisto-info' => '',
                 'title'        => 'التثبيت',
             ],
 
             'installation-completed' => [
                 'admin-panel'                => 'لوحة المشرف',
-                'bagisto-forums'             => 'منتديات Bagisto',
+                'bagisto-forums'             => 'منتديات Aso Signature',
                 'customer-panel'             => 'لوحة العميل',
-                'explore-bagisto-extensions' => 'استكشاف امتدادات Bagisto',
+                'explore-bagisto-extensions' => 'استكشاف امتدادات Aso Signature',
                 'title'                      => 'اكتمال التثبيت',
-                'title-info'                 => 'تم تثبيت Bagisto بنجاح على نظامك.',
+                'title-info'                 => 'تم تثبيت Aso Signature بنجاح على نظامك.',
             ],
 
             'ready-for-installation' => [
                 'create-databsae-table'   => 'إنشاء جدول قاعدة البيانات',
                 'install'                 => 'التثبيت',
-                'install-info'            => 'Bagisto للتثبيت',
+                'install-info'            => 'Aso Signature للتثبيت',
                 'install-info-button'     => 'انقر على الزر أدناه ل',
                 'populate-database-table' => 'ملء جداول قاعدة البيانات',
                 'start-installation'      => 'بدء التثبيت',
@@ -751,8 +751,8 @@ return [
                 'locale'        => 'اللغة',
                 'main'          => 'بداية',
                 'select-locale' => 'اختر اللغة',
-                'title'         => 'تثبيت Bagisto الخاص بك',
-                'welcome-title' => 'مرحبًا بك في Bagisto',
+                'title'         => 'تثبيت Aso Signature الخاص بك',
+                'welcome-title' => 'مرحبًا بك في Aso Signature',
             ],
 
             'server-requirements' => [
@@ -780,9 +780,9 @@ return [
 
             'arabic'                   => 'العربية',
             'back'                     => 'رجوع',
-            'bagisto'                  => 'Bagisto',
-            'bagisto-info'             => 'مشروع مجتمعي من قبل',
-            'bagisto-logo'             => 'شعار Bagisto',
+            'bagisto'                  => 'Aso Signature',
+            'bagisto-info'             => '',
+            'bagisto-logo'             => 'Aso Signature',
             'bengali'                  => 'البنغالية',
             'chinese'                  => 'الصينية',
             'continue'                 => 'متابعة',
@@ -792,7 +792,7 @@ return [
             'german'                   => 'ألماني',
             'hebrew'                   => 'العبرية',
             'hindi'                    => 'الهندية',
-            'installation-description' => 'عادة ما تتضمن عملية تثبيت Bagisto عدة خطوات. إليك نظرة عامة عامة على عملية التثبيت لBagisto',
+            'installation-description' => 'عادة ما تتضمن عملية تثبيت Aso Signature عدة خطوات. إليك نظرة عامة عامة على عملية التثبيت لAso Signature',
             'installation-info'        => 'نحن سعداء برؤيتك هنا!',
             'installation-title'       => 'مرحبًا بك في التثبيت',
             'italian'                  => 'الإيطالية',
@@ -803,10 +803,10 @@ return [
             'russian'                  => 'الروسية',
             'sinhala'                  => 'السنهالية',
             'spanish'                  => 'الإسبانية',
-            'title'                    => 'مثبت Bagisto',
+            'title'                    => 'مثبت Aso Signature',
             'turkish'                  => 'التركية',
             'ukrainian'                => 'الأوكرانية',
-            'webkul'                   => 'Webkul',
+            'webkul'                   => 'Aso Signature',
         ],
     ],
 ];

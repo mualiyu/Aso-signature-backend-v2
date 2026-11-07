@@ -6,7 +6,7 @@ return [
             'email'                  => 'Адрес электронной почты',
             'forget-password-link'   => 'Забыли пароль?',
             'password'               => 'Пароль',
-            'powered-by-description' => 'Работает на :bagisto, проект с открытым исходным кодом от :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Войти',
             'title'                  => 'Войти',
         ],
@@ -16,7 +16,7 @@ return [
                 'email'                  => 'Зарегистрированный адрес электронной почты',
                 'email-not-exist'        => 'Такой адрес электронной почты не существует',
                 'page-title'             => 'Забыли пароль',
-                'powered-by-description' => 'Работает на :bagisto, проект с открытым исходным кодом от :webkul.',
+                'powered-by-description' => '© Aso Signature',
                 'reset-link-sent'        => 'Ссылка для сброса пароля отправлена',
                 'sign-in-link'           => 'Вернуться к входу?',
                 'submit-btn'             => 'Сбросить',
@@ -29,7 +29,7 @@ return [
             'confirm-password'       => 'Подтвердите пароль',
             'email'                  => 'Зарегистрированный адрес электронной почты',
             'password'               => 'Пароль',
-            'powered-by-description' => 'Работает на :bagisto, проект с открытым исходным кодом от :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Сбросить пароль',
             'title'                  => 'Сброс пароля',
         ],
@@ -4125,7 +4125,7 @@ return [
             ],
 
             'powered-by' => [
-                'description' => 'Работает на :bagisto, проект с открытым исходным кодом от :webkul.',
+                'description' => '© Aso Signature',
             ],
         ],
 
@@ -4413,7 +4413,7 @@ return [
     ],
 
     'footer' => [
-        'copy-right' => 'Разработано на платформе <a href="https://bagisto.com/" target="_blank">Bagisto</a>, Проект сообщества <a href="https://webkul.com/" target="_blank">Webkul</a>',
+        'copy-right' => '© Aso Signature',
     ],
 
     'emails' => [

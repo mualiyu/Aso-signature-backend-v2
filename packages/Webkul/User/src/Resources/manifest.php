@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto User',
+    'name'    => 'Aso Signature User',
     'version' => core()->version(),
 ];

@@ -1,3 +1,11 @@
+@php
+    /**
+     * True when the visitor was sent here from checkout. The page then explains
+     * why an account is needed and promises a return to checkout.
+     */
+    $checkoutIntended = $checkoutIntended ?? false;
+@endphp
+
 <!-- SEO Meta Content -->
 @push('meta')
     <meta
@@ -18,7 +26,11 @@
 >
     <!-- Page Title -->
     <x-slot:title>
-        @lang('shop::app.customers.signup-form.page-title')
+        @if ($checkoutIntended)
+            @lang('shop::app.customers.signup-form.checkout.title')
+        @else
+            @lang('shop::app.customers.signup-form.page-title')
+        @endif
     </x-slot>
 
 	<div class="container mt-20 max-1180:px-5 max-md:mt-12">
@@ -45,12 +57,25 @@
         <!-- Form Container -->
 		<div class="m-auto w-full max-w-[870px] rounded-xl border border-zinc-200 p-16 px-[90px] max-md:px-8 max-md:py-8 max-sm:border-none max-sm:p-0">
 			<h1 class="font-dmserif text-4xl max-md:text-3xl max-sm:text-xl">
-                @lang('shop::app.customers.signup-form.page-title')
+                @if ($checkoutIntended)
+                    @lang('shop::app.customers.signup-form.checkout.title')
+                @else
+                    @lang('shop::app.customers.signup-form.page-title')
+                @endif
             </h1>
 
 			<p class="mt-4 text-xl text-zinc-500 max-sm:mt-0 max-sm:text-sm">
-                @lang('shop::app.customers.signup-form.form-signup-text')
+                @if ($checkoutIntended)
+                    @lang('shop::app.customers.signup-form.checkout.description')
+                @else
+                    @lang('shop::app.customers.signup-form.form-signup-text')
+                @endif
             </p>
+
+            <!-- Why an account is needed, shown only when sent here from checkout -->
+            @if ($checkoutIntended)
+                @include('shop::customers.checkout-intent')
+            @endif
 
             <div class="mt-14 rounded max-sm:mt-8">
                 <x-shop::form :action="route('shop.customers.register.store')">
@@ -197,6 +222,41 @@
                     @endif
 
                     {!! view_render_event('bagisto.shop.customers.signup_form.newsletter_subscription.after') !!}
+
+                    <!-- Terms & Conditions Agreement -->
+                    <x-shop::form.control-group class="mt-5 !mb-0">
+                        <div class="flex select-none items-center gap-1.5">
+                            <x-shop::form.control-group.control
+                                type="checkbox"
+                                name="terms"
+                                id="agree-terms"
+                                for="agree-terms"
+                                value="1"
+                                rules="required"
+                                :label="trans('shop::app.customers.signup-form.terms-conditions')"
+                            />
+
+                            <label
+                                class="cursor-pointer select-none text-base text-zinc-500 max-sm:text-sm ltr:pl-0 rtl:pr-0"
+                                for="agree-terms"
+                            >
+                                @lang('shop::app.customers.signup-form.agree-to-terms')
+
+                                <a
+                                    href="{{ route('shop.cms.page', 'terms-conditions') }}"
+                                    target="_blank"
+                                    rel="noopener"
+                                    class="text-navyBlue underline"
+                                >
+                                    @lang('shop::app.customers.signup-form.terms-conditions')
+                                </a>
+                            </label>
+                        </div>
+
+                        <x-shop::form.control-group.error control-name="terms" />
+                    </x-shop::form.control-group>
+
+                    {!! view_render_event('bagisto.shop.customers.signup_form.terms.after') !!}
 
                     <div class="mt-8 flex flex-wrap items-center gap-9 max-sm:justify-center max-sm:gap-5">
                         <button

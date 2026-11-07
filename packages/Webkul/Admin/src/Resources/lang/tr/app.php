@@ -6,7 +6,7 @@ return [
             'email'                  => 'E-posta Adresi',
             'forget-password-link'   => 'Şifremi Unuttum ?',
             'password'               => 'Şifre',
-            'powered-by-description' => ':webkul tarafından geliştirilen açık kaynaklı bir proje olan :bagisto tarafından desteklenmektedir.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Giriş Yap',
             'title'                  => 'Giriş Yap',
         ],
@@ -16,7 +16,7 @@ return [
                 'email'                  => 'Kayıtlı E-posta',
                 'email-not-exist'        => 'E-posta Bulunamadı',
                 'page-title'             => 'Şifremi Unuttum',
-                'powered-by-description' => ':webkul tarafından geliştirilen açık kaynaklı bir proje olan :bagisto tarafından desteklenmektedir.',
+                'powered-by-description' => '© Aso Signature',
                 'reset-link-sent'        => 'Şifre Sıfırlama Bağlantısı Gönderildi',
                 'sign-in-link'           => 'Giriş Yap’a Geri Dön ?',
                 'submit-btn'             => 'Sıfırla',
@@ -29,7 +29,7 @@ return [
             'confirm-password'       => 'Şifreyi Onayla',
             'email'                  => 'Kayıtlı E-posta',
             'password'               => 'Şifre',
-            'powered-by-description' => ':webkul tarafından geliştirilen açık kaynaklı bir proje olan :bagisto tarafından desteklenmektedir.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'Şifre Sıfırla',
             'title'                  => 'Şifre Sıfırlama',
         ],
@@ -4125,7 +4125,7 @@ return [
             ],
 
             'powered-by' => [
-                'description' => ':webkul tarafından geliştirilen açık kaynaklı bir proje olan :bagisto tarafından desteklenmektedir.',
+                'description' => '© Aso Signature',
             ],
         ],
 
@@ -4413,7 +4413,7 @@ return [
     ],
 
     'footer' => [
-        'copy-right' => 'Tarafından desteklenmektedir <a href="https://bagisto.com/" target="_blank">Bagisto</a>, Bir Topluluk Projesi <a href="https://webkul.com/" target="_blank">Webkul</a>',
+        'copy-right' => '© Aso Signature',
     ],
 
     'emails' => [

@@ -103,6 +103,10 @@ class Shipping
         $rates = [];
 
         foreach ($this->rates as $rate) {
+            if ((float) $rate->base_price <= 0) {
+                continue;
+            }
+
             if (! isset($rates[$rate->carrier])) {
                 $rates[$rate->carrier] = [
                     'carrier_title' => $rate->carrier_title,

@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto Attributes',
+    'name'    => 'Aso Signature Attributes',
     'version' => core()->version(),
 ];

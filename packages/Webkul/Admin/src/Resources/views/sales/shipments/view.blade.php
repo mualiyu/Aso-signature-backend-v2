@@ -280,6 +280,8 @@
                             <p class="text-gray-600 dark:text-gray-300">
                                 @lang('admin::app.sales.shipments.view.tracking-number')
                             </p>
+
+                            @include('admin::sales.shipments.partials.dhl-actions', ['shipment' => $shipment])
                         @endif
                     </div>
                 </x-slot>

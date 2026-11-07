@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto Shipping',
+    'name'    => 'Aso Signature Shipping',
     'version' => core()->version(),
 ];

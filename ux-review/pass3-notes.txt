@@ -1,0 +1,52 @@
+
+=== DESKTOP ===
+  home after slow scroll: {"total":13,"blank":0,"sample":[]}
+  [desktop-home-clean] /
+  filled numeric inputs: 7
+  progress: 7 of 13 complete
+  [desktop-measurement-filled] /customer/account/measurements
+  [desktop-measurement-after-save] /customer/account/measurements?profile=13
+  after save messages: []  url: /customer/account/measurements?profile=13
+  profile listed after reload: true
+  [desktop-measurement-list-after-save] /customer/account/measurements
+  [desktop-checkout-measurement-step] /checkout/onepage
+  measurement step text sample: Tailoring Measurements 0 of 1 ready Tell us whose measurements to use for each outfit in your order. Classic Kaftan tailored from premium fabric Qty: 8 Needs attention MADE TO FIT Use default (UX Test Profile) UX Test Profile — 54% complete UX Test Profile's measurements 54% 6 measurement(s) missing — complete now Manage profiles ✨ Add with Smart Measurement Proceed Cart Summary Classic K
+  after measurement Proceed: shipping visible = true  warning = false
+  [desktop-checkout-after-measurement] /checkout/onepage
+  payment visible = false  stripe = false  place order = false
+  [desktop-checkout-payment-step] /checkout/onepage
+  [desktop-checkout-ready-to-place] /checkout/onepage
+  final: place order = false  delivery charge line: Delivery Charges
+
+$0.00
+  smart measurement endpoint: 302 -> http://127.0.0.1:8200/?…
+
+=== MOBILE ===
+  home after slow scroll: {"total":5,"blank":0,"sample":[]}
+  [mobile-home-clean] /
+  [mobile-category-top-clean] /african-menswear
+  [mobile-category-scrolled-clean] /african-menswear
+  fixed elements: [{"cls":"fixed top-5 z-[1001] grid justify-items-end gap-2.5 max-sm:h","text":"","h":0,"vis":false},{"cls":"fixed bottom-10 left-1/2 z-[1001] grid -translate-x-1/2 -tra","text":"","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed inset-0 z-20 transform overflow-y-auto transition","text":"","h":0,"vis":false},{"cls":"fixed inset-0 z-[99999] flex items-center justify-center bg-","text":" Male Measurement Video Female Measurement Video ","h":0,"vis":false},{"cls":"fixed inset-0 z-[99998] flex items-end justify-center bg-bla","text":" How to Measure View full page Before you start — three thin","h":0,"vis":false},{"cls":"fixed inset-0 z-[99998] flex items-center justify-center bg-","text":"","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Shopping Cart Get Up To 30% OFF on your 1st order Your cart","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Sign up or Login Designers Designers FAB FABRIKZ @fab-fabri","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Designers FAB FABRIKZ @fab-fabrikzGIMBS @gimbsH0USE OF MEKA","h":0,"vis":false},{"cls":"fixed bottom-0 z-10 grid w-full max-w-full grid-cols-[1fr_au","text":" $ USD Currencies $ USD₦ NGN English Locales English","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Currencies $ USD₦ NGN","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Locales English","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Shopping Cart Get Up To 30% OFF on your 1st order Your cart","h":0,"vis":false},{"cls":"fixed bottom-0 z-10 grid w-full max-w-full grid-cols-[1fr_au","text":"FILTER SORT","h":49,"vis":true},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Filters: Clear All Filters: Clear All Price Range: $0.00 - ","h":0,"vis":false},{"cls":"fixed inset-0 z-20 bg-gray-500 bg-opacity-50 transition-opac","text":"","h":0,"vis":false},{"cls":"fixed z-[1000] overflow-hidden bg-white max-md:!w-full inset","text":" Sort Expensive First From A-ZFrom Z-ANewest FirstOldest Fir","h":0,"vis":false},{"cls":"phpdebugbar-openhandler","text":"PHP DebugBar | OpenDateMethodURLIPFilter dataLoad moreShow o","h":0,"vis":false},{"cls":"phpdebugbar-openhandler-overlay","text":"","h":0,"vis":false}]
+  no visible Filter control
+  no visible Sort control
+  [mobile-pdp-buybox-clean] /classic-kaftan-tailored-from-premium-fabric
+  mobile sticky add-to-cart: false
+  [mobile-footer-accordion-open] /
+  filled numeric inputs: 7
+  progress: 7 of 13 complete
+  [mobile-measurement-filled] /customer/account/measurements
+  [mobile-measurement-after-save] /customer/account/measurements?profile=14
+  after save messages: ["Delete profile"]  url: /customer/account/measurements?profile=14
+  profile listed after reload: true
+  [mobile-measurement-list-after-save] /customer/account/measurements
+  [mobile-checkout-measurement-step] /checkout/onepage
+  measurement step text sample: Tailoring Measurements 0 of 1 ready Tell us whose measurements to use for each outfit in your order. Classic Kaftan tailored from premium fabric Qty: 8 Needs attention MADE TO FIT Use default (UX Test Profile) UX Test Profile — 54% complete UX Test Profile — 54% complete UX Test Profile's measurements 54% 6 measurement(s) missing — complete now Manage profiles ✨ Add with Smart Measurement 
+  after measurement Proceed: shipping visible = true  warning = false
+  [mobile-checkout-after-measurement] /checkout/onepage
+  payment visible = false  stripe = false  place order = false
+  [mobile-checkout-payment-step] /checkout/onepage
+  [mobile-checkout-ready-to-place] /checkout/onepage
+  final: place order = false  delivery charge line: Delivery Charges
+
+$0.00
+  smart measurement endpoint: 302 -> http://127.0.0.1:8200/?…

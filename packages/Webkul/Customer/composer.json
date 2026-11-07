@@ -1,11 +1,11 @@
 {
-    "name": "bagisto/laravel-customer",
+    "name": "asosignature/customer",
     "description": "Customers Package for themeing and various features for customers",
     "license": "MIT",
     "authors": [
         {
-            "name": "Bagisto",
-            "email": "support@bagisto.com"
+            "name": "Aso Signature",
+            "email": "dev@asosignature.com"
         }
     ],
     "require": {},

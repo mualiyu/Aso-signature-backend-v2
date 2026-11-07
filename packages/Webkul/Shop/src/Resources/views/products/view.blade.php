@@ -320,6 +320,35 @@
 
                                 </div>
 
+                                <!-- Designer (name + logo, linked to the designer page) -->
+                                @if ($product->designer?->status)
+                                    <a
+                                        href="{{ route('shop.designer.view', $product->designer->slug) }}"
+                                        class="mt-3 inline-flex items-center gap-3 transition-all hover:opacity-[0.8] max-sm:mt-2"
+                                        aria-label="{{ $product->designer->name }}"
+                                    >
+                                        @if ($product->designer->logo)
+                                            <img
+                                                src="{{ Storage::url($product->designer->logo->src) }}"
+                                                alt="{{ $product->designer->name }}"
+                                                class="h-10 w-10 shrink-0 rounded-full border border-zinc-200 bg-zinc-100 object-cover"
+                                                width="40"
+                                                height="40"
+                                            />
+                                        @endif
+
+                                        <span class="flex flex-col leading-tight">
+                                            <span class="text-xs uppercase tracking-wide text-zinc-500">
+                                                @lang('shop::app.products.view.designer')
+                                            </span>
+
+                                            <span class="text-base font-semibold text-black">
+                                                {{ $product->designer->name }}
+                                            </span>
+                                        </span>
+                                    </a>
+                                @endif
+
                                 @isset($customAttributeValue)
                                     <div class="flex justify-between gap-4">
                                         {{-- @foreach ($customAttributeValue as $key => $item)
@@ -402,6 +431,20 @@
                                         </p>
                                     </div>
                                 @endif
+
+                                <!-- Production Timeline (optional per-product value + disclaimer) -->
+                                {{-- Label and value stay on one line: this markup sits inside a Vue template, which drops newline-only whitespace between tags. --}}
+                                <div class="mt-4 text-sm text-zinc-600">
+                                    <p>
+                                        <span class="font-medium">@lang('shop::app.products.view.production-timeline'):</span> {{ $product->production_timeline ?: trans('shop::app.products.view.production-timeline-disclaimer') }}
+                                    </p>
+
+                                    @if ($product->production_timeline)
+                                        <p class="mt-1 text-xs text-zinc-500">
+                                            @lang('shop::app.products.view.production-timeline-disclaimer')
+                                        </p>
+                                    @endif
+                                </div>
 
                                 @include('shop::products.view.types.configurable')
 

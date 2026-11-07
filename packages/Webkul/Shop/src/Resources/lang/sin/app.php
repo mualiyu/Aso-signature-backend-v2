@@ -5,7 +5,7 @@ return [
         'forgot-password' => [
             'already-sent'         => 'දැනටමත් මුරපදය යළි පිහිටුවීමේ තැපැල් යවා ඇත.',
             'back'                 => 'ආපසු සන්නියට ආරයැකිනන්න ?',
-            'bagisto'              => 'බගිස්ටෝ',
+            'bagisto'              => 'Aso Signature',
             'email'                => 'ඊමේල්',
             'email-not-exist'      => 'අපි මෙම විද්‍යුත් ලිපිනය සහිතව පරීක්ෂා කරනවානම් අපි යවනවායි.',
             'footer'               => '© වෙබ්කල් මෘදුකාංග 2010 - :current_year, ඉන්දියාවේ ලියාපදිංචි. සියලු අයිතියන්ගේ අනුමානය වෙනස් වේ.',
@@ -19,7 +19,7 @@ return [
 
         'reset-password' => [
             'back-link-title'  => 'ආරයැකින්න',
-            'bagisto'          => 'බගිස්ටෝ',
+            'bagisto'          => 'Aso Signature',
             'confirm-password' => 'මුරපදය තහවුර',
             'email'            => 'ලියාපදිංචි ඊමේල්',
             'footer'           => '© වෙබ්කල් මෘදුකාංග 2010 - :current_year, ඉන්දියාවේ ලියාපදිංචි. සියලු අයිතියන්ගේ අනුමානය වෙනස් වේ.',
@@ -29,7 +29,7 @@ return [
         ],
 
         'login-form' => [
-            'bagisto'             => 'බගිස්ටෝ',
+            'bagisto'             => 'Aso Signature',
             'button-title'        => 'ඇතුල් වන්න',
             'create-your-account' => 'ඔබගේ ගිණුමක් තනා කරන්න',
             'email'               => 'ඊමේල්',
@@ -48,7 +48,7 @@ return [
 
         'signup-form' => [
             'account-exists'              => 'දැනටමත් ගිණුමක් තිබේද?',
-            'bagisto'                     => 'බගිස්ටෝ',
+            'bagisto'                     => 'Aso Signature',
             'button-title'                => 'ලියාපදිංචි කරන්න',
             'confirm-pass'                => 'මුරපදය තහවුර',
             'email'                       => 'ඊමේල්',
@@ -396,7 +396,7 @@ return [
         'layouts' => [
             'header' => [
                 'account'           => 'ගිණුම',
-                'bagisto'           => 'බගිස්ටෝ',
+                'bagisto'           => 'Aso Signature',
                 'cart'              => 'කර්තෘ',
                 'compare'           => 'සංස්ථාගත කරන්න',
                 'dropdown-text'     => 'කර්තෘ, ඇණවුම්, සහ උපාංග කළමනාකරණ කරන්න',
@@ -710,7 +710,7 @@ return [
             'suspended-account-message' => 'ඔබගේ ගිණුම නැවත අක්‍රීය කර ඇත.',
 
             'index' => [
-                'bagisto'                  => 'බගිස්ටෝ',
+                'bagisto'                  => 'Aso Signature',
                 'cart'                     => 'කර්තෘ',
                 'continue-shopping'        => 'කාර්තෘ පෙරවරු',
                 'empty-product'            => 'ඔබේ කර්තෘක්කයේ නිෂ්පාදනයක් නැත.',

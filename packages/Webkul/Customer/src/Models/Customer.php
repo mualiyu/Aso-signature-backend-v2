@@ -169,10 +169,27 @@ class Customer extends Authenticatable implements CustomerContract
     {
         return $this->hasMany(Measurement::class, 'customer_id');
     }
-    // public function measurements()
-    // {
-    //     return $this->hasMany(MeasurementProxy::modelClass(), 'customer_id');
-    // }
+
+    /**
+     * Get the customer's measurement profiles.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurementProfiles()
+    {
+        return $this->hasMany(MeasurementProfile::class, 'customer_id');
+    }
+
+    /**
+     * Get the customer's default measurement profile.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function defaultMeasurementProfile()
+    {
+        return $this->hasOne(MeasurementProfile::class, 'customer_id')
+            ->where('is_default', 1);
+    }
 
 
     /**

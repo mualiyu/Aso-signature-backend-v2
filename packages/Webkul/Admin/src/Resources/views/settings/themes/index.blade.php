@@ -196,6 +196,7 @@
                             category_carousel: "@lang('admin::app.settings.themes.create.type.category-carousel')",
                             static_content: "@lang('admin::app.settings.themes.create.type.static-content')",
                             image_carousel: "@lang('admin::app.settings.themes.create.type.image-carousel')",
+                            hero_carousel: "@lang('admin::app.settings.themes.create.type.hero-carousel')",
                             footer_links: "@lang('admin::app.settings.themes.create.type.footer-links')",
                             services_content: "@lang('admin::app.settings.themes.create.type.services-content')",
                             designer_carousel: "Designer Carousel",

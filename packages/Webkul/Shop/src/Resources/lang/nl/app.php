@@ -5,10 +5,10 @@ return [
         'forgot-password' => [
             'already-sent'         => 'Wachtwoord al opnieuw ingesteld E-mail verzonden.',
             'back'                 => 'Terug naar Aanmelden?',
-            'bagisto'              => 'Bagisto',
+            'bagisto'              => 'Aso Signature',
             'email'                => 'E-mail',
             'email-not-exist'      => 'We kunnen geen gebruiker vinden met dat e-mailadres.',
-            'footer'               => '© Auteursrecht 2010 - :current_year, Webkul Software (geregistreerd in India). Alle rechten voorbehouden.',
+            'footer'               => '© Auteursrecht :current_year, Aso Signature. Alle rechten voorbehouden.',
             'forgot-password-text' => 'Als u uw wachtwoord bent vergeten, kunt u het herstellen door uw e-mailadres in te voeren.',
             'page-title'           => 'Bent u uw wachtwoord vergeten?',
             'reset-link-sent'      => 'We hebben de resetlink voor uw wachtwoord per e-mail verzonden.',
@@ -19,21 +19,21 @@ return [
 
         'reset-password' => [
             'back-link-title'  => 'Terug naar Aanmelden',
-            'bagisto'          => 'Bagisto',
+            'bagisto'          => 'Aso Signature',
             'confirm-password' => 'Bevestig Wachtwoord',
             'email'            => 'Geregistreerde E-mail',
-            'footer'           => '© Auteursrecht 2010 - :current_year, Webkul Software (geregistreerd in India). Alle rechten voorbehouden.',
+            'footer'           => '© Auteursrecht :current_year, Aso Signature. Alle rechten voorbehouden.',
             'password'         => 'Wachtwoord',
             'submit-btn-title' => 'Wachtwoord Resetten',
             'title'            => 'Wachtwoord Resetten',
         ],
 
         'login-form' => [
-            'bagisto'             => 'Bagisto',
+            'bagisto'             => 'Aso Signature',
             'button-title'        => 'Aanmelden',
             'create-your-account' => 'Maak uw account aan',
             'email'               => 'E-mail',
-            'footer'              => '© Auteursrecht 2010 - :current_year, Webkul Software (geregistreerd in India). Alle rechten voorbehouden.',
+            'footer'              => '© Auteursrecht :current_year, Aso Signature. Alle rechten voorbehouden.',
             'forgot-pass'         => 'Wachtwoord Vergeten?',
             'form-login-text'     => 'Als u een account heeft, meld u dan aan met uw e-mailadres.',
             'invalid-credentials' => 'Controleer uw referenties en probeer het opnieuw.',
@@ -48,12 +48,12 @@ return [
 
         'signup-form' => [
             'account-exists'              => 'Heeft u al een account?',
-            'bagisto'                     => 'Bagisto',
+            'bagisto'                     => 'Aso Signature',
             'button-title'                => 'Registreren',
             'confirm-pass'                => 'Bevestig Wachtwoord',
             'email'                       => 'E-mail',
             'first-name'                  => 'Voornaam',
-            'footer'                      => '© Auteursrecht 2010 - :current_year, Webkul Software (geregistreerd in India). Alle rechten voorbehouden.',
+            'footer'                      => '© Auteursrecht :current_year, Aso Signature. Alle rechten voorbehouden.',
             'form-signup-text'            => 'Als u nieuw bent in onze winkel, zijn we blij u als lid te hebben.',
             'last-name'                   => 'Achternaam',
             'page-title'                  => 'Word Gebruiker',
@@ -396,7 +396,7 @@ return [
         'layouts' => [
             'header' => [
                 'account'           => 'Account',
-                'bagisto'           => 'Bagisto',
+                'bagisto'           => 'Aso Signature',
                 'cart'              => 'Winkelwagen',
                 'compare'           => 'Vergelijken',
                 'dropdown-text'     => 'Beheer Winkelwagen, Bestellingen en Verlanglijst',
@@ -434,7 +434,7 @@ return [
                 'customer-service'       => 'Klantenservice',
                 'email'                  => 'E-mail',
                 'footer-content'         => 'Voettekst inhoud',
-                'footer-text'            => '© Auteursrecht 2010 - :current_year, Webkul Software (geregistreerd in India). Alle rechten voorbehouden.',
+                'footer-text'            => '© Auteursrecht :current_year, Aso Signature. Alle rechten voorbehouden.',
                 'locale'                 => 'Taal',
                 'newsletter-text'        => 'Maak je klaar voor onze leuke nieuwsbrief!',
                 'order-return'           => 'Bestelling en Retourneren',
@@ -710,7 +710,7 @@ return [
             'suspended-account-message' => 'Uw account is opgeschort.',
 
             'index' => [
-                'bagisto'                  => 'Bagisto',
+                'bagisto'                  => 'Aso Signature',
                 'cart'                     => 'Winkelwagen',
                 'continue-shopping'        => 'Doorgaan met winkelen',
                 'empty-product'            => 'U heeft geen product in uw winkelwagen.',

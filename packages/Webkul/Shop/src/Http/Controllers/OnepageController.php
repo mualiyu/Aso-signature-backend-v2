@@ -23,13 +23,14 @@ class OnepageController extends Controller
         Event::dispatch('checkout.load.index');
 
         /**
-         * If guest checkout is not allowed then redirect back to the cart page
+         * If guest checkout is not allowed then send the guest to sign in,
+         * remembering the checkout so they land back here afterwards.
          */
         if (
             ! auth()->guard('customer')->check()
             && ! core()->getConfigData('sales.checkout.shopping_cart.allow_guest_checkout')
         ) {
-            return redirect()->route('shop.customer.session.index');
+            return $this->redirectGuestToLogin();
         }
 
         /**
@@ -51,8 +52,8 @@ class OnepageController extends Controller
         $cart = Cart::getCart();
 
         /**
-         * If cart is has downloadable items and customer is not logged in
-         * then redirect back to the cart page
+         * If the cart has downloadable items, or items that require an account,
+         * and the customer is not logged in then send them to sign in.
          */
         if (
             ! auth()->guard('customer')->check()
@@ -61,10 +62,22 @@ class OnepageController extends Controller
                 || ! $cart->hasGuestCheckoutItems()
             )
         ) {
-            return redirect()->route('shop.customer.session.index');
+            return $this->redirectGuestToLogin();
         }
 
         return view('shop::checkout.onepage.index', compact('cart'));
+    }
+
+    /**
+     * Send a guest to the login page and remember the checkout as the intended
+     * destination. The login and registration pages use that to explain why an
+     * account is needed, and the customer is returned here after signing in.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectGuestToLogin()
+    {
+        return redirect()->guest(route('shop.customer.session.index'));
     }
 
     /**

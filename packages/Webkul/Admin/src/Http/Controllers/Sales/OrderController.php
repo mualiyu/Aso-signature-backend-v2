@@ -12,11 +12,11 @@ use Webkul\Admin\Http\Resources\AddressResource;
 use Webkul\Admin\Http\Resources\CartResource;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Checkout\Repositories\CartRepository;
+use Webkul\Core\Traits\PDFHandler;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\Sales\Repositories\OrderCommentRepository;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Transformers\OrderResource;
-use Webkul\Core\Traits\PDFHandler;
 
 class OrderController extends Controller
 {
@@ -175,6 +175,56 @@ class OrderController extends Controller
     }
 
     /**
+     * Manually advance the order through the fulfilment workflow (Processing → Sent for Production
+     * → Ready for Shipment → Shipped → Delivered/Completed). Only the forward transitions declared
+     * in Order::STATUS_TRANSITIONS are accepted; cancellation stays on the dedicated cancel action
+     * so its inventory/refund side-effects are not duplicated here.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStatus(int $id)
+    {
+        $this->validate(request(), [
+            'status' => 'required|string',
+        ]);
+
+        $order = $this->orderRepository->findOrFail($id);
+
+        $status = request()->input('status');
+
+        if (! $order->canTransitionTo($status)) {
+            session()->flash('error', trans('admin::app.sales.orders.view.status-transition-invalid'));
+
+            return redirect()->route('admin.sales.orders.view', $id);
+        }
+
+        $previousLabel = $order->status_label;
+
+        $this->orderRepository->updateOrderStatus($order, $status);
+
+        /**
+         * Record the change in the order timeline so staff have an audit trail of who moved the
+         * order and when. Not customer-facing, so customer_notified is off.
+         */
+        Event::dispatch('sales.order.comment.create.before');
+
+        $comment = $this->orderCommentRepository->create([
+            'order_id'          => $id,
+            'comment'           => trans('admin::app.sales.orders.view.status-changed-comment', [
+                'from' => $previousLabel,
+                'to'   => $order->fresh()->status_label,
+            ]),
+            'customer_notified' => 0,
+        ]);
+
+        Event::dispatch('sales.order.comment.create.after', $comment);
+
+        session()->flash('success', trans('admin::app.sales.orders.view.status-update-success'));
+
+        return redirect()->route('admin.sales.orders.view', $id);
+    }
+
+    /**
      * Add comment to the order
      *
      * @return \Illuminate\Http\Response
@@ -266,42 +316,63 @@ class OrderController extends Controller
     /**
      * Download order measurements as CSV
      *
-     * @param  int  $id
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
     public function downloadMeasurements(int $id)
     {
         $order = $this->orderRepository->findOrFail($id);
 
-        $fileName = 'order-' . $order->increment_id . '-measurements.csv';
+        $fileName = 'order-'.$order->increment_id.'-measurements.csv';
 
         $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
         ];
 
-        $callback = function() use ($order) {
+        $callback = function () use ($order) {
             $file = fopen('php://output', 'w');
+
+            $orderItemsById = $order->items->keyBy('id');
+            $fitPreferenceLabels = \Webkul\Customer\Data\MeasurementFields::fitPreferenceOptions();
+            $fitNoteLabels = \Webkul\Customer\Data\MeasurementFields::fitNoteOptions();
 
             // CSV Headers
             fputcsv($file, [
                 'Order ID',
                 'Customer Name',
                 'Customer Email',
+                'Item',
+                'Profile',
+                'Fit Preference',
+                'Fit Notes',
                 'Measurement Type',
                 'Measurement Name',
                 'Value',
                 'Unit',
                 'Notes',
-                'Captured At'
+                'Captured At',
             ]);
 
             // Data rows
             foreach ($order->measurements as $measurement) {
+                $orderItem = $measurement->order_item_id
+                    ? $orderItemsById->get($measurement->order_item_id)
+                    : null;
+
+                $fitNotes = collect($measurement->fit_notes ?: [])
+                    ->map(fn ($note) => $fitNoteLabels[$note] ?? $note)
+                    ->implode('; ');
+
                 fputcsv($file, [
                     $order->increment_id,
                     $order->customer_full_name,
                     $order->customer_email,
+                    $orderItem ? $orderItem->name : 'Whole Order',
+                    $measurement->profile_name ?? '',
+                    $measurement->fit_preference
+                        ? ($fitPreferenceLabels[$measurement->fit_preference] ?? $measurement->fit_preference)
+                        : '',
+                    $fitNotes,
                     ucfirst($measurement->measurement_type),
                     str_replace('_', ' ', ucfirst($measurement->name)),
                     $measurement->value,
@@ -320,7 +391,6 @@ class OrderController extends Controller
     /**
      * Download designer order details PDF
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function downloadDesignerOrder(int $id)
@@ -329,7 +399,7 @@ class OrderController extends Controller
 
         return $this->downloadPDF(
             view('admin::sales.orders.pdf-designer', compact('order'))->render(),
-            'designer-order-' . $order->increment_id . '-' . $order->created_at->format('d-m-Y')
+            'designer-order-'.$order->increment_id.'-'.$order->created_at->format('d-m-Y')
         );
     }
 }

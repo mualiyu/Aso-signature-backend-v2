@@ -2,6 +2,7 @@
 
 namespace Webkul\Paypal\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Paypal\Payment\SmartButton;
 use Webkul\Sales\Repositories\InvoiceRepository;
@@ -29,8 +30,21 @@ class SmartButtonController extends Controller
     public function createOrder()
     {
         try {
-            return response()->json($this->smartButton->createOrder($this->buildRequestBody()));
+            $body = $this->buildRequestBody();
+
+            Log::info('PayPal Controller: createOrder called', [
+                'cart_currency' => $body['purchase_units'][0]['amount']['currency_code'] ?? null,
+                'total_amount'  => $body['purchase_units'][0]['amount']['value'] ?? null,
+                'payer_email'   => $body['payer']['email_address'] ?? null,
+            ]);
+
+            return response()->json($this->smartButton->createOrder($body));
         } catch (\Exception $e) {
+            Log::error('PayPal Controller: createOrder failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return response()->json(json_decode($e->getMessage()), 400);
         }
     }
@@ -43,10 +57,21 @@ class SmartButtonController extends Controller
     public function captureOrder()
     {
         try {
-            $this->smartButton->captureOrder(request()->input('orderData.orderID'));
+            $orderId = request()->input('orderData.orderID');
+
+            Log::info('PayPal Controller: captureOrder called', [
+                'paypal_order_id' => $orderId,
+            ]);
+
+            $this->smartButton->captureOrder($orderId);
 
             return $this->saveOrder();
         } catch (\Exception $e) {
+            Log::error('PayPal Controller: captureOrder failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
             return response()->json(json_decode($e->getMessage()), 400);
         }
     }

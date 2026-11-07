@@ -1,10 +1,10 @@
 {
-    "name": "bagisto/laravel-social-share",
+    "name": "asosignature/social-share",
     "license": "MIT",
     "authors": [
         {
-            "name": "Bagisto",
-            "email": "support@bagisto.com"
+            "name": "Aso Signature",
+            "email": "dev@asosignature.com"
         }
     ],
     "require": {},

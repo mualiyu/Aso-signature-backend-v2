@@ -88,6 +88,9 @@
                 <!-- Image-Carousel Template -->
                 @includeWhen($theme->type === 'image_carousel', 'admin::settings.themes.edit.image-carousel')
 
+                <!-- Hero-Carousel Template -->
+                @includeWhen($theme->type === 'hero_carousel', 'admin::settings.themes.edit.hero-carousel')
+
                 <!-- Product-Carousel Template -->
                 @includeWhen($theme->type === 'product_carousel', 'admin::settings.themes.edit.product-carousel')
 

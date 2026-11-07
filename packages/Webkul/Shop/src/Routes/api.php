@@ -8,7 +8,10 @@ use Webkul\Shop\Http\Controllers\API\CompareController;
 use Webkul\Shop\Http\Controllers\API\CoreController;
 use Webkul\Shop\Http\Controllers\API\CustomerController;
 use Webkul\Shop\Http\Controllers\API\DesignerController;
+use Webkul\Shop\Http\Controllers\API\HowToMeasureController;
 use Webkul\Shop\Http\Controllers\API\MeasurementController;
+use Webkul\Shop\Http\Controllers\API\MeasurementProfileController;
+use Webkul\Shop\Http\Controllers\API\MeasurementServiceCallbackController;
 use Webkul\Shop\Http\Controllers\API\OnepageController;
 use Webkul\Shop\Http\Controllers\API\ProductController;
 use Webkul\Shop\Http\Controllers\API\ReviewController;
@@ -21,6 +24,20 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::get('states', 'getStates')->name('shop.api.core.states');
     });
+
+    /**
+     * Signed server-to-server callback from the Aso Measurement Service.
+     * Authenticated via HMAC signature (see MeasurementWizardService), not a
+     * customer session, so it lives outside the customer middleware group.
+     */
+    Route::post('measurement-service/callback', [MeasurementServiceCallbackController::class, 'handle'])
+        ->name('shop.api.measurement_service.callback');
+
+    /**
+     * Content for the "How to Measure" modal (also rendered at /how-to-measure).
+     */
+    Route::get('how-to-measure', [HowToMeasureController::class, 'index'])
+        ->name('shop.api.how_to_measure.index');
 
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {
         Route::get('', 'index')->name('shop.api.categories.index');
@@ -142,6 +159,24 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
 
         Route::controller(MeasurementController::class)->prefix('measurements')->group(function () {
             Route::get('', 'index')->name('shop.api.customers.account.measurements.index');
+
+            Route::post('', 'store')->name('shop.api.customers.account.measurements.store');
+        });
+
+        Route::controller(MeasurementProfileController::class)->prefix('measurement-profiles')->group(function () {
+            Route::get('', 'index')->name('shop.api.customers.account.measurement_profiles.index');
+
+            Route::post('', 'store')->name('shop.api.customers.account.measurement_profiles.store');
+
+            Route::put('{id}', 'update')->name('shop.api.customers.account.measurement_profiles.update');
+
+            Route::delete('{id}', 'destroy')->name('shop.api.customers.account.measurement_profiles.delete');
+
+            Route::post('{id}/measurements', 'saveMeasurements')->name('shop.api.customers.account.measurement_profiles.measurements.store');
         });
     });
+
+    Route::post('checkout/cart-items/{id}/measurement-profile', [MeasurementProfileController::class, 'assignToCartItem'])
+        ->middleware('customer')
+        ->name('shop.api.checkout.cart_items.measurement_profile.store');
 });

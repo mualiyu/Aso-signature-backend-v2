@@ -5,10 +5,10 @@ return [
         'forgot-password' => [
             'already-sent'         => 'Zaten Şifre Sıfırlama Postası Gönderildi.',
             'back'                 => 'Girişe geri dön?',
-            'bagisto'              => 'Bagisto',
+            'bagisto'              => 'Aso Signature',
             'email'                => 'E-posta',
             'email-not-exist'      => 'Bu e-posta adresiyle kullanıcı bulunamadı.',
-            'footer'               => '© Telif Hakkı 2010 - :current_year, Webkul Software (Hindistan\'da kayıtlı). Tüm hakları saklıdır.',
+            'footer'               => '© Telif Hakkı :current_year, Aso Signature. Tüm hakları saklıdır.',
             'forgot-password-text' => 'Parolanızı unuttuysanız, e-posta adresinizi girerek kurtarabilirsiniz.',
             'page-title'           => 'Parolanızı mı unuttunuz?',
             'reset-link-sent'      => 'Şifre sıfırlama bağlantısı e-posta ile gönderildi.',
@@ -19,21 +19,21 @@ return [
 
         'reset-password' => [
             'back-link-title'  => 'Girişe Geri Dön',
-            'bagisto'          => 'Bagisto',
+            'bagisto'          => 'Aso Signature',
             'confirm-password' => 'Parolayı Onayla',
             'email'            => 'Kayıtlı E-posta',
-            'footer'           => '© Telif Hakkı 2010 - :current_year, Webkul Software (Hindistan\'da kayıtlı). Tüm hakları saklıdır.',
+            'footer'           => '© Telif Hakkı :current_year, Aso Signature. Tüm hakları saklıdır.',
             'password'         => 'Parola',
             'submit-btn-title' => 'Parolayı Sıfırla',
             'title'            => 'Parolayı Sıfırla',
         ],
 
         'login-form' => [
-            'bagisto'             => 'Bagisto',
+            'bagisto'             => 'Aso Signature',
             'button-title'        => 'Oturum Aç',
             'create-your-account' => 'Hesabınızı oluşturun',
             'email'               => 'E-posta',
-            'footer'              => '© Telif Hakkı 2010 - :current_year, Webkul Software (Hindistan\'da kayıtlı). Tüm hakları saklıdır.',
+            'footer'              => '© Telif Hakkı :current_year, Aso Signature. Tüm hakları saklıdır.',
             'forgot-pass'         => 'Parolanızı mı unuttunuz?',
             'form-login-text'     => 'Bir hesabınız varsa, e-posta adresinizle oturum açın.',
             'invalid-credentials' => 'Kimlik bilgilerinizi kontrol edin ve yeniden deneyin.',
@@ -48,12 +48,12 @@ return [
 
         'signup-form' => [
             'account-exists'              => 'Zaten bir hesabınız var mı?',
-            'bagisto'                     => 'Bagisto',
+            'bagisto'                     => 'Aso Signature',
             'button-title'                => 'Kaydol',
             'confirm-pass'                => 'Parolayı Onayla',
             'email'                       => 'E-posta',
             'first-name'                  => 'Ad',
-            'footer'                      => '© Telif Hakkı 2010 - :current_year, Webkul Software (Hindistan\'da kayıtlı). Tüm hakları saklıdır.',
+            'footer'                      => '© Telif Hakkı :current_year, Aso Signature. Tüm hakları saklıdır.',
             'form-signup-text'            => 'Mağazamıza yeniyseniz, sizi üye olarak görmekten mutluluk duyarız.',
             'last-name'                   => 'Soyad',
             'page-title'                  => 'Kullanıcı Ol',
@@ -396,7 +396,7 @@ return [
         'layouts' => [
             'header' => [
                 'account'           => 'Hesap',
-                'bagisto'           => 'Bagisto',
+                'bagisto'           => 'Aso Signature',
                 'cart'              => 'Sepet',
                 'compare'           => 'Karşılaştır',
                 'dropdown-text'     => 'Sepeti Yönet, Siparişleri ve İstek Listesini Görüntüle',
@@ -435,7 +435,7 @@ return [
                 'customer-service'       => 'Müşteri Hizmetleri',
                 'email'                  => 'E-posta',
                 'footer-content'         => 'Alt İçerik',
-                'footer-text'            => '© Telif Hakkı 2010 - :current_year, Webkul Software (Hindistan\'da kayıtlı). Tüm hakları saklıdır.',
+                'footer-text'            => '© Telif Hakkı :current_year, Aso Signature. Tüm hakları saklıdır.',
                 'locale'                 => 'Yerel Ayar',
                 'newsletter-text'        => 'Eğlenceli Bültenimize Hazır Olun!',
                 'order-return'           => 'Sipariş ve İade',
@@ -711,7 +711,7 @@ return [
             'suspended-account-message' => 'Hesabınız askıya alınmıştır.',
 
             'index' => [
-                'bagisto'                  => 'Bagisto',
+                'bagisto'                  => 'Aso Signature',
                 'cart'                     => 'Sepet',
                 'continue-shopping'        => 'Alışverişe Devam Et',
                 'empty-product'            => 'Sepetinizde ürün bulunmuyor.',

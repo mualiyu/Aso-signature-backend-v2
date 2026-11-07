@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Bagisto Rest Shop API Documentation',
+                'title' => 'Aso Signature Shop REST API Documentation',
             ],
 
             'routes' => [
@@ -48,7 +48,7 @@ return [
         ],
         'admin' => [
             'api' => [
-                'title' => 'Bagisto Admin Rest API Documentation',
+                'title' => 'Aso Signature Admin REST API Documentation',
             ],
 
             'routes' => [

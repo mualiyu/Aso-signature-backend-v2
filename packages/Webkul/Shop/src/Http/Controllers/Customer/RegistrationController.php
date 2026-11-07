@@ -34,7 +34,9 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        return view('shop::customers.sign-up');
+        return view('shop::customers.sign-up', [
+            'checkoutIntended' => $this->isCheckoutIntended(),
+        ]);
     }
 
     /**

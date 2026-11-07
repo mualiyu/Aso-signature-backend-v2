@@ -17,6 +17,12 @@ class ShippingServiceProvider extends ServiceProvider
     public function boot()
     {
         include __DIR__.'/../Http/helpers.php';
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Webkul\Shipping\Console\Commands\SyncDhlTracking::class,
+            ]);
+        }
     }
 
     /**

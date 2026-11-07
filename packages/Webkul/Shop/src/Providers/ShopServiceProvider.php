@@ -66,5 +66,10 @@ class ShopServiceProvider extends ServiceProvider
             dirname(__DIR__).'/Config/menu.php',
             'menu.customer'
         );
+
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/Config/how-to-measure.php',
+            'shop.how-to-measure'
+        );
     }
 }

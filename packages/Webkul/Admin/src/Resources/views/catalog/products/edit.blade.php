@@ -37,10 +37,8 @@
                         </a>
                         @endif
 
-                        <!-- Save Button -->
-                        <button class="primary-button">
-                            @lang('admin::app.catalog.products.edit.save-btn')
-                        </button>
+                        <!-- Save Button (disabled while media uploads are running) -->
+                        @include('admin::catalog.products.edit.media-upload-guard')
                     </div>
                 </div>
             </div>

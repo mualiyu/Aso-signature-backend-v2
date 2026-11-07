@@ -33,7 +33,7 @@
     @endisset
 
     @isset($content)
-        <template v-slot:content>
+        <template v-slot:content="{ close }">
             <div {{ $content->attributes->merge(['class' => 'flex-1 overflow-auto px-6 max-md:px-4']) }}>
                 {{ $content }}
             </div>
@@ -112,8 +112,11 @@
                                         Default Header
                                     </slot>
 
-                                    <!-- Content Slot -->
-                                    <slot name="content"></slot>
+                                    <!-- Content Slot (exposes `close` so links inside can shut the drawer) -->
+                                    <slot
+                                        name="content"
+                                        :close="close"
+                                    ></slot>
 
                                     <!-- Footer Slot -->
                                     <slot name="footer"></slot>

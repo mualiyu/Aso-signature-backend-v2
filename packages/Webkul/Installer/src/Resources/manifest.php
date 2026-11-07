@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto Installer',
+    'name'    => 'Aso Signature Installer',
     'version' => core()->version(),
 ];

@@ -15,6 +15,8 @@ uses(Webkul\Admin\Tests\AdminTestCase::class)->in('../packages/Webkul/Admin/test
 uses(Webkul\Core\Tests\CoreTestCase::class)->in('../packages/Webkul/Core/tests');
 uses(Webkul\DataGrid\Tests\DataGridTestCase::class)->in('../packages/Webkul/DataGrid/tests');
 uses(Webkul\Shop\Tests\ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
+uses(Webkul\Shop\Tests\ShopTestCase::class)->in('../packages/Webkul/Alteration/tests/Feature/Shop');
+uses(Webkul\Admin\Tests\AdminTestCase::class)->in('../packages/Webkul/Alteration/tests/Feature/Admin');
 
 /*
 |--------------------------------------------------------------------------

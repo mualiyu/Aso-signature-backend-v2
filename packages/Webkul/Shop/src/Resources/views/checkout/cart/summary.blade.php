@@ -230,6 +230,15 @@
             @lang('shop::app.checkout.cart.summary.proceed-to-checkout')
         </a>
 
+        <!-- Guests are told up front that the next step asks them to sign in -->
+        @guest('customer')
+            <p class="flex items-start justify-end gap-2 text-xs leading-5 text-zinc-500 max-md:-mt-2 max-md:mb-4 max-sm:justify-center">
+                <span class="icon-users mt-0.5 shrink-0 text-base text-brandPurple"></span>
+
+                <span class="text-right max-sm:text-center">@lang('shop::app.checkout.cart.summary.account-required')</span>
+            </p>
+        @endguest
+
         {!! view_render_event('bagisto.shop.checkout.cart.summary.proceed_to_checkout.after') !!}
     </div>
 </div>

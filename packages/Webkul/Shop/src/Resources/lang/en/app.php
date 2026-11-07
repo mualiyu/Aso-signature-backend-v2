@@ -5,7 +5,7 @@ return [
         'forgot-password' => [
             'already-sent'         => 'Already Password Reset Mail Sent.',
             'back'                 => 'Back to sign In ?',
-            'bagisto'              => 'Bagisto',
+            'bagisto'              => 'Aso Signature',
             'email'                => 'Email',
             'email-not-exist'      => 'We cannot find a user with that email address.',
             'footer'               => '© Copyright :current_year, AsoSignature. All rights reserved.',
@@ -19,18 +19,32 @@ return [
 
         'reset-password' => [
             'back-link-title'  => 'Back to Sign In',
-            'bagisto'          => 'Bagisto',
+            'bagisto'          => 'Aso Signature',
             'confirm-password' => 'Confirm Password',
             'email'            => 'Registered Email',
             'footer'           => '© Copyright :current_year, AsoSignature. All rights reserved.',
             'password'         => 'Password',
             'submit-btn-title' => 'Reset Password',
+            'success'          => 'Your password has been reset successfully. Please sign in with your new password.',
             'title'            => 'Reset Password',
         ],
 
         'login-form' => [
-            'bagisto'             => 'Bagisto',
+            'bagisto'             => 'Aso Signature',
             'button-title'        => 'Sign In',
+            'checkout'            => [
+                'back-to-cart'       => 'Back to cart',
+                'cart-summary'       => '{1} :count item in your cart|[2,*] :count items in your cart',
+                'create-account'     => 'Create an account',
+                'description'        => 'Your cart is saved. Sign in and we will take you straight back to checkout.',
+                'new-customer-text'  => 'Creating an account takes about a minute, and your cart will be waiting for you.',
+                'new-customer-title' => 'New here?',
+                'reason-fit'         => 'Every piece is cut to the measurements saved on your profile.',
+                'reason-reorder'     => 'Reorder in your size without measuring again.',
+                'reason-track'       => 'Follow your order from cutting to delivery.',
+                'title'              => 'Sign in to complete your order',
+                'why-title'          => 'Why do I need an account?',
+            ],
             'create-your-account' => 'Create your account',
             'email'               => 'Email',
             'footer'              => '© Copyright :current_year, AsoSignature. All rights reserved.',
@@ -48,8 +62,13 @@ return [
 
         'signup-form' => [
             'account-exists'              => 'Already have an account ?',
-            'bagisto'                     => 'Bagisto',
+            'agree-to-terms'              => 'I have read and agree to the',
+            'bagisto'                     => 'Aso Signature',
             'button-title'                => 'Register',
+            'checkout'                    => [
+                'description' => 'It only takes a minute. Your cart is saved, and once you sign in we will take you straight back to checkout.',
+                'title'       => 'Create an account to complete your order',
+            ],
             'confirm-pass'                => 'Confirm Password',
             'email'                       => 'Email',
             'first-name'                  => 'First Name',
@@ -63,6 +82,8 @@ return [
             'success'                     => 'Account created successfully.',
             'success-verify'              => 'Account created successfully, an e-mail has been sent for verification.',
             'success-verify-email-unsent' => 'Account created successfully, but verification e-mail unsent.',
+            'terms-conditions'            => 'Terms & Conditions',
+            'terms-required'              => 'You must agree to the Terms & Conditions to create an account.',
             'verification-not-sent'       => 'Error! Problem in sending verification email, please try again later.',
             'verification-sent'           => 'Verification email sent',
             'verified'                    => 'Your account has been verified, try to login now.',
@@ -182,13 +203,16 @@ return [
                     'title' => 'Status',
 
                     'options' => [
-                        'canceled'        => 'Canceled',
-                        'closed'          => 'Closed',
-                        'completed'       => 'Completed',
-                        'fraud'           => 'Fraud',
-                        'pending'         => 'Pending',
-                        'pending-payment' => 'Pending Payment',
-                        'processing'      => 'Processing',
+                        'canceled'            => 'Canceled',
+                        'closed'              => 'Closed',
+                        'completed'           => 'Delivered / Completed',
+                        'fraud'               => 'Fraud',
+                        'pending'             => 'Pending',
+                        'pending-payment'     => 'Pending Payment',
+                        'processing'          => 'Processing',
+                        'ready-for-shipment'  => 'Ready for Shipment',
+                        'sent-for-production' => 'Sent for Production',
+                        'shipped'             => 'Shipped',
                     ],
                 ],
 
@@ -267,13 +291,18 @@ return [
                     ],
 
                     'shipments' => [
-                        'individual-shipment' => 'Shipment #:shipment_id',
-                        'product-name'        => 'Name',
-                        'qty'                 => 'Qty',
-                        'shipments'           => 'Shipments',
-                        'sku'                 => 'SKU',
-                        'subtotal'            => 'Subtotal',
-                        'tracking-number'     => 'Tracking Number',
+                        'individual-shipment'   => 'Shipment #:shipment_id',
+                        'product-name'          => 'Name',
+                        'qty'                   => 'Qty',
+                        'shipments'             => 'Shipments',
+                        'sku'                   => 'SKU',
+                        'subtotal'              => 'Subtotal',
+                        'tracking-number'       => 'Tracking Number',
+                        'track-online'          => 'Track shipment online',
+                        'dhl-download'          => 'Download DHL paperwork (PDF)',
+                        'dhl-status'            => 'Shipping status',
+                        'shipping-updates'      => 'Shipping updates',
+                        'dhl-documents-pending' => 'DHL paperwork is being prepared. Refresh this page shortly or contact support if it does not appear.',
                     ],
 
                     'refunds' => [
@@ -396,7 +425,7 @@ return [
         'layouts' => [
             'header' => [
                 'account'           => 'Account',
-                'bagisto'           => 'Bagisto',
+                'bagisto'           => 'Aso Signature',
                 'cart'              => 'Cart',
                 'compare'           => 'Compare',
                 'dropdown-text'     => 'Manage Cart, Orders & Wishlist',
@@ -620,6 +649,9 @@ return [
             'buy-now'                => 'Buy Now',
             'compare'                => 'Compare',
             'description'            => 'Description',
+            'designer'               => 'Designer',
+            'production-timeline'    => 'Production Timeline',
+            'production-timeline-disclaimer' => 'Timeline varies by product.',
             'related-product-title'  => 'Related Products',
             'review'                 => 'Reviews',
             'tax-inclusive'          => 'Inclusive of all taxes',
@@ -710,7 +742,7 @@ return [
             'suspended-account-message' => 'Your account has been suspended.',
 
             'index' => [
-                'bagisto'                  => 'Bagisto',
+                'bagisto'                  => 'Aso Signature',
                 'cart'                     => 'Cart',
                 'continue-shopping'        => 'Continue Shopping',
                 'empty-product'            => 'You don’t have a product in your cart.',
@@ -739,6 +771,7 @@ return [
             ],
 
             'mini-cart' => [
+                'account-required'     => 'You will sign in or create an account at checkout.',
                 'continue-to-checkout' => 'Continue to Checkout',
                 'empty-cart'           => 'Your cart is empty',
                 'excl-tax'             => 'Excl. Tax:',
@@ -751,6 +784,7 @@ return [
             ],
 
             'summary' => [
+                'account-required'          => 'You will sign in or create an account at the next step. Each piece is made to the measurements saved on your profile.',
                 'cart-summary'              => 'Cart Summary',
                 'delivery-charges-excl-tax' => 'Delivery Charges (Excl. Tax)',
                 'delivery-charges-incl-tax' => 'Delivery Charges (Incl. Tax)',
@@ -870,6 +904,188 @@ return [
             'phone-number'  => 'Phone Number',
             'submit'        => 'Submit',
             'title'         => 'Contact Us',
+        ],
+
+        'how-it-works' => [
+            'title'   => 'How It Works',
+            'eyebrow' => 'How it works',
+            'heading' => 'From your measurements to your doorstep, made with care at every stage',
+            'intro'   => '',
+            // 'intro'   => 'Seven steps between choosing a design and wearing it. Here is exactly what happens at each one.',
+            'scroll'  => 'See the steps',
+            'step'    => 'Step :number',
+
+            'steps' => [
+                'choose-design' => [
+                    'title' => 'Choose your design',
+                    'desc'  => 'Browse our catalogue and pick the piece you want made — from fabric to finish, the design starts with you.',
+                ],
+
+                'submit-measurements' => [
+                    'title' => 'Submit your measurements',
+                    'desc'  => 'Follow our step-by-step guide to take your own measurements at home, no tailor visit required.',
+                ],
+
+                'review' => [
+                    'title' => 'Aso confirms your measurements',
+                    'desc'  => 'Our team checks every figure against your design for fit and flags anything that looks off before cutting begins.',
+                ],
+
+                'production' => [
+                    'title' => 'Designer produces your outfit',
+                    'desc'  => 'Once measurements are confirmed, our designers cut and construct your piece by hand to those exact figures.',
+                ],
+
+                'quality-check' => [
+                    'title' => 'Aso quality-checks',
+                    'desc'  => 'Before anything ships, we inspect the stitching, finish, and fit against your original specification.',
+                ],
+
+                'delivery' => [
+                    'title' => 'We deliver to your door',
+                    'desc'  => 'Your finished piece is packaged and shipped wherever you are, tracked from our workshop to your doorstep.',
+                ],
+
+                'support' => [
+                    'title' => 'We Support you',
+                    'desc'  => 'If something doesn\'t sit right, our team works with you to adjust or remake it until it does.',
+                ],
+            ],
+
+            'cta' => [
+                'title'     => 'Ready when you are',
+                'desc'      => '',
+                'primary'   => 'Start your design',
+                'secondary' => 'Measurement guide',
+            ],
+        ],
+
+        'how-to-measure' => [
+            'title'          => 'How to Measure',
+            'heading'        => 'How to',
+            'heading-accent' => 'Measure',
+
+            'prerequisites' => [
+                'title' => 'Before you start — three things on the table',
+
+                'tape' => [
+                    'title' => 'A cloth tape',
+                    'desc'  => 'Flexible, marked in inches and centimetres. A phone charging cable is not a substitute.',
+                ],
+
+                'layer' => [
+                    'title' => 'A fitted layer',
+                    'desc'  => 'Measure over a snug t-shirt and slim trousers — not baggy, not bulky.',
+                ],
+
+                'helper' => [
+                    'title' => 'A second pair of hands',
+                    'desc'  => 'A friend gets you a straighter back and cleaner shoulder. Alone works too — stand by a mirror.',
+                ],
+            ],
+
+            'guide' => [
+                'title'              => 'The eight measurements',
+                'showing'            => 'Showing',
+                'of'                 => 'of',
+                'search-placeholder' => 'Search a measurement — neck, waist, sleeve…',
+                'no-results'         => 'No measurements match that. Try "neck", "waist", or "sleeve".',
+                'tip'                => 'Tip:',
+                'start'              => 'Start',
+                'done'               => 'Done',
+            ],
+
+            'videos' => [
+                'title'      => 'Watch it done',
+                'intro'      => 'Two short walkthroughs — pick the one that matches you and measure along.',
+                'play'       => 'Play video',
+                'unsupported' => 'Your browser does not support the video tag.',
+
+                'male' => [
+                    'label' => 'Men',
+                    'title' => 'Men\'s measurement guide',
+                    'desc'  => 'Neck, shoulder, chest, waist, sleeve and trouser lengths, taken step by step.',
+                ],
+
+                'female' => [
+                    'label' => 'Women',
+                    'title' => 'Women\'s measurement guide',
+                    'desc'  => 'Bust, waist, hip and length measurements for dresses, tops and skirts.',
+                ],
+            ],
+
+            'link' => [
+                'title'      => 'Measurement Guide',
+                'subtitle'   => 'Learn how to measure yourself',
+                'eyebrow'    => 'How to Measure',
+                'full-guide' => 'Read the full measurement guide',
+            ],
+
+            'modal' => [
+                'title'          => 'How to Measure',
+                'view-full-page' => 'View full page',
+                'close'          => 'Close',
+                'error'          => 'We couldn\'t load the guide right now.',
+                'error-link'     => 'Open the full page instead',
+            ],
+
+            'measurements' => [
+                'neck' => [
+                    'label' => 'Neck',
+                    'title' => 'Around the base of the neck',
+                    'how'   => 'Circle the tape where a collar would sit — low, not up under the chin. Slide one finger between tape and skin. That finger is the ease we cut in for you.',
+                    'tip'   => 'If the reading feels tight, take it again. A neck that pinches is a shirt returned.',
+                ],
+
+                'shoulder' => [
+                    'label' => 'Shoulder',
+                    'title' => 'Bone to bone, across the back',
+                    'how'   => 'Stand relaxed, arms at your sides. From the bony point at the top of one shoulder, straight across the back to the same point on the other. Take it over the shoulder blades, not across the chest.',
+                    'tip'   => 'This decides your garment\'s silhouette. A friend is worth their weight here.',
+                ],
+
+                'chest' => [
+                    'label' => 'Chest',
+                    'title' => 'Full circle at the fullest point',
+                    'how'   => 'Wrap the tape all the way around, level with the ground — front, back, both sides. It should sit at the fullest part of your chest, usually just under the armpits. Breathe normally; don\'t puff out.',
+                    'tip'   => 'Check the tape isn\'t riding higher in the back. Ask a mirror or take a photo.',
+                ],
+
+                'waist' => [
+                    'label' => 'Waist',
+                    'title' => 'The natural crease when you bend sideways',
+                    'how'   => 'Not where your trousers ride — where your body actually bends. Lean gently to one side; the fold that appears is your natural waist. Measure there, tape parallel to the floor.',
+                    'tip'   => 'Most people measure this two inches too low. Trust the crease, not the belt.',
+                ],
+
+                'hip' => [
+                    'label' => 'Hip',
+                    'title' => 'The widest circle below the waist',
+                    'how'   => 'Feet together, tape around the fullest part of your seat. This is often lower than people expect — around eight inches below the natural waist. Keep the tape level.',
+                    'tip'   => 'Empty your pockets. A phone in there adds an inch we\'d rather not cut in.',
+                ],
+
+                'sleeve' => [
+                    'label' => 'Sleeve',
+                    'title' => 'Shoulder point down to wrist bone',
+                    'how'   => 'Arm bent slightly at your side, elbow relaxed. Start where the shoulder measurement ended — the bony point — and run the tape down the outside of your arm, over the elbow, to the bone at your wrist.',
+                    'tip'   => 'A straight arm gives a sleeve that binds. Keep the bend natural, as if holding a cup.',
+                ],
+
+                'top-length' => [
+                    'label' => 'Top length',
+                    'title' => 'From the shoulder to where the garment ends',
+                    'how'   => 'For a shirt, this is the base of the neck down to just below the belt. For an agbada or kaftan, take it to the point on your leg where the garment should stop.',
+                    'tip'   => 'If you have a top you love the length of, measure that flat and use its number.',
+                ],
+
+                'inseam' => [
+                    'label' => 'Inseam',
+                    'title' => 'Crotch seam down to your ankle bone',
+                    'how'   => 'Wear the shoes you\'d wear with the garment — this changes the length by half an inch, and half an inch matters. Measure the inside of your leg from the crotch straight down to the bone at your ankle.',
+                    'tip'   => 'A pair of trousers you love? Lay them flat and measure the inseam. Faster and more accurate.',
+                ],
+            ],
         ],
 
         'index' => [
@@ -1033,6 +1249,14 @@ return [
             'commented' => [
                 'subject' => 'New comment Added',
                 'title'   => 'New comment added to your order :order_id placed on :created_at',
+            ],
+
+            'status-updated' => [
+                'current-status' => 'Current status',
+                'greeting'       => 'There is an update on your order :order_id. Here is its latest status.',
+                'subject'        => 'Order #:order_id status update',
+                'title'          => 'Your order status has been updated',
+                'view-order'     => 'View your order',
             ],
 
             'billing-address'            => 'Billing Address',

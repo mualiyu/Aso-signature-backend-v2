@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'    => 'Webkul Bagisto Core',
+    'name'    => 'Aso Signature Core',
     'version' => core()->version(),
 ];

@@ -6,7 +6,7 @@ return [
             'email'                  => 'آدرس ایمیل',
             'forget-password-link'   => 'فراموشی رمز عبور؟',
             'password'               => 'رمز عبور',
-            'powered-by-description' => 'قدرت گرفته از :bagisto، یک پروژه متن‌باز توسط :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'ورود',
             'title'                  => 'ورود',
         ],
@@ -16,7 +16,7 @@ return [
                 'email'                  => 'آدرس ایمیل ثبت شده',
                 'email-not-exist'        => 'آدرس ایمیل وجود ندارد',
                 'page-title'             => 'فراموشی رمز عبور',
-                'powered-by-description' => 'قدرت گرفته از :bagisto، یک پروژه متن‌باز توسط :webkul.',
+                'powered-by-description' => '© Aso Signature',
                 'reset-link-sent'        => 'لینک تغییر رمز عبور ارسال شد',
                 'sign-in-link'           => 'بازگشت به صفحه ورود؟',
                 'submit-btn'             => 'تغییر رمز',
@@ -29,7 +29,7 @@ return [
             'confirm-password'       => 'تأیید رمز عبور',
             'email'                  => 'آدرس ایمیل ثبت شده',
             'password'               => 'رمز عبور',
-            'powered-by-description' => 'قدرت گرفته از :bagisto، یک پروژه متن‌باز توسط :webkul.',
+            'powered-by-description' => '© Aso Signature',
             'submit-btn'             => 'تغییر رمز عبور',
             'title'                  => 'تغییر رمز عبور',
         ],
@@ -4125,7 +4125,7 @@ return [
             ],
 
             'powered-by' => [
-                'description' => 'قدرت گرفته از :bagisto، یک پروژه متن‌باز توسط :webkul.',
+                'description' => '© Aso Signature',
             ],
         ],
 
@@ -4413,7 +4413,7 @@ return [
     ],
 
     'footer' => [
-        'copy-right' => 'قدرت گرفته از <a href="https://bagisto.com/" target="_blank">Bagisto</a>، یک پروژه اجتماعی توسط <a href="https://webkul.com/" target="_blank">Webkul</a>',
+        'copy-right' => '© Aso Signature',
     ],
 
     'emails' => [

@@ -3,9 +3,11 @@
 namespace Webkul\Shop\Listeners;
 
 use Webkul\Sales\Contracts\Order as OrderContract;
+use Webkul\Sales\Models\Order as OrderModel;
 use Webkul\Shop\Mail\Order\CanceledNotification;
 use Webkul\Shop\Mail\Order\CommentedNotification;
 use Webkul\Shop\Mail\Order\CreatedNotification;
+use Webkul\Shop\Mail\Order\StatusUpdatedNotification;
 
 class Order extends Base
 {
@@ -41,6 +43,31 @@ class Order extends Base
             }
 
             $this->prepareMail($order, new CanceledNotification($order));
+        } catch (\Exception $e) {
+            report($e);
+        }
+    }
+
+    /**
+     * Notify the customer whenever the order moves to a new status (Processing, Sent for Production,
+     * Ready for Shipment, Shipped, Delivered/Completed, …). Cancellation is skipped here because it
+     * already has its own dedicated customer email. Gated by an admin email-notification toggle.
+     *
+     * @param  \Webkul\Sales\Contracts\Order  $order
+     * @return void
+     */
+    public function afterStatusUpdated($order)
+    {
+        if ($order->status === OrderModel::STATUS_CANCELED) {
+            return;
+        }
+
+        try {
+            if (! core()->getConfigData('emails.general.notifications.emails.general.notifications.order_status_update')) {
+                return;
+            }
+
+            $this->prepareMail($order, new StatusUpdatedNotification($order));
         } catch (\Exception $e) {
             report($e);
         }
