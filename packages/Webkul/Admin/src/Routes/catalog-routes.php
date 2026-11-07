@@ -8,6 +8,7 @@ use Webkul\Admin\Http\Controllers\Catalog\Product\BundleController;
 use Webkul\Admin\Http\Controllers\Catalog\Product\ConfigurableController;
 use Webkul\Admin\Http\Controllers\Catalog\Product\DownloadableController;
 use Webkul\Admin\Http\Controllers\Catalog\Product\GroupedController;
+use Webkul\Admin\Http\Controllers\Catalog\Product\MediaController;
 use Webkul\Admin\Http\Controllers\Catalog\ProductController;
 
 /**
@@ -123,6 +124,15 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::controller(DownloadableController::class)->group(function () {
                 Route::get('{id}/downloadable-options', 'options')->name('admin.catalog.products.downloadable.options');
+            });
+
+            /**
+             * Background (chunked) media uploads from the product edit page.
+             */
+            Route::controller(MediaController::class)->where(['type' => 'images|videos'])->group(function () {
+                Route::post('{id}/media/{type}', 'upload')->name('admin.catalog.products.media.upload');
+
+                Route::delete('{id}/media/{type}/{mediaId}', 'destroy')->name('admin.catalog.products.media.delete');
             });
 
             Route::get('search', 'search')->name('admin.catalog.products.search');

@@ -4,7 +4,8 @@
     'showPlaceholders' => false,
     'uploadedImages'   => [],
     'width'            => '120px',
-    'height'           => '120px'
+    'height'           => '120px',
+    'uploadUrl'        => ''
 ])
 
 <v-media-images
@@ -14,10 +15,13 @@
     :uploaded-images='{{ json_encode($uploadedImages) }}'
     width="{{ $width }}"
     height="{{ $height }}"
+    upload-url="{{ $uploadUrl }}"
     :errors="errors"
 >
     <x-admin::shimmer.image class="h-[110px] w-[110px] rounded" />
 </v-media-images>
+
+@include('admin::components.media.uploader')
 
 @pushOnce('scripts')
     <script
@@ -95,7 +99,10 @@
                             :image="element"
                             :width="width"
                             :height="height"
+                            :upload-mode="uploadMode"
                             @onRemove="remove($event)"
+                            @onRetry="retryUpload($event)"
+                            @onReplace="replaceUpload($event)"
                         >
                         </v-media-image-item>
                     </template>
@@ -346,6 +353,58 @@
                 :style="{'width': this.width, 'height': this.height}"
             />
 
+            <!-- Background upload state (only when the component uploads on its own) -->
+            <div
+                class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1.5 bg-white/90 p-2 text-center dark:bg-gray-900/90"
+                v-if="image.upload && image.upload.status != 'done'"
+            >
+                <template v-if="image.upload.status == 'error'">
+                    <p class="text-xs font-semibold text-red-600">
+                        @lang('admin::app.components.media.images.upload-failed')
+                    </p>
+
+                    <div class="flex gap-2">
+                        <button
+                            type="button"
+                            class="text-xs font-semibold text-blue-600"
+                            @click="$emit('onRetry', image)"
+                        >
+                            @lang('admin::app.components.media.images.upload-retry')
+                        </button>
+
+                        <button
+                            type="button"
+                            class="text-xs font-semibold text-gray-600 dark:text-gray-300"
+                            @click="remove"
+                        >
+                            @lang('admin::app.components.media.images.upload-cancel')
+                        </button>
+                    </div>
+                </template>
+
+                <template v-else>
+                    <p class="text-xs font-semibold text-gray-800 dark:text-white">
+                        <template v-if="image.upload.status == 'uploading'">@{{ image.upload.progress }}%</template>
+                        <template v-else>@lang('admin::app.components.media.images.upload-optimising')</template>
+                    </p>
+
+                    <div class="h-1.5 w-full overflow-hidden rounded bg-gray-200 dark:bg-gray-800">
+                        <div
+                            class="h-full rounded bg-blue-600 transition-all"
+                            :style="{ width: image.upload.progress + '%' }"
+                        ></div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="text-xs font-semibold text-gray-600 dark:text-gray-300"
+                        @click="remove"
+                    >
+                        @lang('admin::app.components.media.images.upload-cancel')
+                    </button>
+                </template>
+            </div>
+
             <div class="invisible absolute bottom-0 top-0 flex w-full flex-col justify-between bg-white p-3 opacity-80 transition-all group-hover:visible dark:bg-gray-900">
                 <!-- Image Name -->
                 <p class="break-all text-xs font-semibold text-gray-600 dark:text-gray-300"></p>
@@ -364,7 +423,7 @@
 
                     <input
                         type="hidden"
-                        :name="name + '[' + image.id + ']'"
+                        :name="name + '[' + (image.media_id ?? image.id) + ']'"
                         v-if="! image.is_new"
                     />
 
@@ -385,6 +444,18 @@
     <script type="module">
         app.component('v-media-images', {
             template: '#v-media-images-template',
+
+            mixins: [
+                window.asoMediaUploadMixin({
+                    collection: 'images',
+                    prefix: 'image',
+                    compress: true,
+                    messages: {
+                        failed: "@lang('admin::app.components.media.images.upload-failed')",
+                        sessionExpired: "@lang('admin::app.components.media.images.upload-session-expired')",
+                    },
+                }),
+            ],
 
             props: {
                 name: {
@@ -498,16 +569,30 @@
                         return;
                     }
 
-                    imageInput.files.forEach((file, index) => {
+                    Array.from(imageInput.files).forEach((file) => {
+                        if (this.uploadMode) {
+                            this.queueUpload(file);
+
+                            return;
+                        }
+
                         this.images.push({
                             id: 'image_' + this.images.length,
                             url: '',
                             file: file
                         });
                     });
+
+                    if (this.uploadMode) {
+                        imageInput.value = '';
+                    }
                 },
 
                 remove(image) {
+                    if (this.uploadMode) {
+                        this.discardUpload(image);
+                    }
+
                     let index = this.images.indexOf(image);
 
                     this.images.splice(index, 1);
@@ -537,10 +622,18 @@
 
                 apply() {
                     this.selectedAIImages.forEach((image, index) => {
+                        const file = this.getBase64ToFile(image.url, 'temp.png');
+
+                        if (this.uploadMode) {
+                            this.queueUpload(file);
+
+                            return;
+                        }
+
                         this.images.push({
                             id: 'image_' + this.images.length,
                             url: '',
-                            file: this.getBase64ToFile(image.url, 'temp.png')
+                            file: file
                         });
                     });
 
@@ -584,10 +677,10 @@
         app.component('v-media-image-item', {
             template: '#v-media-image-item-template',
 
-            props: ['index', 'image', 'name', 'width', 'height'],
+            props: ['index', 'image', 'name', 'width', 'height', 'uploadMode'],
 
             mounted() {
-                if (this.image.file instanceof File) {
+                if (! this.uploadMode && this.image.file instanceof File) {
                     this.setFile(this.image.file);
 
                     this.readFile(this.image.file);
@@ -609,6 +702,14 @@
                             type: 'warning',
                             message: "@lang('admin::app.components.media.images.not-allowed-error')"
                         });
+
+                        return;
+                    }
+
+                    if (this.uploadMode) {
+                        this.$emit('onReplace', { item: this.image, file: imageInput.files[0] });
+
+                        imageInput.value = '';
 
                         return;
                     }

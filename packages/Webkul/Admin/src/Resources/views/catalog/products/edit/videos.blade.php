@@ -19,6 +19,7 @@
         name="videos[files]"
         :allow-multiple="true"
         :uploaded-videos="$product->videos"
+        upload-url="{{ route('admin.catalog.products.media.upload', [$product->id, 'videos']) }}"
     />
 
     <x-admin::form.control-group.error control-name='videos.files[0]' />

@@ -20,6 +20,7 @@
         allow-multiple="true"
         show-placeholders="true"
         :uploaded-images="$product->images"
+        upload-url="{{ route('admin.catalog.products.media.upload', [$product->id, 'images']) }}"
     />
 
     <x-admin::form.control-group.error control-name='images.files[0]' />

@@ -819,10 +819,13 @@ return [
             ],
 
             'edit' => [
-                'preview'  => 'Preview',
-                'remove'   => 'Remove',
-                'save-btn' => 'Save Product',
-                'title'    => 'Edit Product',
+                'preview'               => 'Preview',
+                'remove'                => 'Remove',
+                'save-btn'              => 'Save Product',
+                'save-btn-uploading'    => 'Uploading media…',
+                'title'                 => 'Edit Product',
+                'uploads-in-progress'   => 'Media is still uploading. Please wait for every upload to finish before saving.',
+                'uploads-leave-warning' => 'Media uploads are still in progress. If you leave now they will be cancelled.',
 
                 'channels' => [
                     'title' => 'Channels',
@@ -868,6 +871,14 @@ return [
                 'images' => [
                     'info'  => 'Image resolution should be like 560px X 609px',
                     'title' => 'Images',
+                ],
+
+                'media' => [
+                    'delete-success' => 'Media removed.',
+                    'image'          => 'image',
+                    'incomplete'     => 'The upload is incomplete. Please try again.',
+                    'too-large'      => 'The file may not be greater than :max kilobytes.',
+                    'video'          => 'video',
                 ],
 
                 'videos' => [
@@ -4326,11 +4337,17 @@ return [
 
         'media' => [
             'images' => [
-                'add-image-btn'     => 'Add Image',
-                'ai-add-image-btn'  => 'Magic AI',
-                'ai-btn-info'       => 'Generate Image',
-                'allowed-types'     => 'png, jpeg, jpg',
-                'not-allowed-error' => 'Only images files (.jpeg, .jpg, .png, ..) are allowed.',
+                'add-image-btn'          => 'Add Image',
+                'ai-add-image-btn'       => 'Magic AI',
+                'ai-btn-info'            => 'Generate Image',
+                'allowed-types'          => 'png, jpeg, jpg',
+                'not-allowed-error'      => 'Only images files (.jpeg, .jpg, .png, ..) are allowed.',
+                'upload-cancel'          => 'Cancel',
+                'upload-failed'          => 'Upload failed',
+                'upload-optimising'      => 'Optimising…',
+                'upload-retry'           => 'Retry',
+                'upload-session-expired' => 'Your session has expired. Reload the page, sign in again and add the file again.',
+                'upload-uploading'       => 'Uploading…',
 
                 'ai-generation' => [
                     '1024x1024'        => '1024x1024',
@@ -4363,9 +4380,14 @@ return [
             ],
 
             'videos' => [
-                'add-video-btn'     => 'Add Video',
-                'allowed-types'     => 'mp4, webm, mkv',
-                'not-allowed-error' => 'Only videos files (.mp4, .mov, .ogg ..) are allowed.',
+                'add-video-btn'          => 'Add Video',
+                'allowed-types'          => 'mp4, webm, mkv',
+                'not-allowed-error'      => 'Only videos files (.mp4, .mov, .ogg ..) are allowed.',
+                'upload-cancel'          => 'Cancel',
+                'upload-failed'          => 'Upload failed',
+                'upload-retry'           => 'Retry',
+                'upload-session-expired' => 'Your session has expired. Reload the page, sign in again and add the file again.',
+                'upload-uploading'       => 'Uploading…',
             ],
         ],
 
