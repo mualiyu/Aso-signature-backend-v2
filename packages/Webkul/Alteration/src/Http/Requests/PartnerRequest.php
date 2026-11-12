@@ -40,7 +40,6 @@ class PartnerRequest extends FormRequest
             'vetting_checklist'        => ['nullable', 'array'],
             'vetting_checklist.*'      => [Rule::in(config('alteration.vetting_checklist'))],
             'is_active'                => ['nullable', 'boolean'],
-            'currency'                 => ['nullable', 'string', 'size:3', Rule::exists('currencies', 'code')],
             'side_conditions'          => ['nullable', 'string'],
             'payment_terms'            => ['nullable', 'string'],
             'notes'                    => ['nullable', 'string'],
@@ -81,7 +80,6 @@ class PartnerRequest extends FormRequest
     {
         $this->merge([
             'country'           => strtoupper((string) $this->input('country')),
-            'currency'          => $this->filled('currency') ? strtoupper((string) $this->input('currency')) : null,
             'is_active'         => $this->boolean('is_active'),
             'vetting_checklist' => array_values((array) $this->input('vetting_checklist', [])),
         ]);
