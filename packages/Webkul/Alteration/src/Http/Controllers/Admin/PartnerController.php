@@ -33,7 +33,6 @@ class PartnerController extends Controller
         'vetting_status',
         'vetting_checklist',
         'is_active',
-        'currency',
         'side_conditions',
         'payment_terms',
         'notes',

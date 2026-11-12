@@ -298,22 +298,6 @@
                     @endforeach
                 </x-admin::form.control-group.control>
             </x-admin::form.control-group>
-
-            <x-admin::form.control-group class="!mb-0">
-                <x-admin::form.control-group.label>
-                    @lang('alteration::app.admin.partners.currency')
-                </x-admin::form.control-group.label>
-
-                <x-admin::form.control-group.control
-                    type="text"
-                    name="currency"
-                    :value="$value('currency', $baseCurrency)"
-                    :label="trans('alteration::app.admin.partners.currency')"
-                    placeholder="GBP"
-                />
-
-                <x-admin::form.control-group.error control-name="currency" />
-            </x-admin::form.control-group>
         </div>
 
         <!-- Vetting -->
