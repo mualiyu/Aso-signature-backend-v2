@@ -5,6 +5,7 @@ namespace Webkul\Core;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Concerns\CurrencyFormatter;
 use Webkul\Core\Models\Channel;
 use Webkul\Core\Repositories\ChannelRepository;
@@ -934,5 +935,46 @@ class Core
     public function getMaxUploadSize()
     {
         return ini_get('upload_max_filesize');
+    }
+
+    /**
+     * Width and height that show an image from the default storage disk at the given
+     * height without distorting it, capped at a maximum width. Returns null when the
+     * image cannot be read (missing file, SVG, remote disk), so callers can fall back
+     * to CSS sizing.
+     *
+     * Used by the e-mail layouts, where clients honour explicit width/height attributes
+     * but do not reliably keep the aspect ratio on their own.
+     *
+     * @return array{width: int, height: int}|null
+     */
+    public function getImageSizeForHeight(?string $path, int $height = 40, int $maxWidth = 220): ?array
+    {
+        if (! $path) {
+            return null;
+        }
+
+        try {
+            $size = @getimagesize(Storage::path($path));
+        } catch (\Throwable) {
+            return null;
+        }
+
+        if (empty($size[0]) || empty($size[1])) {
+            return null;
+        }
+
+        $width = (int) round($height * $size[0] / $size[1]);
+
+        if ($width > $maxWidth) {
+            $height = (int) round($maxWidth * $size[1] / $size[0]);
+
+            $width = $maxWidth;
+        }
+
+        return [
+            'width'  => max(1, $width),
+            'height' => max(1, $height),
+        ];
     }
 }
