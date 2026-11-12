@@ -216,9 +216,9 @@
 
                                     <td class="px-2 py-2">
                                         <input
-                                            type="number"
-                                            step="0.01"
-                                            min="0"
+                                            type="text"
+                                            inputmode="decimal"
+                                            autocomplete="off"
                                             name="prices[{{ $fixType->id }}][price]"
                                             value="{{ $price !== null ? (float) $price : '' }}"
                                             class="w-28 rounded-md border px-2.5 py-1.5 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
@@ -231,8 +231,9 @@
 
                                     <td class="px-2 py-2">
                                         <input
-                                            type="number"
-                                            min="0"
+                                            type="text"
+                                            inputmode="numeric"
+                                            autocomplete="off"
                                             name="prices[{{ $fixType->id }}][turnaround_days]"
                                             value="{{ old('prices.'.$fixType->id.'.turnaround_days', $prices->get($fixType->id)?->turnaround_days) }}"
                                             class="w-20 rounded-md border px-2.5 py-1.5 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
