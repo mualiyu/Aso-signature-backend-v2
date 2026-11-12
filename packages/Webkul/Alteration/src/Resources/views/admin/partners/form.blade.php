@@ -69,7 +69,7 @@
                         <x-admin::form.control-group.control
                             :type="$field === 'email' ? 'email' : 'text'"
                             :name="$field"
-                            :rules="$field === 'email' ? 'email' : ''"
+                            :rules="['email' => 'email', 'phone' => 'phone', 'whatsapp' => 'phone'][$field] ?? ''"
                             :value="$value($field)"
                             :label="trans('alteration::app.admin.partners.'.$label)"
                         />
@@ -150,6 +150,7 @@
                     <x-admin::form.control-group.control
                         type="text"
                         name="latitude"
+                        rules="decimal"
                         :value="$value('latitude')"
                         :label="trans('alteration::app.admin.partners.latitude')"
                         placeholder="51.5074"
@@ -166,6 +167,7 @@
                     <x-admin::form.control-group.control
                         type="text"
                         name="longitude"
+                        rules="decimal"
                         :value="$value('longitude')"
                         :label="trans('alteration::app.admin.partners.longitude')"
                         placeholder="-0.1278"
@@ -215,14 +217,18 @@
                                     </td>
 
                                     <td class="px-2 py-2">
-                                        <input
-                                            type="number"
-                                            step="0.01"
-                                            min="0"
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            inputmode="decimal"
+                                            autocomplete="off"
                                             name="prices[{{ $fixType->id }}][price]"
-                                            value="{{ $price !== null ? (float) $price : '' }}"
-                                            class="w-28 rounded-md border px-2.5 py-1.5 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
-                                        >
+                                            rules="decimal"
+                                            :value="$price !== null ? (float) $price : ''"
+                                            :label="trans('alteration::app.admin.partners.price')"
+                                            style="width: 7rem;"
+                                        />
+
+                                        <x-admin::form.control-group.error control-name="prices[{{ $fixType->id }}][price]" />
 
                                         @if ($aboveCap)
                                             <span class="label-pending ml-2">@lang('alteration::app.admin.partners.above-cap')</span>
@@ -230,13 +236,18 @@
                                     </td>
 
                                     <td class="px-2 py-2">
-                                        <input
-                                            type="number"
-                                            min="0"
+                                        <x-admin::form.control-group.control
+                                            type="text"
+                                            inputmode="numeric"
+                                            autocomplete="off"
                                             name="prices[{{ $fixType->id }}][turnaround_days]"
-                                            value="{{ old('prices.'.$fixType->id.'.turnaround_days', $prices->get($fixType->id)?->turnaround_days) }}"
-                                            class="w-20 rounded-md border px-2.5 py-1.5 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"
-                                        >
+                                            rules="numeric"
+                                            :value="old('prices.'.$fixType->id.'.turnaround_days', $prices->get($fixType->id)?->turnaround_days)"
+                                            :label="trans('alteration::app.admin.partners.turnaround')"
+                                            style="width: 5rem;"
+                                        />
+
+                                        <x-admin::form.control-group.error control-name="prices[{{ $fixType->id }}][turnaround_days]" />
                                     </td>
                                 </tr>
                             @endforeach
