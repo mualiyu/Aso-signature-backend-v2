@@ -16,10 +16,19 @@
                 <div style="margin-bottom: 65px;">
                     <a href="{{ route('shop.home.index') }}">
                         @if ($logo = core()->getCurrentChannel()->logo_url)
+                            {{-- Explicit width/height keep the logo's own proportions in e-mail clients. --}}
+                            @php $logoSize = core()->getImageSizeForHeight(core()->getCurrentChannel()->logo); @endphp
+
                             <img
                                 src="{{ $logo }}"
                                 alt="{{ config('app.name') }}"
-                                style="height: 40px; width: 110px;"
+                                @if ($logoSize)
+                                    width="{{ $logoSize['width'] }}"
+                                    height="{{ $logoSize['height'] }}"
+                                    style="width: {{ $logoSize['width'] }}px; height: {{ $logoSize['height'] }}px; display: block;"
+                                @else
+                                    style="height: 40px; width: auto; display: block;"
+                                @endif
                             />
                         @else
                             <img
