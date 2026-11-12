@@ -175,6 +175,24 @@ it('creates a partner with its price sheet', function () {
         ->and($partner->prices->first()->turnaround_days)->toBe(3);
 });
 
+it('offers the configured currencies as a dropdown and only accepts one of them', function () {
+    $this->loginAsAdmin();
+
+    $response = get(route('admin.alterations.partners.create'))->assertOk();
+
+    foreach (core()->getAllCurrencies() as $currency) {
+        $response->assertSee('<option value="'.$currency->code.'">', false);
+    }
+
+    post(route('admin.alterations.partners.store'), partnerPayload(['currency' => 'XYZ']))
+        ->assertSessionHasErrors('currency');
+
+    post(route('admin.alterations.partners.store'), partnerPayload(['name' => 'Lagos Fit', 'currency' => 'ngn']))
+        ->assertRedirect(route('admin.alterations.partners.index'));
+
+    expect(AlterationPartner::where('name', 'Lagos Fit')->firstOrFail()->currency)->toBe('NGN');
+});
+
 it('only allows vetting once the checklist is complete and coordinates are set', function () {
     $admin = $this->loginAsAdmin();
 

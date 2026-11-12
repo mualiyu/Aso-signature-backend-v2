@@ -40,6 +40,7 @@ class PartnerRequest extends FormRequest
             'vetting_checklist'        => ['nullable', 'array'],
             'vetting_checklist.*'      => [Rule::in(config('alteration.vetting_checklist'))],
             'is_active'                => ['nullable', 'boolean'],
+            'currency'                 => ['nullable', 'string', 'size:3', Rule::exists('currencies', 'code')],
             'side_conditions'          => ['nullable', 'string'],
             'payment_terms'            => ['nullable', 'string'],
             'notes'                    => ['nullable', 'string'],
