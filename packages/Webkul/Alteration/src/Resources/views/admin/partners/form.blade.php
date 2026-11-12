@@ -305,12 +305,16 @@
                 </x-admin::form.control-group.label>
 
                 <x-admin::form.control-group.control
-                    type="text"
+                    type="select"
                     name="currency"
+                    rules="required"
                     :value="$value('currency', $baseCurrency)"
                     :label="trans('alteration::app.admin.partners.currency')"
-                    placeholder="GBP"
-                />
+                >
+                    @foreach (core()->getAllCurrencies() as $currency)
+                        <option value="{{ $currency->code }}">{{ $currency->name }} ({{ $currency->code }})</option>
+                    @endforeach
+                </x-admin::form.control-group.control>
 
                 <x-admin::form.control-group.error control-name="currency" />
             </x-admin::form.control-group>
