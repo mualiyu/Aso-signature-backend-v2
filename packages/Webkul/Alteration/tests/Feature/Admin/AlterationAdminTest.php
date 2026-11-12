@@ -175,22 +175,17 @@ it('creates a partner with its price sheet', function () {
         ->and($partner->prices->first()->turnaround_days)->toBe(3);
 });
 
-it('offers the configured currencies as a dropdown and only accepts one of them', function () {
+it('does not ask for a currency on the partner form and keeps one already saved', function () {
     $this->loginAsAdmin();
 
-    $response = get(route('admin.alterations.partners.create'))->assertOk();
+    get(route('admin.alterations.partners.create'))->assertOk()->assertDontSee('<option value="'.core()->getBaseCurrencyCode().'">', false);
 
-    foreach (core()->getAllCurrencies() as $currency) {
-        $response->assertSee('<option value="'.$currency->code.'">', false);
-    }
+    $partner = vettedPartner(['currency' => 'GBP']);
 
-    post(route('admin.alterations.partners.store'), partnerPayload(['currency' => 'XYZ']))
-        ->assertSessionHasErrors('currency');
+    put(route('admin.alterations.partners.update', $partner->id), partnerPayload(['vetting_status' => 'pending']))
+        ->assertRedirect();
 
-    post(route('admin.alterations.partners.store'), partnerPayload(['name' => 'Lagos Fit', 'currency' => 'ngn']))
-        ->assertRedirect(route('admin.alterations.partners.index'));
-
-    expect(AlterationPartner::where('name', 'Lagos Fit')->firstOrFail()->currency)->toBe('NGN');
+    expect($partner->fresh()->currency)->toBe('GBP');
 });
 
 it('only allows vetting once the checklist is complete and coordinates are set', function () {

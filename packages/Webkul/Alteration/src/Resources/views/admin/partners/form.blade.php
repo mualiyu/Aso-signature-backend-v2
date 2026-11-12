@@ -309,26 +309,6 @@
                     @endforeach
                 </x-admin::form.control-group.control>
             </x-admin::form.control-group>
-
-            <x-admin::form.control-group class="!mb-0">
-                <x-admin::form.control-group.label>
-                    @lang('alteration::app.admin.partners.currency')
-                </x-admin::form.control-group.label>
-
-                <x-admin::form.control-group.control
-                    type="select"
-                    name="currency"
-                    rules="required"
-                    :value="$value('currency', $baseCurrency)"
-                    :label="trans('alteration::app.admin.partners.currency')"
-                >
-                    @foreach (core()->getAllCurrencies() as $currency)
-                        <option value="{{ $currency->code }}">{{ $currency->name }} ({{ $currency->code }})</option>
-                    @endforeach
-                </x-admin::form.control-group.control>
-
-                <x-admin::form.control-group.error control-name="currency" />
-            </x-admin::form.control-group>
         </div>
 
         <!-- Vetting -->
