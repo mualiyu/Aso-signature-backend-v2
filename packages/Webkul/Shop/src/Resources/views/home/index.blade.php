@@ -71,11 +71,23 @@
                        {{-- <h1> TEST DESIGNER </h1> --}}
                 @break
             @case ($customization::PRODUCT_CAROUSEL)
+                @php
+                    $productFilters = $data['filters'] ?? [];
+
+                    /**
+                     * A hand-arranged carousel shows exactly the picked products. The other
+                     * filters were only there to narrow the admin's picker list.
+                     */
+                    if (($productFilters['sort'] ?? null) === 'manual') {
+                        $productFilters = \Illuminate\Support\Arr::only($productFilters, ['sort', 'limit', 'product_ids']);
+                    }
+                @endphp
+
                 <!-- Product Carousel -->
                 <x-shop::products.carousel
                     :title="$data['title'] ?? ''"
-                    :src="route('shop.api.products.index', $data['filters'] ?? [])"
-                    :navigation-link="route('shop.search.index', $data['filters'] ?? [])"
+                    :src="route('shop.api.products.index', $productFilters)"
+                    :navigation-link="route('shop.search.index', $productFilters)"
                     aria-label="Product Carousel"
                 />
 

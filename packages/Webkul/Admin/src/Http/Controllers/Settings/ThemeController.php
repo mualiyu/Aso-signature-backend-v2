@@ -3,12 +3,15 @@
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Admin\DataGrids\Theme\ThemeDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\Http\Requests\MassDestroyRequest;
 use Webkul\Admin\Http\Requests\MassUpdateRequest;
+use Webkul\Admin\Http\Resources\ProductResource;
+use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Theme\Repositories\ThemeCustomizationRepository;
 
 class ThemeController extends Controller
@@ -18,7 +21,10 @@ class ThemeController extends Controller
      *
      * @return void
      */
-    public function __construct(public ThemeCustomizationRepository $themeCustomizationRepository) {}
+    public function __construct(
+        public ThemeCustomizationRepository $themeCustomizationRepository,
+        protected ProductRepository $productRepository
+    ) {}
 
     /**
      * Display a listing resource for the available tax rates.
@@ -85,6 +91,49 @@ class ThemeController extends Controller
     }
 
     /**
+     * Products a product carousel can be hand-arranged from. The carousel's own
+     * filters narrow the list first, an optional `query` searches it by name.
+     */
+    public function products(int $id): JsonResource
+    {
+        $theme = $this->themeCustomizationRepository->findOrFail($id);
+
+        $filters = collect(request()->input('filters', []))
+            ->filter(fn ($value, $key) => is_string($key) && is_scalar($value) && $value !== '')
+            ->except([
+                'sort',
+                'limit',
+                'page',
+                'product_ids',
+                'channel_id',
+                'status',
+                'visible_individually',
+                'url_key',
+                'name',
+                'query',
+            ])
+            ->all();
+
+        $params = array_merge($filters, [
+            'channel_id'           => $theme->channel_id,
+            'status'               => 1,
+            'visible_individually' => 1,
+            'sort'                 => 'name-asc',
+            'limit'                => product_toolbar()->getAvailableLimits()->last(),
+        ]);
+
+        if (filled(request('query'))) {
+            $params['name'] = request('query');
+        }
+
+        $products = $this->productRepository
+            ->setSearchEngine('database')
+            ->getAll($params);
+
+        return ProductResource::collection($products);
+    }
+
+    /**
      * Update the specified resource
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -100,6 +149,14 @@ class ThemeController extends Controller
         ]);
 
         $locale = request('locale');
+
+        if (request('type') === 'product_carousel') {
+            $this->validate(request(), [
+                $locale.'.options.filters.product_ids' => 'required_if:'.$locale.'.options.filters.sort,manual',
+            ], [
+                $locale.'.options.filters.product_ids.required_if' => trans('admin::app.settings.themes.edit.manual-products.required'),
+            ]);
+        }
 
         $data = request()->only(
             'locale',

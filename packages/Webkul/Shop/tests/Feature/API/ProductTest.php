@@ -77,3 +77,36 @@ it('returns all products listing', function () {
             'id' => $product->id,
         ]);
 });
+
+it('returns hand-arranged products in the given order', function () {
+    // Arrange.
+    $products = (new ProductFaker)
+        ->getSimpleProductFactory()
+        ->count(3)
+        ->create();
+
+    $ids = [$products[2]->id, $products[0]->id, $products[1]->id];
+
+    // Act.
+    $response = getJson(route('shop.api.products.index', [
+        'sort'        => 'manual',
+        'product_ids' => implode(',', $ids),
+    ]))
+        ->assertOk()
+        ->collect();
+
+    // Assert.
+    expect(collect($response['data'])->pluck('id')->all())->toBe($ids);
+});
+
+it('returns no products for a manual sort without picked products', function () {
+    // Arrange.
+    (new ProductFaker)
+        ->getSimpleProductFactory()
+        ->create();
+
+    // Act and Assert.
+    getJson(route('shop.api.products.index', ['sort' => 'manual']))
+        ->assertOk()
+        ->assertJsonCount(0, 'data');
+});

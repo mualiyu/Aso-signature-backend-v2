@@ -3242,6 +3242,26 @@ return [
                 'value'                          => 'Value: :value',
                 'value-input'                    => 'Value',
 
+                'manual-products' => [
+                    'add-btn'             => 'Add Products',
+                    'add-selected-btn'    => 'Add Selected',
+                    'empty-info'          => 'Add the products this carousel should show, then drag them into the order you want.',
+                    'empty-title'         => 'No products picked yet',
+                    'filters-info'        => 'With Manually arrange, filters only narrow the list you pick products from. The carousel shows exactly the products you picked.',
+                    'info'                => 'Drag the products into the order they should appear. Only these products are shown in the carousel.',
+                    'limit-warning'       => 'You picked :count products but Limit is :limit, so only the first :limit are shown. Faded products are hidden.',
+                    'load-more'           => 'Load more',
+                    'picker-empty'        => 'No products match.',
+                    'picker-filtered'     => 'Showing products matching this carousel\'s filters:',
+                    'picker-title'        => 'Select Products',
+                    'picker-unfiltered'   => 'Showing all products. Add filters to narrow this list.',
+                    'required'            => 'Pick at least one product to arrange.',
+                    'search-placeholder'  => 'Search by name',
+                    'sku'                 => 'SKU - :sku',
+                    'sort-option'         => 'Manually arrange',
+                    'title'               => 'Products',
+                ],
+
                 'hero-carousel' => [
                     'add-btn'                  => 'Add Hero Slide',
                     'autoplay'                 => 'Rotate automatically',
