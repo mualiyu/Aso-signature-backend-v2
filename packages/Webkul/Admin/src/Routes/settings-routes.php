@@ -178,6 +178,8 @@ Route::group(['middleware' => ['admin'], 'prefix' => config('app.admin_url')], f
 
             Route::post('edit/{id}', 'update')->name('admin.settings.themes.update');
 
+            Route::get('edit/{id}/products', 'products')->name('admin.settings.themes.products');
+
             Route::delete('edit/{id}', 'destroy')->name('admin.settings.themes.delete');
 
             Route::post('mass-update', 'massUpdate')->name('admin.settings.themes.mass_update');

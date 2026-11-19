@@ -207,7 +207,14 @@ class ProductRepository extends Repository
      */
     public function getAll(array $params = [])
     {
-        if ($this->searchEngine == 'elastic') {
+        /**
+         * A hand-arranged list is an exact set of ids in a fixed order, which only the
+         * database query knows how to honour, so it never goes through elastic.
+         */
+        if (
+            $this->searchEngine == 'elastic'
+            && ! $this->isManualSort($params)
+        ) {
             return $this->searchFromElastic($params);
         }
 
@@ -261,6 +268,19 @@ class ProductRepository extends Repository
 
             if (! empty($params['designer_id'])) {
                 $qb->whereIn('products.designer_id', explode(',', $params['designer_id']));
+            }
+
+            /**
+             * Restrict to an explicit list of products. A manual sort with no ids
+             * matches nothing rather than falling back to the whole catalog.
+             */
+            $productIds = $this->parseProductIds($params['product_ids'] ?? null);
+
+            if (
+                ! empty($productIds)
+                || $this->isManualSort($params)
+            ) {
+                $qb->whereIn('products.id', $productIds ?: [0]);
             }
 
             if (! empty($params['channel_id'])) {
@@ -373,6 +393,22 @@ class ProductRepository extends Repository
             }
 
             /**
+             * Manual sort keeps the products in the order the ids were given.
+             */
+            if (
+                $this->isManualSort($params)
+                && ! empty($productIds)
+            ) {
+                $cases = collect($productIds)
+                    ->map(fn ($id, $position) => 'WHEN '.$id.' THEN '.$position)
+                    ->implode(' ');
+
+                $qb->orderByRaw('CASE '.$prefix.'products.id '.$cases.' END');
+
+                return $qb->groupBy('products.id');
+            }
+
+            /**
              * Sort collection.
              */
             $sortOptions = $this->getSortOptions($params);
@@ -481,6 +517,36 @@ class ProductRepository extends Repository
     public function getPerPageLimit(array $params): int
     {
         return product_toolbar()->getLimit($params);
+    }
+
+    /**
+     * Whether the products should come back in the hand-arranged `product_ids` order.
+     */
+    public function isManualSort(array $params): bool
+    {
+        return ($params['sort'] ?? null) === 'manual';
+    }
+
+    /**
+     * Turn a comma separated (or array) list of product ids into unique positive
+     * integers, keeping the order they were given in.
+     */
+    protected function parseProductIds($productIds): array
+    {
+        if (empty($productIds)) {
+            return [];
+        }
+
+        if (! is_array($productIds)) {
+            $productIds = explode(',', (string) $productIds);
+        }
+
+        return collect($productIds)
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**
